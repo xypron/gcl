@@ -2,8 +2,10 @@ gcl (2.6.1-31) unstable; urgency=low
 
   * Adjustments to vs_top reset logic to clear (hopefully last)
     remaining bug found by the random-tester
+  * Allow args-info-referred-vars to match replaced vars, clearing bug
+    report submitted by Matt Kauffman
 
- -- Camm Maguire <camm@enhanced.com>  Sat,  6 Mar 2004 14:47:57 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat,  6 Mar 2004 14:48:14 +0000
 
 gcl (2.6.1-30) unstable; urgency=low
 
