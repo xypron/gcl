@@ -16,7 +16,7 @@ prefix=/usr/local
 # use=386-linux
 
 # for main link of raw_gcl
-LIBS= -lm
+LIBS= -lm -lreadline -ltermcap
 
 #The multi precision library stuff
 MPFILES=$(MPDIR)/mpi-386_no_under.o $(MPDIR)/libmport.a
@@ -25,7 +25,7 @@ MPFILES=$(MPDIR)/mpi-386_no_under.o $(MPDIR)/libmport.a
 # root for the installation, eg /usr/local
 # This would cause make install to create /usr/local/bin/gcl and
 # /usr/local/lib/gcl-2-??/* with some basic files.
-prefix=/fix/f/debian/mm/gcl/gcl-2.5.0/../tmp
+prefix=/usr/local
 
 # where to place the info files
 INFO_DIR=/usr/info/
@@ -55,9 +55,9 @@ TCL_LIBS=-ldl  -lm
 NOTIFY=yes
 GCC=gcc
 
-RL_OBJS=
+RL_OBJS=readline.o
 
-RL_LIB=
+RL_LIB=lsp/readline.o
 
 GCLDIR=/fix/f/debian/mm/gcl/gcl-2.5.0
 SHELL=/bin/sh
@@ -74,12 +74,12 @@ MACHINE=386-linux
 
 LBINDIR=/usr/local/bin
 
-OFLAG	=  -g 
-#OFLAG	=  -O 
+#OFLAG	=  -g 
+OFLAG	=  -O 
 #LIBS	= -lm 
 
-#ODIR_DEBUG= -O4 
-ODIR_DEBUG= -g
+ODIR_DEBUG= -O4 
+#ODIR_DEBUG= -g
 
 # This CC string will be used for compilation of the system,
 # and also in the compiler::*cc* variable for later compilation of
@@ -226,7 +226,10 @@ clean:
 	(cd $(CMPDIR); make clean)
 	(cd $(PORTDIR); make clean)
 	(cd gcl-tk ; make clean)
-
+	(cd gmp ; make distclean)
+	rm -f foo.tcl config.log makedefs makedefsafter config.cache config.status makedefc
+	rm -f h/config.h h/gclincl.h h/cmpinclude.h
+	rm -rf gmp/.deps
 
 CMPINCLUDE_FILES=${HDIR}cmpincl1.h ${HDIR}gclincl.h ${HDIR}compbas.h ${HDIR}enum.h ${HDIR}object.h ${HDIR}vs.h \
 	${HDIR}bds.h ${HDIR}frame.h \
