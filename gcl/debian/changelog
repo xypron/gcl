@@ -14,8 +14,10 @@ gcl (2.6.4-2) unstable; urgency=low
     when using gprof
   * Fix (setf (get ...) ...) return bug when interpreted
   * Fix overwrite end of sgc_type_map bug
+  * Versioned depends on binutils-dev manually installed by Debian build
+    process
 
- -- Camm Maguire <camm@enhanced.com>  Thu, 12 Aug 2004 16:42:20 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu, 12 Aug 2004 16:46:11 +0000
 
 gcl (2.6.4-1) unstable; urgency=high
 
