@@ -453,27 +453,32 @@ typedef struct {
   reloc_howto_type *h;
 } mtbl;
 
+int in_bfd_init=0;
+
 static void
 do_bfd_reloc(unsigned int oc,unsigned int val,
 	     unsigned int *where) {
 
-  static reloc_howto_type * m[BFD_RELOC_UNUSED];
   static bfd *dum;
+  static reloc_howto_type * m[BFD_RELOC_UNUSED];
   reloc_howto_type *h;
 
   if (!m[0]) {
 
     bfd_reloc_code_real_type t;
 
+    in_bfd_init=1;
+
     bfd_init();
+
     if (!(dum=bfd_openr("/dev/null",NULL)))
       FEerror("Cannot open dummy bfd\n");
-    for (t=BFD_RELOC_UNUSED;t>_dummy_first_bfd_reloc_code_real;t--) {
+
+    for (t=BFD_RELOC_UNUSED;t>_dummy_first_bfd_reloc_code_real;t--) 
       if ((h=bfd_reloc_type_lookup(dum,t)))
 	m[h->type]=h;
-    }
-/*      if (!bfd_close(dum)) */
-/*        FEerror("Cannot close bfd\n"); */
+      
+    in_bfd_init=0;
 
   }
 
