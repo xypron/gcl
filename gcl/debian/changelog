@@ -20,8 +20,9 @@ gcl (2.6.6-1) unstable; urgency=high
     fix time errors on the Itanium
   * Disable SGC on macosx until the sgc/save problem can be fixed.
   * Fix fixnum print bug on 64bit
+  * Fix nil types in room report
 
- -- Camm Maguire <camm@enhanced.com>  Sat, 15 Jan 2005 20:27:26 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat, 15 Jan 2005 21:24:20 +0000
 
 gcl (2.6.5-1) unstable; urgency=high
 
