@@ -8,8 +8,9 @@ gcl (2.6.2-1) unstable; urgency=low
   * acconfig.h update for isnormal default
   * Fix bug in setting elements (si::aset) of 0 rank arrays uncovered by
     the random tester
+  * No -fomit-frame-pointer on mingw
 
- -- Camm Maguire <camm@enhanced.com>  Mon, 31 May 2004 18:33:34 -0400
+ -- Camm Maguire <camm@enhanced.com>  Sat,  5 Jun 2004 18:07:28 +0000
 
 gcl (2.6.1-39) unstable; urgency=high
 
