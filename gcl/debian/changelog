@@ -32,8 +32,9 @@ gcl (2.6.2-1) unstable; urgency=low
   * Allow for elf_abi.h in FreeBSD.h
   * Add README.openbsd file
   * readme.mingw updates
+  * solaris.h updates for custreloc option
 
- -- Camm Maguire <camm@enhanced.com>  Thu, 17 Jun 2004 20:33:08 -0400
+ -- Camm Maguire <camm@enhanced.com>  Thu, 17 Jun 2004 20:38:04 -0400
 
 gcl (2.6.1-39) unstable; urgency=high
 
