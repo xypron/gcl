@@ -30,7 +30,7 @@ to compile use cc rsym.c -o rsym  -I../h
 Elf32_Phdr pheader;
 Elf32_Ehdr eheader;
 Elf32_Sym *symbol_table;
-int text_index,data_index,bss_index;
+int text_index,data_index,bss_index,sbss_index;
 #undef SYM_NAME
 #undef EXT_and_TEXT_BSS_DAT
 
@@ -175,6 +175,7 @@ char *filename;
 	my_string_table = get_section(fp,".strtab");
 	text_index = get_section_number(".text");
 	bss_index = get_section_number(".bss");
+	sbss_index = get_section_number(".sbss");
 	data_index = get_section_number(".data");
 	
 	fclose(fp);
@@ -189,6 +190,7 @@ struct lsymbol_table tab;
 				 (p->st_shndx == text_index \
 				  || p->st_shndx == data_index\
 				  || p->st_shndx == bss_index \
+				  || p->st_shndx == sbss_index \
 				  || p->st_shndx == SHN_UNDEF \
 				  ))
 #define SYM_NAME(p) my_string_table+(p->st_name)
@@ -224,15 +226,24 @@ char *out;
 	       files to be loaded do NOT have this tacked on.
 	     */
      if (name ) {
-        char *tmp;
+       char *tmp;
        tmp=index(name,'@') ;
        if (name 
 	   && tmp
 	   && tmp[1]=='@'
 	   && tmp[2]=='G'
 	   && tmp[3]=='L'
-	   && tmp[4]=='I')
-	 { *tmp=0; }
+	   && tmp[4]=='I') { 
+	 *tmp=0;      
+
+	 /* Some glibc have _setjmp as a strong symbol.  We will need
+            __sigsetjmp, to which _setjmp apparently points, to run
+            properly */
+
+	 if (!(strcmp(name,"_setjmp")))
+	   name="__sigsetjmp";
+
+       }
      }
 
        { dprintf(tab.n_symbols %d , tab.n_symbols);
