@@ -1,3 +1,12 @@
+gcl (2.6.1-4) unstable; urgency=low
+
+  * Fix to sfasli.c to avoid defining symbols in other than *UND*
+    sections
+  * Remove some 64 bit warnings
+  * Turn off def_static on ia64 for now -- its broken
+
+ -- Camm Maguire <camm@enhanced.com>  Sat,  6 Sep 2003 17:22:10 +0000
+
 gcl (2.6.1-3) unstable; urgency=low
 
   * Fix static detection fr ia64; contblock size detection on arm
