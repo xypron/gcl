@@ -18,9 +18,12 @@ saved_clcs_gcl: ../unixport/saved_pcl_gcl
 	$(CC) $(CFLAGS) -c $< -o $@
 	../xbin/append $*.data $@
 
-sys-proclaim.lisp:
+%.fn: ../cmpnew/gcl_collectfn.o %.lisp ./saved_clcs_gcl
+	echo '(load "$<")(compiler::emit-fn t)(compile-file "$*.lisp")' |./saved_clcs_gcl
+
+sys-proclaim.lisp: $(addsuffix .fn,$(FILES))
 	echo '(in-package "CONDITIONS")' \
-	'(load "../cmpnew/collectfn")'\
+	'(load "../cmpnew/gcl_collectfn")'\
 	'(compiler::make-all-proclaims "*.fn")' | ../xbin/gcl
 
 compile: ${LISP}

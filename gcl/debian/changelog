@@ -12,8 +12,10 @@ gcl (2.6.1-10) unstable; urgency=low
     optimization in all directories
   * collectfn -> gcl_collectfn in lsp/gcl_auto.lsp
   * collectfn -> gcl_collectfn in cmpnew/gcl_make-fn.lsp
+  * Make sure makefiles can generate sys-proclaim.lsp, regenerate these
+    files and recompile from lsp
 
- -- Camm Maguire <camm@enhanced.com>  Tue, 23 Sep 2003 18:36:15 +0000
+ -- Camm Maguire <camm@enhanced.com>  Tue, 23 Sep 2003 18:38:23 +0000
 
 gcl (2.6.1-9) unstable; urgency=low
 
