@@ -5,8 +5,9 @@ gcl (2.6.1-34) unstable; urgency=low
   * Use lisp rather than 'system touch' to make empty map file in
     compiler::link
   * fix small bug when info is passed bad second argument
+  * Don't try to open map file if doesn't stat (macosx)
 
- -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 01:34:46 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 01:36:14 +0000
 
 gcl (2.6.1-33) unstable; urgency=low
 
