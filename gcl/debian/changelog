@@ -1,8 +1,9 @@
 gcl (2.6.1-16) unstable; urgency=low
 
   * Fix sh syntax in debian/gcl.sh
+  * init_or_load1 -> gcl_init_or_load1 in xgcl-2/sysinit.lsp
 
- -- Camm Maguire <camm@intech.m.enhanced.com>  Sat, 18 Oct 2003 22:22:31 -0400
+ -- Camm Maguire <camm@intech.m.enhanced.com>  Sat, 18 Oct 2003 22:24:34 -0400
 
 gcl (2.6.1-15) unstable; urgency=low
 
