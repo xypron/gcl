@@ -2,8 +2,10 @@ gcl (2.6.1-34) unstable; urgency=low
 
   * Fix GNU_LD autodetection in configure.in
   * Eliminate C_INCLUDE_PATH from shell script wrapper
+  * Use lisp rather than 'system touch' to make empty map file in
+    compiler::link
 
- -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 01:30:23 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 01:32:57 +0000
 
 gcl (2.6.1-33) unstable; urgency=low
 
