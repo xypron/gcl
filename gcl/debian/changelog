@@ -7,8 +7,10 @@ gcl (2.6.1-24) unstable; urgency=low
     versions
   * SGC on for arm and hppa
   * remove fast-link workaround now fixed for windows
+  * Backport HEAD makefile changes to clean .{c,h,data} files and
+    new_decl.h, remove said from repository (generated files)
 
- -- Camm Maguire <camm@enhanced.com>  Thu, 12 Feb 2004 05:27:09 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu, 12 Feb 2004 05:56:29 +0000
 
 gcl (2.6.1-23) unstable; urgency=low
 
