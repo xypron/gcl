@@ -6,8 +6,11 @@ gcl (2.6.1-30) unstable; urgency=low
     plt.c.  Generates a clear and explicit error of an undefined symbol
     when we've missed an address
   * Define the external symbols known to be written at present in plt.c
+  * fix some more compiler errors found by the random tester -- all
+    related to proper unwinding of temporary reductions of vs_top from
+    te local supremum
 
- -- Camm Maguire <camm@enhanced.com>  Sat,  6 Mar 2004 01:59:06 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat,  6 Mar 2004 02:05:59 +0000
 
 gcl (2.6.1-29) unstable; urgency=low
 
