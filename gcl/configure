@@ -2347,7 +2347,7 @@ case $canonical in
      sparc-*-linux*)
      use=sparc-linux;;
 
-     arm-*-linux*)
+     arm*-*-linux*)
      use=arm-linux;;
 
      s390-*-linux*)
