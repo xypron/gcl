@@ -7,8 +7,9 @@ gcl (2.6.1-21) unstable; urgency=low
   * Rework documentation installation in and outside of Debian
   * Support user deined predicates at an elementary level in the form
     '(satisfies foop) in gcl_predlib.lsp
+  * Install binary gcd algorithm for ~10% performance increase
 
- -- Camm Maguire <camm@enhanced.com>  Thu,  8 Jan 2004 23:46:15 +0000
+ -- Camm Maguire <camm@enhanced.com>  Mon, 12 Jan 2004 13:45:08 -0500
 
 gcl (2.6.1-20) unstable; urgency=low
 
