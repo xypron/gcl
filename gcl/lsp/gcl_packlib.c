@@ -120,14 +120,12 @@ static void L3()
 	base[3]= VV[0];
 	} else {
 	base[3]= (V17->c.c_car);
-	V17=V17->c.c_cdr;
-	}
+	V17=V17->c.c_cdr;}
 	if(endp(V17)){
 	base[4]= Cnil;
 	} else {
 	base[4]= (V17->c.c_car);
-	V17=V17->c.c_cdr;
-	}
+	V17=V17->c.c_cdr;}
 	if(!endp(V17))invalid_macro_call();}
 	V16=V16->c.c_cdr;
 	base[5]= V16;}
@@ -229,14 +227,12 @@ static void L4()
 	base[3]= VV[0];
 	} else {
 	base[3]= (V49->c.c_car);
-	V49=V49->c.c_cdr;
-	}
+	V49=V49->c.c_cdr;}
 	if(endp(V49)){
 	base[4]= Cnil;
 	} else {
 	base[4]= (V49->c.c_car);
-	V49=V49->c.c_cdr;
-	}
+	V49=V49->c.c_cdr;}
 	if(!endp(V49))invalid_macro_call();}
 	V48=V48->c.c_cdr;
 	base[5]= V48;}
@@ -313,8 +309,7 @@ static void L5()
 	base[3]= Cnil;
 	} else {
 	base[3]= (V68->c.c_car);
-	V68=V68->c.c_cdr;
-	}
+	V68=V68->c.c_cdr;}
 	if(!endp(V68))invalid_macro_call();}
 	V67=V67->c.c_cdr;
 	base[4]= V67;}

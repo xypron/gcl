@@ -112,8 +112,7 @@ static void L6()
 	if(endp(V19)){
 	base[4]= Cnil;
 	} else {
-	base[4]= (V19->c.c_car);
-	}}
+	base[4]= (V19->c.c_car);}}
 	V18=V18->c.c_cdr;
 	base[5]= V18;}
 	{object V20;
@@ -145,8 +144,7 @@ static void L7()
 	if(endp(V24)){
 	base[4]= Cnil;
 	} else {
-	base[4]= (V24->c.c_car);
-	}}
+	base[4]= (V24->c.c_car);}}
 	V23=V23->c.c_cdr;
 	base[5]= (V23->c.c_car);}
 	base[6]= base[5];
@@ -245,8 +243,7 @@ static void L9()
 	if(endp(V35)){
 	base[3]= Cnil;
 	} else {
-	base[3]= (V35->c.c_car);
-	}}
+	base[3]= (V35->c.c_car);}}
 	if(base[3]!=Cnil){
 	vs_top=(vs_base=base+3)+1;
 	return;}

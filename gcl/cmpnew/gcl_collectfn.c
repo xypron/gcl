@@ -1056,13 +1056,7 @@ T325:;
 	return;
 	goto T324;
 T324:;}{object V101;
-	base[1]= VV[41];
-	base[2]= (VV[42]->s.s_dbind);
-	base[3]= VV[43];
-	vs_top=(vs_base=base+1)+3;
-	(void) (*Lnk99)();
-	vs_top=sup;
-	base[0]= vs_base[0];
+	base[0]= (VFUN_NARGS=3,(*(LnkLI99))(VV[41],(VV[42]->s.s_dbind),VV[43]));
 	vs_top=(vs_base=base+0)+1;
 	(void) (*Lnk100)();
 	vs_top=sup;
@@ -1096,13 +1090,13 @@ static void L19()
 	register object V104;
 	V103= (V102);
 	V104= CMPcar((V103));
-	goto T337;
-T337:;
+	goto T334;
+T334:;
 	if(!(((V103))==Cnil)){
-	goto T338;}
-	goto T333;
-	goto T338;
-T338:;
+	goto T335;}
+	goto T330;
+	goto T335;
+T335:;
 	base[3]=VV[100]->s.s_gfdef;
 	base[4]= (V104);
 	vs_top=(vs_base=base+4)+1;
@@ -1112,26 +1106,26 @@ T338:;
 	{object V105;
 	object V106= V107;
 	if(V106==Cnil){
-	goto T342;}
+	goto T339;}
 	base[2]=V105=MMcons(Cnil,Cnil);
-	goto T343;
-T343:;
+	goto T340;
+T340:;
 	base[4]= (V106->c.c_car);
 	vs_top=(vs_base=base+4)+1;
 	(void) (*Lnk100)();
 	vs_top=sup;
 	(V105->c.c_car)= vs_base[0];
 	if((V106=MMcdr(V106))==Cnil){
-	goto T342;}
+	goto T339;}
 	V105=MMcdr(V105)=MMcons(Cnil,Cnil);
-	goto T343;}
-	goto T342;
-T342:;
+	goto T340;}
+	goto T339;
+T339:;
 	V103= CMPcdr((V103));
 	V104= CMPcar((V103));
-	goto T337;}
-	goto T333;
-T333:;
+	goto T334;}
+	goto T330;
+T330:;
 	vs_base=vs_top;
 	(void) (*Lnk103)();
 	return;
@@ -1167,13 +1161,13 @@ TTL:;
 	vs_top=sup;
 	nlj_active=FALSE;frs_pop();
 	if((base[0])==Cnil){
-	goto T359;}
+	goto T356;}
 	base[2]= base[0];
 	vs_top=(vs_base=base+2)+1;
 	Lclose();
 	vs_top=sup;
-	goto T359;
-T359:;
+	goto T356;
+T356:;
 	vs_base=vs_top=base+2;
 	for(p= base[1];!endp(p);p=MMcdr(p))vs_push(MMcar(p));
 	if(active)unwind(fr,tag);else{
@@ -1201,63 +1195,58 @@ TTL:;
 	vs_top=sup;
 	V110= vs_base[0];
 	if(((V110))!=Cnil){
-	goto T366;}
+	goto T363;}
 	V111= Cnil;
-	goto T365;
-	goto T366;
-T366:;
+	goto T362;
+	goto T363;
+T363:;
 	base[1]= (V110);
 	vs_top=(vs_base=base+1)+1;
 	Ltruename();
 	vs_top=sup;
 	V111= vs_base[0];
-	goto T365;
-T365:;
+	goto T362;
+T362:;
 	{register object V112;
 	register object V113;
 	V112= (V108);
 	V113= CMPcar((V112));
-	goto T374;
-T374:;
+	goto T371;
+T371:;
 	if(!(((V112))==Cnil)){
-	goto T375;}
+	goto T372;}
 	base[2]= Cnil;
 	vs_top=(vs_base=base+2)+1;
 	return;
-	goto T375;
-T375:;
+	goto T372;
+T372:;
 	if(!(eql(STREF(object,(V113),0),VV[8]))){
-	goto T379;}
-	base[3]= VV[41];
-	base[4]= VV[48];
-	base[6]= (V111);
-	vs_top=(vs_base=base+6)+1;
+	goto T376;}
+	base[3]= (V111);
+	vs_top=(vs_base=base+3)+1;
 	Lnamestring();
 	vs_top=sup;
-	base[5]= vs_base[0];
-	vs_top=(vs_base=base+3)+3;
-	(void) (*Lnk99)();
-	vs_top=sup;
-	base[2]= vs_base[0];
+	V115= vs_base[0];
+	base[2]= (VFUN_NARGS=3,(*(LnkLI99))(VV[41],VV[48],V115));
 	vs_top=(vs_base=base+2)+1;
 	Lintern();
 	vs_top=sup;
 	V114= vs_base[0];
-	V115= Ct;
+	V116= Ct;
 	STSET(object,(V113),0, V114);
 	(void)(V114);
 	(void)(sputprop(STREF(object,(V113),0),VV[8],Ct));
-	goto T379;
-T379:;
-	{register object V116;
-	register object V117;
+	goto T376;
+T376:;
+	{register object V117;
 	register object V118;
-	V116= STREF(object,(V113),0);
-	V117= (VV[9]->s.s_dbind);
-	V118= (V113);
-	base[3]= (V116);
-	base[4]= (V117);
-	base[5]= (V118);
+	register object V119;
+	V117= STREF(object,(V113),0);
+	V118= (VV[9]->s.s_dbind);
+	V119= (V113);
+	base[3]= (V117);
+	base[4]= (V118);
+	base[5]= (V119);
 	vs_top=(vs_base=base+3)+3;
 	siLhash_set();
 	vs_top=sup;}
@@ -1268,12 +1257,12 @@ T379:;
 	vs_top=sup;
 	V109= vs_base[0];
 	if(((V109))==Cnil){
-	goto T396;}
+	goto T391;}
 	if(!(equal((V109),(V111)))){
-	goto T402;}
-	goto T396;
-	goto T402;
-T402:;
+	goto T397;}
+	goto T391;
+	goto T397;
+T397:;
 	base[2]= Ct;
 	base[3]= VV[50];
 	base[4]= STREF(object,(V113),0);
@@ -1282,23 +1271,23 @@ T402:;
 	vs_top=(vs_base=base+2)+5;
 	Lformat();
 	vs_top=sup;
-	goto T396;
-T396:;
-	{register object V119;
-	register object V120;
+	goto T391;
+T391:;
+	{register object V120;
 	register object V121;
-	V119= STREF(object,(V113),0);
-	V120= (VV[49]->s.s_dbind);
-	V121= (V111);
-	base[3]= (V119);
-	base[4]= (V120);
-	base[5]= (V121);
+	register object V122;
+	V120= STREF(object,(V113),0);
+	V121= (VV[49]->s.s_dbind);
+	V122= (V111);
+	base[3]= (V120);
+	base[4]= (V121);
+	base[5]= (V122);
 	vs_top=(vs_base=base+3)+3;
 	siLhash_set();
 	vs_top=sup;}
 	V112= CMPcdr((V112));
 	V113= CMPcar((V112));
-	goto T374;}}}
+	goto T371;}}}
 	}
 }
 /*	function definition for DUMP-FN-DATA	*/
@@ -1308,16 +1297,16 @@ static void L22()
 	register object *VOL sup=base+VM22; VC22
 	vs_check;
 	bds_check;
-	{VOL object V122;
-	if(vs_base>=vs_top){vs_top=sup;goto T421;}
-	V122=(base[0]);
+	{VOL object V123;
+	if(vs_base>=vs_top){vs_top=sup;goto T416;}
+	V123=(base[0]);
 	vs_top=sup;
-	goto T422;
-	goto T421;
-T421:;
-	V122= VV[51];
-	goto T422;
-T422:;
+	goto T417;
+	goto T416;
+T416:;
+	V123= VV[51];
+	goto T417;
+T417:;
 	base[4]= VV[52];
 	vs_top=(vs_base=base+4)+1;
 	Lfind_package();
@@ -1325,7 +1314,7 @@ T422:;
 	bds_bind(VV[33],vs_base[0]);
 	bds_bind(VV[30],Cnil);
 	bds_bind(VV[31],Cnil);
-	base[5]= (V122);
+	base[5]= (V123);
 	base[6]= VV[45];
 	base[7]= VV[46];
 	vs_top=(vs_base=base+5)+3;
@@ -1349,9 +1338,9 @@ T422:;
 	vs_top=(vs_base=base+6)+2;
 	Lmaphash();
 	vs_top=sup;
-	goto T435;
-	goto T435;
-T435:;
+	goto T430;
+	goto T430;
+T430:;
 	(void)(princ(VV[55],(base[4]->c.c_car)));
 	base[6]= (base[4]->c.c_car);
 	vs_top=(vs_base=base+6)+1;
@@ -1363,13 +1352,13 @@ T435:;
 	vs_top=sup;
 	nlj_active=FALSE;frs_pop();
 	if(((base[4]->c.c_car))==Cnil){
-	goto T442;}
+	goto T437;}
 	base[6]= (base[4]->c.c_car);
 	vs_top=(vs_base=base+6)+1;
 	Lclose();
 	vs_top=sup;
-	goto T442;
-T442:;
+	goto T437;
+T437:;
 	vs_base=vs_top=base+6;
 	for(p= base[5];!endp(p);p=MMcdr(p))vs_push(MMcar(p));
 	if(active)unwind(fr,tag);else{
@@ -1385,47 +1374,47 @@ static void L23()
 {register object *base=vs_base;
 	register object *sup=base+VM23; VC23
 	vs_check;
-	{object V123;
-	register object V124;
-	V123=(base[0]);
-	V124=(base[1]);
+	{object V124;
+	register object V125;
+	V124=(base[0]);
+	V125=(base[1]);
 	vs_top=sup;
 	goto TTL;
 TTL:;
-	if(((V124))==Cnil){
-	goto T446;}
-	if(!(type_of((V124))==t_symbol)){
-	goto T446;}
-	base[2]= (V124);
+	if(((V125))==Cnil){
+	goto T441;}
+	if(!(type_of((V125))==t_symbol)){
+	goto T441;}
+	base[2]= (V125);
 	vs_top=(vs_base=base+2)+1;
 	(void) (*Lnk107)();
 	vs_top=sup;
-	goto T446;
-T446:;
-	if(!(((V123))==(VV[56]))){
-	goto T452;}
+	goto T441;
+T441:;
+	if(!(((V124))==(VV[56]))){
+	goto T447;}
 	base[2]= Cnil;
 	vs_top=(vs_base=base+2)+1;
 	return;
-	goto T452;
-T452:;
-	{object V125= (VV[57]->s.s_dbind);
-	if((V125!= VV[108]))goto T455;
-	if(!(((V123))==(VV[58]))){
-	goto T457;}
+	goto T447;
+T447:;
+	{object V126= (VV[57]->s.s_dbind);
+	if((V126!= VV[108]))goto T450;
+	if(!(((V124))==(VV[58]))){
+	goto T452;}
 	base[2]= Cnil;
-	if((V124)!=Cnil){
-	base[3]= (V124);
-	goto T460;}
+	if((V125)!=Cnil){
+	base[3]= (V125);
+	goto T455;}
 	base[3]= VV[59];
-	goto T460;
-T460:;
+	goto T455;
+T455:;
 	vs_top=(vs_base=base+2)+2;
 	(void) (*Lnk109)();
 	return;
-	goto T457;
-T457:;
-	base[3]= (V123);
+	goto T452;
+T452:;
+	base[3]= (V124);
 	vs_top=(vs_base=base+3)+1;
 	(void) (*Lnk110)();
 	vs_top=sup;
@@ -1434,31 +1423,31 @@ T457:;
 	vs_top=(vs_base=base+2)+2;
 	(void) (*Lnk109)();
 	return;
-	goto T455;
-T455:;
-	if((V125!= VV[111]))goto T464;
+	goto T450;
+T450:;
+	if((V126!= VV[111]))goto T459;
 	base[2]= VV[12];
 	base[3]= Cnil;
 	vs_top=(vs_base=base+2)+2;
 	(void) (*Lnk109)();
 	return;
-	goto T464;
-T464:;
-	if((V125!= VV[112]))goto T467;
+	goto T459;
+T459:;
+	if((V126!= VV[112]))goto T462;
 	base[2]= Ct;
 	base[3]= Cnil;
 	vs_top=(vs_base=base+2)+2;
 	(void) (*Lnk109)();
 	return;
-	goto T467;
-T467:;
-	if((V125!= VV[113]))goto T470;
-	(VV[60]->s.s_dbind)= make_cons((V124),Cnil);
+	goto T462;
+T462:;
+	if((V126!= VV[113]))goto T465;
+	(VV[60]->s.s_dbind)= make_cons((V125),Cnil);
 	base[2]= (VV[60]->s.s_dbind);
 	vs_top=(vs_base=base+2)+1;
 	return;
-	goto T470;
-T470:;
+	goto T465;
+T465:;
 	base[2]= Cnil;
 	vs_top=(vs_base=base+2)+1;
 	return;}
@@ -1480,9 +1469,9 @@ TTL:;
 	vs_top=(vs_base=base+1)+2;
 	Lmaphash();
 	vs_top=sup;
-	goto T472;
-	goto T472;
-T472:;
+	goto T467;
+	goto T467;
+T467:;
 	base[1]= (base[0]->c.c_car);
 	vs_top=(vs_base=base+1)+1;
 	return;
@@ -1509,7 +1498,7 @@ static void L26()
 	vs_top=sup;
 	goto TTL;
 TTL:;
-	{object V126;
+	{object V127;
 	base[2]=MMcons(small_fixnum(0),Cnil);
 	base[3]= 
 	make_cclosure_new(LC36,Cnil,base[2],Cdata);
@@ -1517,17 +1506,17 @@ TTL:;
 	vs_top=(vs_base=base+3)+2;
 	Lmaphash();
 	vs_top=sup;
-	V126= (base[2]->c.c_car);
-	goto T477;
-	V126= Cnil;
-	goto T477;
-	V126= Cnil;
-	goto T477;
-T477:;
+	V127= (base[2]->c.c_car);
+	goto T472;
+	V127= Cnil;
+	goto T472;
+	V127= Cnil;
+	goto T472;
+T472:;
 	base[2]= VV[17];
 	base[3]= VV[63];
 	base[4]= VV[64];
-	base[5]= number_plus(small_fixnum(3),(V126));
+	base[5]= number_plus(small_fixnum(3),(V127));
 	vs_top=(vs_base=base+2)+4;
 	Lmake_hash_table();
 	vs_top=sup;
@@ -1539,9 +1528,9 @@ T477:;
 	vs_top=(vs_base=base+2)+2;
 	Lmaphash();
 	vs_top=sup;
-	goto T488;
-	goto T488;
-T488:;
+	goto T483;
+	goto T483;
+T483:;
 	base[2]=MMcons(Cnil,base[1]);
 	base[3]=MMcons(Cnil,base[2]);
 	base[4]= 
@@ -1566,22 +1555,22 @@ static void L27()
 {register object *base=vs_base;
 	register object *sup=base+VM27; VC27
 	vs_check;
-	{object V127;
-	object V128;
+	{object V128;
 	object V129;
 	object V130;
-	V127=(base[0]);
-	V128=(base[1]);
-	V129=(base[2]);
-	V130=(base[3]);
+	object V131;
+	V128=(base[0]);
+	V129=(base[1]);
+	V130=(base[2]);
+	V131=(base[3]);
 	vs_top=sup;
 	goto TTL;
 TTL:;
-	if(((V130))!=Cnil){
-	goto T498;}
-	V130= Ct;
-	goto T498;
-T498:;
+	if(((V131))!=Cnil){
+	goto T493;}
+	V131= Ct;
+	goto T493;
+T493:;
 	if((VV[10]->s.s_dbind)==Cnil){
 	base[4]= Cnil;
 	vs_top=(vs_base=base+4)+1;
@@ -1590,25 +1579,25 @@ T498:;
 	base[4]= Cnil;
 	vs_top=(vs_base=base+4)+1;
 	return;}
-	{object V131;
+	{object V132;
 	base[4]= VV[7];
-	base[5]= (V127);
+	base[5]= (V128);
 	base[6]= VV[15];
-	base[7]= (V128);
+	base[7]= (V129);
 	base[8]= VV[67];
-	base[9]= (V130);
+	base[9]= (V131);
 	base[10]= VV[68];
-	base[11]= (V129);
+	base[11]= (V130);
 	vs_top=(vs_base=base+4)+8;
 	(void) (*Lnk90)();
 	vs_top=sup;
-	V131= vs_base[0];
-	(VV[5]->s.s_dbind)= make_cons(V131,(VV[5]->s.s_dbind));
-	{object V134;
-	V134= (VV[9]->s.s_dbind);
-	base[4]= V127;
-	base[5]= (V134);
-	base[6]= V131;
+	V132= vs_base[0];
+	(VV[5]->s.s_dbind)= make_cons(V132,(VV[5]->s.s_dbind));
+	{object V135;
+	V135= (VV[9]->s.s_dbind);
+	base[4]= V128;
+	base[5]= (V135);
+	base[6]= V132;
 	vs_top=(vs_base=base+4)+3;
 	siLhash_set();
 	return;}}
@@ -1621,21 +1610,21 @@ static void L28()
 	register object *VOL sup=base+VM28; VC28
 	vs_check;
 	bds_check;
-	{VOL object V136;
-	if(vs_base>=vs_top){vs_top=sup;goto T517;}
+	{VOL object V137;
+	if(vs_base>=vs_top){vs_top=sup;goto T512;}
 	vs_base++;
-	if(vs_base>=vs_top){vs_top=sup;goto T518;}
-	V136=(base[1]);
+	if(vs_base>=vs_top){vs_top=sup;goto T513;}
+	V137=(base[1]);
 	vs_top=sup;
-	goto T519;
-	goto T517;
-T517:;
+	goto T514;
+	goto T512;
+T512:;
 	base[0]= VV[69];
-	goto T518;
-T518:;
-	V136= Cnil;
-	goto T519;
-T519:;
+	goto T513;
+T513:;
+	V137= Cnil;
+	goto T514;
+T514:;
 	bds_bind(VV[70],Ct);
 	base[3]=alloc_frame_id();
 	frs_push(FRS_CATCH,base[3]);
@@ -1644,8 +1633,8 @@ T519:;
 	bds_unwind1;
 	return;}
 	else{
-	if(((V136))!=Cnil){
-	goto T522;}
+	if(((V137))!=Cnil){
+	goto T517;}
 	base[5]= base[0];
 	base[6]= VV[45];
 	base[7]= VV[46];
@@ -1687,418 +1676,418 @@ T519:;
 	vs_top=sup;
 	nlj_active=FALSE;frs_pop();
 	if((base[4])==Cnil){
-	goto T543;}
+	goto T538;}
 	base[6]= base[4];
 	vs_top=(vs_base=base+6)+1;
 	Lclose();
 	vs_top=sup;
-	goto T543;
-T543:;
+	goto T538;
+T538:;
 	vs_base=vs_top=base+6;
 	for(p= base[5];!endp(p);p=MMcdr(p))vs_push(MMcar(p));
 	if(active)unwind(fr,tag);else{
 	vs_top=sup;}}
-	goto T522;
-T522:;
-	{object V137;
-	register object V138;
+	goto T517;
+T517:;
+	{object V138;
+	register object V139;
 	vs_base=vs_top;
 	Llist_all_packages();
 	vs_top=sup;
-	V137= vs_base[0];
-	V138= CMPcar((V137));
-	goto T550;
-T550:;
-	if(!(((V137))==Cnil)){
-	goto T551;}
+	V138= vs_base[0];
+	V139= CMPcar((V138));
+	goto T545;
+T545:;
+	if(!(((V138))==Cnil)){
+	goto T546;}
 	frs_pop();
 	base[6]= Cnil;
 	vs_top=(vs_base=base+6)+1;
 	bds_unwind1;
 	return;
-	goto T551;
-T551:;
-	base[6]= (V138);
+	goto T546;
+T546:;
+	base[6]= (V139);
 	vs_top=(vs_base=base+6)+1;
 	Lpackage_name();
 	vs_top=sup;
-	V140= vs_base[0];
-	{register object x= V140,V139= VV[75];
-	while(V139!=Cnil)
-	if(equal(x,V139->c.c_car)){
-	goto T555;
-	}else V139=V139->c.c_cdr;}
+	V141= vs_base[0];
+	{register object x= V141,V140= VV[75];
+	while(V140!=Cnil)
+	if(equal(x,V140->c.c_car)){
+	goto T550;
+	}else V140=V140->c.c_cdr;}
 	base[6]= base[0];
 	base[7]= VV[76];
-	base[9]= (V138);
+	base[9]= (V139);
 	vs_top=(vs_base=base+9)+1;
 	Lpackage_name();
 	vs_top=sup;
 	base[8]= vs_base[0];
-	base[9]= (V136);
+	base[9]= (V137);
 	vs_top=(vs_base=base+6)+4;
 	Lformat();
 	vs_top=sup;
-	{object V141= (V136);
-	if((V141!= VV[71]))goto T566;
+	{object V142= (V137);
+	if((V142!= VV[71]))goto T561;
 	bds_bind(VV[70],Ct);
-	base[8]= (V138);
+	base[8]= (V139);
 	vs_top=(vs_base=base+8)+1;
 	Lpackage_name();
 	vs_top=sup;
-	V142= vs_base[0];
-	base[8]= (V138);
+	V143= vs_base[0];
+	base[8]= (V139);
 	vs_top=(vs_base=base+8)+1;
 	Lpackage_nicknames();
 	vs_top=sup;
 	if((vs_base[0])==Cnil){
-	goto T572;}
-	base[8]= (V138);
+	goto T567;}
+	base[8]= (V139);
 	vs_top=(vs_base=base+8)+1;
 	Lpackage_nicknames();
 	vs_top=sup;
-	V144= vs_base[0];
-	V143= list(2,VV[78],list(2,VV[36],V144));
-	goto T570;
-	goto T572;
-T572:;
-	V143= Cnil;
-	goto T570;
-T570:;
-	base[7]= listA(5,VV[32],V142,VV[77],Cnil,V143);
+	V145= vs_base[0];
+	V144= list(2,VV[78],list(2,VV[36],V145));
+	goto T565;
+	goto T567;
+T567:;
+	V144= Cnil;
+	goto T565;
+T565:;
+	base[7]= listA(5,VV[32],V143,VV[77],Cnil,V144);
 	vs_top=(vs_base=base+7)+1;
 	L29(base);
 	vs_top=sup;
 	bds_unwind1;
-	goto T555;
-	goto T566;
-T566:;
-	if((V141!= VV[72]))goto T577;
+	goto T550;
+	goto T561;
+T561:;
+	if((V142!= VV[72]))goto T572;
 	bds_bind(VV[70],Ct);
-	base[8]= (V138);
+	base[8]= (V139);
 	vs_top=(vs_base=base+8)+1;
 	Lpackage_name();
 	vs_top=sup;
-	V145= vs_base[0];
-	base[9]= (V138);
+	V146= vs_base[0];
+	base[9]= (V139);
 	vs_top=(vs_base=base+9)+1;
 	Lpackage_use_list();
 	vs_top=sup;
-	V149= vs_base[0];
-	{object V147;
-	object V148= V149;
-	if(V148==Cnil){
-	V146= Cnil;
-	goto T582;}
-	base[8]=V147=MMcons(Cnil,Cnil);
-	goto T583;
-T583:;
-	base[9]= (V148->c.c_car);
+	V150= vs_base[0];
+	{object V148;
+	object V149= V150;
+	if(V149==Cnil){
+	V147= Cnil;
+	goto T577;}
+	base[8]=V148=MMcons(Cnil,Cnil);
+	goto T578;
+T578:;
+	base[9]= (V149->c.c_car);
 	vs_top=(vs_base=base+9)+1;
 	Lpackage_name();
 	vs_top=sup;
-	(V147->c.c_car)= vs_base[0];
-	if((V148=MMcdr(V148))==Cnil){
-	V146= base[8];
-	goto T582;}
-	V147=MMcdr(V147)=MMcons(Cnil,Cnil);
-	goto T583;}
-	goto T582;
-T582:;
-	V150= list(2,VV[36],V146);
-	base[8]= (V138);
+	(V148->c.c_car)= vs_base[0];
+	if((V149=MMcdr(V149))==Cnil){
+	V147= base[8];
+	goto T577;}
+	V148=MMcdr(V148)=MMcons(Cnil,Cnil);
+	goto T578;}
+	goto T577;
+T577:;
+	V151= list(2,VV[36],V147);
+	base[8]= (V139);
 	vs_top=(vs_base=base+8)+1;
 	Lpackage_nicknames();
 	vs_top=sup;
 	if((vs_base[0])==Cnil){
-	goto T590;}
-	base[8]= (V138);
+	goto T585;}
+	base[8]= (V139);
 	vs_top=(vs_base=base+8)+1;
 	Lpackage_nicknames();
 	vs_top=sup;
-	V152= vs_base[0];
-	V151= list(2,VV[78],list(2,VV[36],V152));
-	goto T588;
-	goto T590;
-T590:;
-	V151= Cnil;
-	goto T588;
-T588:;
-	base[7]= listA(5,VV[32],V145,VV[77],/* INLINE-ARGS */V150,V151);
+	V153= vs_base[0];
+	V152= list(2,VV[78],list(2,VV[36],V153));
+	goto T583;
+	goto T585;
+T585:;
+	V152= Cnil;
+	goto T583;
+T583:;
+	base[7]= listA(5,VV[32],V146,VV[77],/* INLINE-ARGS */V151,V152);
 	vs_top=(vs_base=base+7)+1;
 	L29(base);
 	vs_top=sup;
 	bds_unwind1;
-	{object V153;
-	object V154;
-	V153= Cnil;
-	bds_bind(VV[33],(V138));
+	{object V154;
+	object V155;
 	V154= Cnil;
-	{object V155;
-	register object V156;
+	bds_bind(VV[33],(V139));
+	V155= Cnil;
+	{object V156;
 	register object V157;
-	base[7]= V138;
+	register object V158;
+	base[7]= V139;
 	vs_top=(vs_base=base+7)+1;
 	Lpackagep();
 	vs_top=sup;
 	if((vs_base[0])==Cnil){
-	goto T598;}
-	V155= V138;
-	goto T596;
-	goto T598;
-T598:;
-	base[7]= coerce_to_string(V138);
+	goto T593;}
+	V156= V139;
+	goto T591;
+	goto T593;
+T593:;
+	base[7]= coerce_to_string(V139);
 	vs_top=(vs_base=base+7)+1;
 	Lfind_package();
 	vs_top=sup;
-	V155= vs_base[0];
-	goto T596;
-T596:;
-	V156= Cnil;
+	V156= vs_base[0];
+	goto T591;
+T591:;
 	V157= Cnil;
-	{object V159;
-	object V160;
-	base[8]= (V155);
+	V158= Cnil;
+	{object V160;
+	object V161;
+	base[8]= (V156);
 	vs_top=(vs_base=base+8)+1;
 	(void) (*Lnk115)();
 	vs_top=sup;
-	V159= vs_base[0];
-	V160= small_fixnum(0);
-	goto T606;
-T606:;
-	if(!(number_compare((V160),(V159))>=0)){
-	goto T607;}
-	V156= Cnil;
-	goto T595;
-	goto T607;
-T607:;
-	base[8]= (V155);
-	base[9]= (V160);
+	V160= vs_base[0];
+	V161= small_fixnum(0);
+	goto T601;
+T601:;
+	if(!(number_compare((V161),(V160))>=0)){
+	goto T602;}
+	V157= Cnil;
+	goto T590;
+	goto T602;
+T602:;
+	base[8]= (V156);
+	base[9]= (V161);
 	vs_top=(vs_base=base+8)+2;
 	siLpackage_external();
 	vs_top=sup;
-	V157= vs_base[0];
+	V158= vs_base[0];
+	goto T609;
+T609:;
+	if(((V158))!=Cnil){
+	goto T614;}
+	goto T610;
 	goto T614;
 T614:;
-	if(((V157))!=Cnil){
-	goto T619;}
-	goto T615;
-	goto T619;
-T619:;
-	V156= CMPcar((V157));
-	V153= make_cons(V156,(V153));
-	base[8]= (V156);
+	V157= CMPcar((V158));
+	V154= make_cons(V157,(V154));
+	base[8]= (V157);
 	vs_top=(vs_base=base+8)+1;
 	Lsymbol_package();
 	vs_top=sup;
-	V162= vs_base[0];
-	if(!((V162)==((V138)))){
-	goto T627;}
-	goto T626;
-	goto T627;
-T627:;
-	V154= make_cons(V156,(V154));
-	goto T626;
-T626:;
-	V157= CMPcdr((V157));
-	goto T614;
-	goto T615;
-T615:;
-	goto T612;
-	goto T612;
-T612:;
-	V160= one_plus((V160));
-	goto T606;}}
-	goto T595;
-T595:;
-	base[7]= list(2,VV[79],list(2,VV[36],(V154)));
+	V163= vs_base[0];
+	if(!((V163)==((V139)))){
+	goto T622;}
+	goto T621;
+	goto T622;
+T622:;
+	V155= make_cons(V157,(V155));
+	goto T621;
+T621:;
+	V158= CMPcdr((V158));
+	goto T609;
+	goto T610;
+T610:;
+	goto T607;
+	goto T607;
+T607:;
+	V161= one_plus((V161));
+	goto T601;}}
+	goto T590;
+T590:;
+	base[7]= list(2,VV[79],list(2,VV[36],(V155)));
 	vs_top=(vs_base=base+7)+1;
 	L29(base);
 	vs_top=sup;
-	base[7]= list(2,VV[72],list(2,VV[36],(V153)));
+	base[7]= list(2,VV[72],list(2,VV[36],(V154)));
 	vs_top=(vs_base=base+7)+1;
 	L29(base);
 	vs_top=sup;
 	bds_unwind1;
-	goto T555;}
-	goto T577;
-T577:;
-	if((V141!= VV[73]))goto T640;
+	goto T550;}
+	goto T572;
+T572:;
+	if((V142!= VV[73]))goto T635;
 	bds_bind(VV[70],Ct);
-	base[8]= (V138);
+	base[8]= (V139);
 	vs_top=(vs_base=base+8)+1;
 	Lpackage_name();
 	vs_top=sup;
-	V164= vs_base[0];
-	base[7]= list(2,VV[32],V164);
+	V165= vs_base[0];
+	base[7]= list(2,VV[32],V165);
 	vs_top=(vs_base=base+7)+1;
 	L29(base);
 	vs_top=sup;
 	bds_unwind1;
-	{object V165;
-	object V166;
+	{object V166;
+	object V167;
 	base[7]= VV[80];
 	vs_top=(vs_base=base+7)+1;
 	Lfind_package();
 	vs_top=sup;
 	base[6]= vs_base[0];
-	V165= Cnil;
 	V166= Cnil;
+	V167= Cnil;
 	bds_bind(VV[33],base[6]);
-	{object V167;
-	object V168;
-	base[9]= (V138);
+	{object V168;
+	object V169;
+	base[9]= (V139);
 	vs_top=(vs_base=base+9)+1;
 	(void) (*Lnk116)();
 	vs_top=sup;
-	V167= vs_base[0];
-	V168= CMPcar((V167));
-	goto T652;
-T652:;
-	if(!(((V167))==Cnil)){
-	goto T653;}
+	V168= vs_base[0];
+	V169= CMPcar((V168));
 	goto T647;
-	goto T653;
-T653:;
-	base[9]= (V168);
+T647:;
+	if(!(((V168))==Cnil)){
+	goto T648;}
+	goto T642;
+	goto T648;
+T648:;
+	base[9]= (V169);
 	vs_top=(vs_base=base+9)+1;
 	Lsymbol_package();
 	vs_top=sup;
-	V169= vs_base[0];
-	if(!((V169)==((V138)))){
-	goto T659;}
-	V165= make_cons(V168,(V165));
-	goto T657;
-	goto T659;
-T659:;
-	V166= make_cons(V168,(V166));
-	goto T657;
-T657:;
-	V167= CMPcdr((V167));
-	V168= CMPcar((V167));
-	goto T652;}
-	goto T647;
-T647:;
-	base[7]= list(2,VV[73],list(2,VV[36],(V165)));
+	V170= vs_base[0];
+	if(!((V170)==((V139)))){
+	goto T654;}
+	V166= make_cons(V169,(V166));
+	goto T652;
+	goto T654;
+T654:;
+	V167= make_cons(V169,(V167));
+	goto T652;
+T652:;
+	V168= CMPcdr((V168));
+	V169= CMPcar((V168));
+	goto T647;}
+	goto T642;
+T642:;
+	base[7]= list(2,VV[73],list(2,VV[36],(V166)));
 	vs_top=(vs_base=base+7)+1;
 	L29(base);
 	vs_top=sup;
-	base[7]= list(2,VV[81],list(2,VV[36],(V166)));
+	base[7]= list(2,VV[81],list(2,VV[36],(V167)));
 	vs_top=(vs_base=base+7)+1;
 	L29(base);
 	vs_top=sup;
-	{object V172;
-	V172= Cnil;
 	{object V173;
-	register object V174;
+	V173= Cnil;
+	{object V174;
 	register object V175;
-	base[7]= V138;
+	register object V176;
+	base[7]= V139;
 	vs_top=(vs_base=base+7)+1;
 	Lpackagep();
 	vs_top=sup;
 	if((vs_base[0])==Cnil){
-	goto T677;}
-	V173= V138;
-	goto T675;
-	goto T677;
-T677:;
-	base[7]= coerce_to_string(V138);
+	goto T672;}
+	V174= V139;
+	goto T670;
+	goto T672;
+T672:;
+	base[7]= coerce_to_string(V139);
 	vs_top=(vs_base=base+7)+1;
 	Lfind_package();
 	vs_top=sup;
-	V173= vs_base[0];
-	goto T675;
-T675:;
-	V174= Cnil;
+	V174= vs_base[0];
+	goto T670;
+T670:;
 	V175= Cnil;
-	{object V177;
-	register object V178;
-	base[9]= (V173);
+	V176= Cnil;
+	{object V178;
+	register object V179;
+	base[9]= (V174);
 	vs_top=(vs_base=base+9)+1;
 	Lpackage_use_list();
 	vs_top=sup;
-	V179= vs_base[0];
-	V177= make_cons((V173),V179);
-	V178= CMPcar((V177));
-	goto T686;
-T686:;
-	if(!(((V177))==Cnil)){
-	goto T687;}
-	V174= Cnil;
-	goto T674;
-	goto T687;
-T687:;
-	{long V180;
-	long V181;
-	base[9]= (V178);
+	V180= vs_base[0];
+	V178= make_cons((V174),V180);
+	V179= CMPcar((V178));
+	goto T681;
+T681:;
+	if(!(((V178))==Cnil)){
+	goto T682;}
+	V175= Cnil;
+	goto T669;
+	goto T682;
+T682:;
+	{long V181;
+	long V182;
+	base[9]= (V179);
 	vs_top=(vs_base=base+9)+1;
 	(void) (*Lnk115)();
-	if(vs_base>=vs_top){vs_top=sup;goto T696;}
-	V180= fix(vs_base[0]);
-	vs_base++;
-	if(vs_base>=vs_top){vs_top=sup;goto T697;}
+	if(vs_base>=vs_top){vs_top=sup;goto T691;}
 	V181= fix(vs_base[0]);
+	vs_base++;
+	if(vs_base>=vs_top){vs_top=sup;goto T692;}
+	V182= fix(vs_base[0]);
 	vs_top=sup;
-	goto T698;
-	goto T696;
-T696:;
-	V180= fix(Cnil);
-	goto T697;
-T697:;
-	V181= fix(Cnil);
-	goto T698;
-T698:;
-	if(((V173))==((V178))){
-	goto T699;}
-	V181= 0;
-	goto T699;
-T699:;
-	{object V182;
-	register object V183;
-	V184 = CMPmake_fixnum(V181);
-	V185 = CMPmake_fixnum(V180);
-	V182= number_plus(V184,V185);
-	V183= small_fixnum(0);
-	goto T706;
-T706:;
-	if(!(number_compare((V183),(V182))>=0)){
-	goto T707;}
 	goto T693;
-	goto T707;
-T707:;
+	goto T691;
+T691:;
+	V181= fix(Cnil);
+	goto T692;
+T692:;
+	V182= fix(Cnil);
+	goto T693;
+T693:;
+	if(((V174))==((V179))){
+	goto T694;}
+	V182= 0;
+	goto T694;
+T694:;
+	{object V183;
+	register object V184;
+	V185 = CMPmake_fixnum(V182);
 	V186 = CMPmake_fixnum(V181);
-	if(!(number_compare((V183),V186)<0)){
-	goto T716;}
-	base[10]= (V178);
-	base[11]= (V183);
+	V183= number_plus(V185,V186);
+	V184= small_fixnum(0);
+	goto T701;
+T701:;
+	if(!(number_compare((V184),(V183))>=0)){
+	goto T702;}
+	goto T688;
+	goto T702;
+T702:;
+	V187 = CMPmake_fixnum(V182);
+	if(!(number_compare((V184),V187)<0)){
+	goto T711;}
+	base[10]= (V179);
+	base[11]= (V184);
 	vs_top=(vs_base=base+10)+2;
 	siLpackage_internal();
 	vs_top=sup;
-	V175= vs_base[0];
-	goto T714;
-	goto T716;
-T716:;
-	base[10]= (V178);
-	V187 = CMPmake_fixnum(V181);
-	base[11]= number_minus((V183),V187);
+	V176= vs_base[0];
+	goto T709;
+	goto T711;
+T711:;
+	base[10]= (V179);
+	V188 = CMPmake_fixnum(V182);
+	base[11]= number_minus((V184),V188);
 	vs_top=(vs_base=base+10)+2;
 	siLpackage_external();
 	vs_top=sup;
-	V175= vs_base[0];
-	goto T714;
-T714:;
-	goto T712;
-T712:;
-	if(((V175))!=Cnil){
-	goto T722;}
-	goto T713;
-	goto T722;
-T722:;
-	V174= CMPcar((V175));
-	if(((V178))==((V173))){
-	goto T728;}
-	base[11]= symbol_name((V174));
-	base[12]= (V173);
+	V176= vs_base[0];
+	goto T709;
+T709:;
+	goto T707;
+T707:;
+	if(((V176))!=Cnil){
+	goto T717;}
+	goto T708;
+	goto T717;
+T717:;
+	V175= CMPcar((V176));
+	if(((V179))==((V174))){
+	goto T723;}
+	base[11]= symbol_name((V175));
+	base[12]= (V174);
 	vs_top=(vs_base=base+11)+2;
 	Lfind_symbol();
 	Llist();
@@ -2107,54 +2096,54 @@ T722:;
 	vs_top=(vs_base=base+10)+1;
 	Llast();
 	vs_top=sup;
-	V188= vs_base[0];
-	if(!((VV[82])==(CMPcar(V188)))){
-	goto T727;}
-	goto T728;
-T728:;
-	base[10]= (V174);
+	V189= vs_base[0];
+	if(!((VV[82])==(CMPcar(V189)))){
+	goto T722;}
+	goto T723;
+T723:;
+	base[10]= (V175);
 	vs_top=(vs_base=base+10)+1;
 	Lsymbol_package();
 	vs_top=sup;
-	V189= vs_base[0];
-	if((V189)==((V138))){
-	goto T737;}
-	V172= make_cons(V174,(V172));
-	goto T737;
-T737:;
-	goto T727;
-T727:;
-	V175= CMPcdr((V175));
-	goto T712;
-	goto T713;
-T713:;
-	goto T710;
-	goto T710;
-T710:;
-	V183= one_plus((V183));
-	goto T706;}}
-	goto T693;
-T693:;
-	V177= CMPcdr((V177));
-	V178= CMPcar((V177));
-	goto T686;}}
-	goto T674;
-T674:;
-	base[7]= list(2,VV[79],list(2,VV[36],(V172)));
+	V190= vs_base[0];
+	if((V190)==((V139))){
+	goto T732;}
+	V173= make_cons(V175,(V173));
+	goto T732;
+T732:;
+	goto T722;
+T722:;
+	V176= CMPcdr((V176));
+	goto T707;
+	goto T708;
+T708:;
+	goto T705;
+	goto T705;
+T705:;
+	V184= one_plus((V184));
+	goto T701;}}
+	goto T688;
+T688:;
+	V178= CMPcdr((V178));
+	V179= CMPcar((V178));
+	goto T681;}}
+	goto T669;
+T669:;
+	base[7]= list(2,VV[79],list(2,VV[36],(V173)));
 	vs_top=(vs_base=base+7)+1;
 	L29(base);
 	vs_top=sup;
 	bds_unwind1;
-	goto T555;}}
-	goto T640;
-T640:;
-	FEerror("The ECASE key value ~s is illegal.",1,V141);
-	goto T555;}
-	goto T555;
-T555:;
-	V137= CMPcdr((V137));
-	V138= CMPcar((V137));
+	goto T550;}}
+	goto T635;
+T635:;
+	FEerror("The ECASE key value ~s is illegal.",1,V142);
 	goto T550;}
+	goto T550;
+T550:;
+	V138= CMPcdr((V138));
+	V139= CMPcar((V138));
+	goto T545;}
 	}
 	}
 }
@@ -2165,14 +2154,14 @@ register object *base0;
 {	register object *base=vs_base;
 	register object *sup=base+VM29; VC29
 	vs_check;
-	{object V191;
-	V191=(base[0]);
+	{object V192;
+	V192=(base[0]);
 	vs_top=sup;
 	goto TTL;
 TTL:;
 	base[1]= base0[0];
 	base[2]= VV[83];
-	base[3]= (V191);
+	base[3]= (V192);
 	vs_top=(vs_base=base+1)+3;
 	Lformat();
 	return;
@@ -2185,46 +2174,46 @@ register object *base0;
 {	register object *base=vs_base;
 	register object *sup=base+VM30; VC30
 	vs_check;
-	{object V192;
-	object V193;
-	V192=(base[0]);
-	V193=(base[1]);
+	{object V193;
+	object V194;
+	V193=(base[0]);
+	V194=(base[1]);
 	vs_top=sup;
-	base[2]= (V192);
+	base[2]= (V193);
 	base[3]= (base0[2]->c.c_car);
 	vs_top=(vs_base=base+2)+2;
 	Lgethash();
 	vs_top=sup;
 	if((vs_base[0])!=Cnil){
-	goto T764;}
-	{register object x= STREF(object,(V193),4),V194= VV[65];
-	while(V194!=Cnil)
-	if(x==(V194->c.c_car)){
-	goto T769;
-	}else V194=V194->c.c_cdr;
-	goto T764;}
-	goto T769;
-T769:;
+	goto T759;}
+	{register object x= STREF(object,(V194),4),V195= VV[65];
+	while(V195!=Cnil)
+	if(x==(V195->c.c_car)){
+	goto T764;
+	}else V195=V195->c.c_cdr;
+	goto T759;}
+	goto T764;
+T764:;
 	if(((base0[0]->c.c_car))==Cnil){
-	goto T771;}
-	{object V195;
-	object V196;
-	V195= (base0[0]->c.c_car);
-	(base0[0]->c.c_car)= make_cons((V192),Cnil);
+	goto T766;}
+	{object V196;
+	object V197;
 	V196= (base0[0]->c.c_car);
-	((V195))->c.c_cdr = (V196);
-	base[3]= (V196);
+	(base0[0]->c.c_car)= make_cons((V193),Cnil);
+	V197= (base0[0]->c.c_car);
+	((V196))->c.c_cdr = (V197);
+	base[3]= (V197);
 	vs_top=(vs_base=base+3)+1;
 	return;}
-	goto T771;
-T771:;
-	(base0[0]->c.c_car)= make_cons((V192),Cnil);
+	goto T766;
+T766:;
+	(base0[0]->c.c_car)= make_cons((V193),Cnil);
 	(base0[1]->c.c_car)= (base0[0]->c.c_car);
 	base[2]= (base0[1]->c.c_car);
 	vs_top=(vs_base=base+2)+1;
 	return;
-	goto T764;
-T764:;
+	goto T759;
+T759:;
 	base[2]= Cnil;
 	vs_top=(vs_base=base+2)+1;
 	return;
@@ -2237,81 +2226,81 @@ register object *base0;
 {	register object *base=vs_base;
 	register object *sup=base+VM31; VC31
 	vs_check;
-	{object V197;
-	object V198;
-	V197=(base[0]);
-	V198=(base[1]);
+	{object V198;
+	object V199;
+	V198=(base[0]);
+	V199=(base[1]);
 	vs_top=sup;
-	{register object V199;
-	register object V200;
-	V200= STREF(object,(V198),16);
-	V199= Cnil;
-	goto T782;
-T782:;
-	if(((V200))==Cnil){
-	goto T785;}
-	goto T784;
-	goto T785;
-T785:;
-	goto T783;
-	goto T784;
-T784:;
-	{register object V201;
-	V201= CMPcar((V200));
-	V199= (V201);}
-	{register object V202;
-	register object V203;
-	register object V204;
-	V202= (V199);
-	V203= (base0[0]->c.c_car);
-	V204= Ct;
-	base[2]= (V202);
-	base[3]= (V203);
-	base[4]= (V204);
-	vs_top=(vs_base=base+2)+3;
-	siLhash_set();
-	vs_top=sup;}
-	V200= CMPcdr((V200));
-	goto T782;
-	goto T783;
-T783:;
+	{register object V200;
+	register object V201;
+	V201= STREF(object,(V199),16);
+	V200= Cnil;
+	goto T777;
+T777:;
+	if(((V201))==Cnil){
+	goto T780;}
 	goto T779;
-	goto T779;}
+	goto T780;
+T780:;
+	goto T778;
 	goto T779;
 T779:;
-	{register object V205;
-	register object V206;
-	V206= STREF(object,(V198),32);
-	V205= Cnil;
-	goto T802;
-T802:;
-	if(((V206))==Cnil){
-	goto T805;}
-	goto T804;
-	goto T805;
-T805:;
-	goto T803;
-	goto T804;
-T804:;
-	{register object V207;
-	V207= CMPcar((V206));
-	V205= (V207);}
-	{register object V208;
-	register object V209;
-	register object V210;
-	V208= (V205);
-	V209= (base0[0]->c.c_car);
-	V210= Ct;
-	base[2]= (V208);
-	base[3]= (V209);
-	base[4]= (V210);
+	{register object V202;
+	V202= CMPcar((V201));
+	V200= (V202);}
+	{register object V203;
+	register object V204;
+	register object V205;
+	V203= (V200);
+	V204= (base0[0]->c.c_car);
+	V205= Ct;
+	base[2]= (V203);
+	base[3]= (V204);
+	base[4]= (V205);
 	vs_top=(vs_base=base+2)+3;
 	siLhash_set();
 	vs_top=sup;}
-	V206= CMPcdr((V206));
-	goto T802;
-	goto T803;
-T803:;
+	V201= CMPcdr((V201));
+	goto T777;
+	goto T778;
+T778:;
+	goto T774;
+	goto T774;}
+	goto T774;
+T774:;
+	{register object V206;
+	register object V207;
+	V207= STREF(object,(V199),32);
+	V206= Cnil;
+	goto T797;
+T797:;
+	if(((V207))==Cnil){
+	goto T800;}
+	goto T799;
+	goto T800;
+T800:;
+	goto T798;
+	goto T799;
+T799:;
+	{register object V208;
+	V208= CMPcar((V207));
+	V206= (V208);}
+	{register object V209;
+	register object V210;
+	register object V211;
+	V209= (V206);
+	V210= (base0[0]->c.c_car);
+	V211= Ct;
+	base[2]= (V209);
+	base[3]= (V210);
+	base[4]= (V211);
+	vs_top=(vs_base=base+2)+3;
+	siLhash_set();
+	vs_top=sup;}
+	V207= CMPcdr((V207));
+	goto T797;
+	goto T798;
+T798:;
 	base[2]= Cnil;
 	vs_top=(vs_base=base+2)+1;
 	return;
@@ -2327,10 +2316,10 @@ register object *base0;
 {	register object *base=vs_base;
 	register object *sup=base+VM32; VC32
 	vs_check;
-	{object V211;
-	object V212;
-	V211=(base[0]);
-	V212=(base[1]);
+	{object V212;
+	object V213;
+	V212=(base[0]);
+	V213=(base[1]);
 	vs_top=sup;
 	(base0[0]->c.c_car)= one_plus((base0[0]->c.c_car));
 	base[2]= Cnil;
@@ -2345,85 +2334,85 @@ register object *base0;
 {	register object *base=vs_base;
 	register object *sup=base+VM33; VC33
 	vs_check;
-	{object V213;
-	object V214;
-	V213=(base[0]);
-	V214=(base[1]);
+	{object V214;
+	object V215;
+	V214=(base[0]);
+	V215=(base[1]);
 	vs_top=sup;
-	{register object V215;
-	register object V216;
-	V216= STREF(object,(V214),16);
-	V215= Cnil;
-	goto T827;
-T827:;
-	if(((V216))==Cnil){
-	goto T830;}
-	goto T829;
-	goto T830;
-T830:;
-	goto T828;
-	goto T829;
-T829:;
-	{register object V217;
-	V217= CMPcar((V216));
-	V215= (V217);}
-	base[2]= (V215);
+	{register object V216;
+	register object V217;
+	V217= STREF(object,(V215),16);
+	V216= Cnil;
+	goto T822;
+T822:;
+	if(((V217))==Cnil){
+	goto T825;}
+	goto T824;
+	goto T825;
+T825:;
+	goto T823;
+	goto T824;
+T824:;
+	{register object V218;
+	V218= CMPcar((V217));
+	V216= (V218);}
+	base[2]= (V216);
 	vs_top=(vs_base=base+2)+1;
 	Lfboundp();
 	vs_top=sup;
 	if((vs_base[0])!=Cnil){
-	goto T835;}
-	base[2]= (V215);
+	goto T830;}
+	base[2]= (V216);
 	base[3]= (VV[9]->s.s_dbind);
 	vs_top=(vs_base=base+2)+2;
 	Lgethash();
 	vs_top=sup;
 	if((vs_base[0])!=Cnil){
-	goto T835;}
-	{object V218 =((V215))->s.s_plist;
+	goto T830;}
+	{object V219 =((V216))->s.s_plist;
 	 object ind= VV[61];
-	while(V218!=Cnil){
-	if(V218->c.c_car==ind){
-	if(((V218->c.c_cdr->c.c_car))!=Cnil){
-	goto T835;}
-	goto T845;
-	}else V218=V218->c.c_cdr->c.c_cdr;}}
-	goto T845;
-T845:;
-	{object V219 =((V215))->s.s_plist;
-	 object ind= VV[62];
 	while(V219!=Cnil){
 	if(V219->c.c_car==ind){
 	if(((V219->c.c_cdr->c.c_car))!=Cnil){
-	goto T835;}
-	goto T847;
+	goto T830;}
+	goto T840;
 	}else V219=V219->c.c_cdr->c.c_cdr;}}
-	goto T847;
-T847:;
-	{object V220 =((V215))->s.s_plist;
-	 object ind= VV[8];
+	goto T840;
+T840:;
+	{object V220 =((V216))->s.s_plist;
+	 object ind= VV[62];
 	while(V220!=Cnil){
 	if(V220->c.c_car==ind){
 	if(((V220->c.c_cdr->c.c_car))!=Cnil){
-	goto T835;}
-	goto T848;
+	goto T830;}
+	goto T842;
 	}else V220=V220->c.c_cdr->c.c_cdr;}}
-	goto T848;
-T848:;
-	{register object V221;
-	V221= (V215);
-	base[2]= (V221);
+	goto T842;
+T842:;
+	{object V221 =((V216))->s.s_plist;
+	 object ind= VV[8];
+	while(V221!=Cnil){
+	if(V221->c.c_car==ind){
+	if(((V221->c.c_cdr->c.c_car))!=Cnil){
+	goto T830;}
+	goto T843;
+	}else V221=V221->c.c_cdr->c.c_cdr;}}
+	goto T843;
+T843:;
+	{register object V222;
+	V222= (V216);
+	base[2]= (V222);
 	base[3]= (base0[0]->c.c_car);
 	vs_top=(vs_base=base+2)+2;
 	Ladjoin();
 	vs_top=sup;
 	(base0[0]->c.c_car)= vs_base[0];}
-	goto T835;
-T835:;
-	V216= CMPcdr((V216));
-	goto T827;
-	goto T828;
-T828:;
+	goto T830;
+T830:;
+	V217= CMPcdr((V217));
+	goto T822;
+	goto T823;
+T823:;
 	base[2]= Cnil;
 	vs_top=(vs_base=base+2)+1;
 	return;
@@ -2439,12 +2428,12 @@ register object *base0;
 {	register object *base=vs_base;
 	register object *sup=base+VM34; VC34
 	vs_check;
-	{object V222;
-	object V223;
-	V222=(base[0]);
-	V223=(base[1]);
+	{object V223;
+	object V224;
+	V223=(base[0]);
+	V224=(base[1]);
 	vs_top=sup;
-	base[2]= print((V223),(base0[0]->c.c_car));
+	base[2]= print((V224),(base0[0]->c.c_car));
 	vs_top=(vs_base=base+2)+1;
 	return;
 	}
@@ -2456,13 +2445,13 @@ register object *base0;
 {	register object *base=vs_base;
 	register object *sup=base+VM35; VC35
 	vs_check;
-	{object V224;
-	object V225;
-	V224=(base[0]);
-	V225=(base[1]);
+	{object V225;
+	object V226;
+	V225=(base[0]);
+	V226=(base[1]);
 	vs_top=sup;
-	V226= list(2,VV[35],list(2,VV[36],listA(3,VV[37],make_cons(VV[38],(V224)),(V225))));
-	base[2]= print(/* INLINE-ARGS */V226,(base0[1]->c.c_car));
+	V227= list(2,VV[35],list(2,VV[36],listA(3,VV[37],make_cons(VV[38],(V225)),(V226))));
+	base[2]= print(/* INLINE-ARGS */V227,(base0[1]->c.c_car));
 	vs_top=(vs_base=base+2)+1;
 	return;
 	}
@@ -2474,49 +2463,49 @@ register object *base0;
 {	register object *base=vs_base;
 	register object *sup=base+VM36; VC36
 	vs_check;
-	{object V227;
-	object V228;
-	V227=(base[0]);
-	V228=(base[1]);
+	{object V228;
+	object V229;
+	V228=(base[0]);
+	V229=(base[1]);
 	vs_top=sup;
-	{object V229;
-	if(!(eql(small_fixnum(1),STREF(object,(V228),28)))){
-	goto T861;}
-	V229= Ct;
-	goto T860;
-	goto T861;
-T861:;
-	V229= ((((STREF(object,(V228),4))==(VV[34])?Ct:Cnil))==Cnil?Ct:Cnil);
-	goto T860;
-T860:;
-	if(((V229))==Cnil){
-	goto T864;}
-	base[2]= (V229);
+	{object V230;
+	if(!(eql(small_fixnum(1),STREF(object,(V229),28)))){
+	goto T856;}
+	V230= Ct;
+	goto T855;
+	goto T856;
+T856:;
+	V230= ((((STREF(object,(V229),4))==(VV[34])?Ct:Cnil))==Cnil?Ct:Cnil);
+	goto T855;
+T855:;
+	if(((V230))==Cnil){
+	goto T859;}
+	base[2]= (V230);
 	vs_top=(vs_base=base+2)+1;
 	return;
-	goto T864;
-T864:;
-	base[2]= (V227);
+	goto T859;
+T859:;
+	base[2]= (V228);
 	vs_top=(vs_base=base+2)+1;
 	(void) (*Lnk97)();
 	vs_top=sup;
 	(base0[1]->c.c_car)= vs_base[0];
-	(base0[0]->c.c_car)= STREF(object,(V228),24);
-	{object V231;
-	object V232;
+	(base0[0]->c.c_car)= STREF(object,(V229),24);
+	{object V232;
 	object V233;
-	V231= list(2,(base0[0]->c.c_car),(base0[1]->c.c_car));
-	V232= (base0[2]->c.c_car);
-	base[4]= (V231);
-	base[5]= (V232);
+	object V234;
+	V232= list(2,(base0[0]->c.c_car),(base0[1]->c.c_car));
+	V233= (base0[2]->c.c_car);
+	base[4]= (V232);
+	base[5]= (V233);
 	vs_top=(vs_base=base+4)+2;
 	Lgethash();
 	vs_top=sup;
-	V234= vs_base[0];
-	V233= make_cons(V227,V234);
-	base[4]= (V231);
-	base[5]= (V232);
-	base[6]= (V233);
+	V235= vs_base[0];
+	V234= make_cons(V228,V235);
+	base[4]= (V232);
+	base[5]= (V233);
+	base[6]= (V234);
 	vs_top=(vs_base=base+4)+3;
 	siLhash_set();
 	return;}}
@@ -2529,13 +2518,13 @@ register object *base0;
 {	register object *base=vs_base;
 	register object *sup=base+VM37; VC37
 	vs_check;
-	{object V235;
-	object V236;
-	V235=(base[0]);
-	V236=(base[1]);
+	{object V236;
+	object V237;
+	V236=(base[0]);
+	V237=(base[1]);
 	vs_top=sup;
-	V237= Ct;
-	STSET(object,(V236),28, small_fixnum(1));
+	V238= Ct;
+	STSET(object,(V237),28, small_fixnum(1));
 	base[2]= small_fixnum(1);
 	vs_top=(vs_base=base+2)+1;
 	return;
@@ -2548,46 +2537,46 @@ register object *base0;
 {	register object *base=vs_base;
 	register object *sup=base+VM38; VC38
 	vs_check;
-	{object V238;
-	object V239;
-	V238=(base[0]);
-	V239=(base[1]);
+	{object V239;
+	object V240;
+	V239=(base[0]);
+	V240=(base[1]);
 	vs_top=sup;
-	{register object x= (base0[2]->c.c_car),V240= STREF(object,(V239),16);
-	while(V240!=Cnil)
-	if(eql(x,V240->c.c_car)){
-	goto T883;
-	}else V240=V240->c.c_cdr;}
-	{register object x= (base0[2]->c.c_car),V241= STREF(object,(V239),32);
+	{register object x= (base0[2]->c.c_car),V241= STREF(object,(V240),16);
 	while(V241!=Cnil)
 	if(eql(x,V241->c.c_car)){
-	goto T887;
-	}else V241=V241->c.c_cdr;
-	goto T884;}
-	goto T887;
-T887:;
-	goto T883;
-T883:;
+	goto T878;
+	}else V241=V241->c.c_cdr;}
+	{register object x= (base0[2]->c.c_car),V242= STREF(object,(V240),32);
+	while(V242!=Cnil)
+	if(eql(x,V242->c.c_car)){
+	goto T882;
+	}else V242=V242->c.c_cdr;
+	goto T879;}
+	goto T882;
+T882:;
+	goto T878;
+T878:;
 	if(((base0[0]->c.c_car))==Cnil){
-	goto T889;}
-	{object V242;
-	object V243;
-	V242= (base0[0]->c.c_car);
-	(base0[0]->c.c_car)= make_cons((V238),Cnil);
+	goto T884;}
+	{object V243;
+	object V244;
 	V243= (base0[0]->c.c_car);
-	((V242))->c.c_cdr = (V243);
-	base[3]= (V243);
+	(base0[0]->c.c_car)= make_cons((V239),Cnil);
+	V244= (base0[0]->c.c_car);
+	((V243))->c.c_cdr = (V244);
+	base[3]= (V244);
 	vs_top=(vs_base=base+3)+1;
 	return;}
-	goto T889;
-T889:;
-	(base0[0]->c.c_car)= make_cons((V238),Cnil);
+	goto T884;
+T884:;
+	(base0[0]->c.c_car)= make_cons((V239),Cnil);
 	(base0[1]->c.c_car)= (base0[0]->c.c_car);
 	base[2]= (base0[1]->c.c_car);
 	vs_top=(vs_base=base+2)+1;
 	return;
-	goto T884;
-T884:;
+	goto T879;
+T879:;
 	base[2]= Cnil;
 	vs_top=(vs_base=base+2)+1;
 	return;
@@ -2606,7 +2595,7 @@ static void LnkT103(){ call_or_link(VV[103],(void **)(void *)&Lnk103);} /* WRITE
 static void LnkT102(){ call_or_link(VV[102],(void **)(void *)&Lnk102);} /* SETUP-SYS-PROCLAIMS */
 static void LnkT101(){ call_or_link(VV[101],(void **)(void *)&Lnk101);} /* NO-MAKE-PROCLAIMS-HACK */
 static void LnkT100(){ call_or_link(VV[100],(void **)(void *)&Lnk100);} /* LOAD */
-static void LnkT99(){ call_or_link(VV[99],(void **)(void *)&Lnk99);} /* CONCATENATE */
+static object  LnkTLI99(object first,...){object V1;va_list ap;va_start(ap,first);V1=call_vproc_new(VV[99],(void **)(void *)&LnkLI99,first,ap);va_end(ap);return V1;} /* CONCATENATE */
 static void LnkT97(){ call_or_link(VV[97],(void **)(void *)&Lnk97);} /* GET-VALUE-TYPE */
 static void LnkT96(){ call_or_link(VV[96],(void **)(void *)&Lnk96);} /* GET-VALUE-TYPE1 */
 static void LnkT95(){ call_or_link(VV[95],(void **)(void *)&Lnk95);} /* GET-VAR-TYPES */

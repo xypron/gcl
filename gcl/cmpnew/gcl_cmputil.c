@@ -322,8 +322,7 @@ static void L11()
 	if(endp(V38)){
 	base[4]= Cnil;
 	} else {
-	base[4]= (V38->c.c_car);
-	}}
+	base[4]= (V38->c.c_car);}}
 	V37=V37->c.c_cdr;
 	base[5]= V37;}
 	{register object V39;
@@ -355,8 +354,7 @@ static void L12()
 	if(endp(V45)){
 	base[4]= Cnil;
 	} else {
-	base[4]= (V45->c.c_car);
-	}}
+	base[4]= (V45->c.c_car);}}
 	V44=V44->c.c_cdr;
 	base[5]= V44;}
 	{register object V46;
@@ -388,8 +386,7 @@ static void L13()
 	if(endp(V52)){
 	base[4]= Cnil;
 	} else {
-	base[4]= (V52->c.c_car);
-	}}
+	base[4]= (V52->c.c_car);}}
 	V51=V51->c.c_cdr;
 	base[5]= V51;}
 	{object V53;
@@ -420,8 +417,7 @@ static void L14()
 	if(endp(V58)){
 	base[4]= Cnil;
 	} else {
-	base[4]= (V58->c.c_car);
-	}}
+	base[4]= (V58->c.c_car);}}
 	V57=V57->c.c_cdr;
 	base[5]= V57;}
 	{object V59;

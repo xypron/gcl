@@ -321,8 +321,7 @@ static void L3()
 	base[4]= Cnil;
 	} else {
 	base[4]= (V14->c.c_car);
-	V14=V14->c.c_cdr;
-	}
+	V14=V14->c.c_cdr;}
 	if(!endp(V14))invalid_macro_call();}
 	if((base[4])==Cnil){
 	goto T128;}
@@ -355,8 +354,7 @@ static void L4()
 	base[4]= Cnil;
 	} else {
 	base[4]= (V16->c.c_car);
-	V16=V16->c.c_cdr;
-	}
+	V16=V16->c.c_cdr;}
 	if(!endp(V16))invalid_macro_call();}
 	if((base[4])==Cnil){
 	goto T132;}

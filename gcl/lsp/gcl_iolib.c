@@ -70,27 +70,20 @@ static void L2()
 	V11=V11->c.c_cdr;
 	{object V12=getf(V11,VV[40],OBJNULL);
 	if(V12==OBJNULL){
-	base[4]= Cnil;
-	} else {
+	base[4]= Cnil;} else {
 	base[4]= V12;
 	}}
 	{object V13=getf(V11,VV[41],OBJNULL);
 	if(V13==OBJNULL){
-	base[5]= Cnil;
-	} else {
+	base[5]= Cnil;} else {
 	base[5]= V13;
 	}}
 	{object V14=getf(V11,VV[42],OBJNULL);
 	if(V14==OBJNULL){
-	base[6]= Cnil;
-	} else {
+	base[6]= Cnil;} else {
 	base[6]= V14;
 	}}
-	check_other_key(V11,3
-	,VV[40]
-	,VV[41]
-	,VV[42]
-	);}
+	check_other_key(V11,3,VV[40],VV[41],VV[42]);}
 	V10=V10->c.c_cdr;
 	base[7]= V10;}
 	if((base[4])==Cnil){
@@ -148,8 +141,7 @@ static void L3()
 	base[3]= Cnil;
 	} else {
 	base[3]= (V24->c.c_car);
-	V24=V24->c.c_cdr;
-	}
+	V24=V24->c.c_cdr;}
 	if(!endp(V24))invalid_macro_call();}
 	V23=V23->c.c_cdr;
 	base[4]= V23;}

@@ -23,8 +23,7 @@ static void L1()
 	} else {
 	base[4]= (V1->c.c_car);
 	base[5]= Ct;
-	V1=V1->c.c_cdr;
-	}
+	V1=V1->c.c_cdr;}
 	if(!endp(V1))invalid_macro_call();}
 	V2= list(2,list(3,VV[2],base[2],list(2,VV[3],base[3])),Cnil);
 	V3= list(2,VV[3],base[2]);
@@ -59,14 +58,12 @@ static void L2()
 	base[3]= Cnil;
 	} else {
 	base[3]= (V7->c.c_car);
-	V7=V7->c.c_cdr;
-	}
+	V7=V7->c.c_cdr;}
 	if(endp(V7)){
 	base[4]= Cnil;
 	} else {
 	base[4]= (V7->c.c_car);
-	V7=V7->c.c_cdr;
-	}
+	V7=V7->c.c_cdr;}
 	base[5]= V7;}
 	V8= list(2,base[2],Cnil);
 	if((base[4])==Cnil){
