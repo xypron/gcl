@@ -19,8 +19,9 @@ gcl (2.6.1-26) unstable; urgency=low
   * Add mach-o specific files from cvs head to local bfd tree
   * Add bfd/po makefiles
   * Macosx defaults in configure.in
+  * bfd make and configure file changes to handle mach-o backend
 
- -- Camm Maguire <camm@enhanced.com>  Wed, 25 Feb 2004 22:35:06 +0000
+ -- Camm Maguire <camm@enhanced.com>  Wed, 25 Feb 2004 22:39:01 +0000
 
 gcl (2.6.1-25) unstable; urgency=low
 

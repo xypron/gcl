@@ -177,6 +177,8 @@ CODE_FRAGMENT
 .      struct cisco_core_struct *cisco_core_data;
 .      struct versados_data_struct *versados_data;
 .      struct netbsd_core_struct *netbsd_core_data;
+.      struct mach_o_data_struct *mach_o_data;
+.      struct mach_o_fat_data_struct *mach_o_fat_data;
 .      PTR any;
 .    }
 .  tdata;
