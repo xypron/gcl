@@ -20,8 +20,9 @@ gcl (2.6.1-34) unstable; urgency=low
   * Fix rare infinite loop bug in array.c
   * Import si::info into 'user
   * , -> # as sed separator
+  * Minro warning removals and fixups
 
- -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 02:20:39 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 02:47:36 +0000
 
 gcl (2.6.1-33) unstable; urgency=low
 
