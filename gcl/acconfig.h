@@ -236,3 +236,5 @@ SGC is enabled.  */
 #undef ENDIAN_ALREADY_DEFINED
 #undef USE_CLEANUP
 #undef SIZEOF_CONTBLOCK
+
+#undef GCL_GPROF
