@@ -21,11 +21,11 @@ CROSS_PREFIX =
 
 # Remove -fno-zero-initialized-in-bss if using gcc less than 3.3.1
 # It is needed for the Unexec stuff to work with 3.3.1 at least
-# CFLAGS       = -fno-zero-initialized-in-bss -Wall -fwritable-strings -DVOL=volatile -fsigned-char $(PROCESSOR_FLAGS) -I$(GCLDIR)/o 
-# FINAL_CFLAGS = -fno-zero-initialized-in-bss -Wall -fwritable-strings -DVOL=volatile -fsigned-char $(PROCESSOR_FLAGS)
-# O3FLAGS      = -O3 -fomit-frame-pointer
-# O2FLAGS      = -O2
-# OFLAG        = -O
+CFLAGS       = -fno-zero-initialized-in-bss -Wall -O3 -fomit-frame-pointer -fwritable-strings -DVOL=volatile -fsigned-char $(PROCESSOR_FLAGS) -I$(GCLDIR)/o 
+FINAL_CFLAGS = -fno-zero-initialized-in-bss -Wall -fwritable-strings -DVOL=volatile -fsigned-char $(PROCESSOR_FLAGS)
+O3FLAGS      = -O3  -fomit-frame-pointer
+O2FLAGS      = -O
+OFLAG        = -O
 
 # Unexec dependency
 
