@@ -144,32 +144,38 @@ signaled at this point in the stack.  For the moment the rest of the VARIABLES a
 	  (t (setf bod (cons 'progn bod))))
     `(block cond-error-continue ,bod)))
 
+(defvar *error-handler-args* nil)
 
-
-(defun #. (if (boundp '*error-handler-function*)*error-handler-function* 'joe)
+(defun #. (if (boundp '*error-handler-function*) *error-handler-function* 'joe)
   (&rest error-handler-args)
-  (when *show-all-debug-info*
-       (si::simple-backtrace)(si::backtrace) (si::break-vs))
-  (let ((err (make-error-condition
-			     :name (car error-handler-args)
-			     :string (fifth error-handler-args)
-			     :function (third error-handler-args)
-			     :continue-string (fourth error-handler-args)
-			     :format-args
-			     (copy-list (nthcdr 5 error-handler-args))
-			     :error-handler-args (copy-list error-handler-args))))
-    (cond (*catch-error* (throw :any-error err))
-	  ((let (flag) (do ((i 0 (the fixnum (1+ i)))
-			    (end (the fixnum(fill-pointer (the array
-						    *catch-error-stack*)))))
-			   ((>= i end))
+  (when (equal error-handler-args *error-handler-args*)
+    (format t "Error handler called recursively ~S~%"
+	    error-handler-args)
+    ;; FIXME
+    (return-from si::universal-error-handler nil))
+  (let ((*error-handler-args* error-handler-args))
+    (when *show-all-debug-info*
+      (si::simple-backtrace)(si::backtrace) (si::break-vs))
+    (let ((err (make-error-condition
+		:name (car error-handler-args)
+		:string (fifth error-handler-args)
+		:function (third error-handler-args)
+		:continue-string (fourth error-handler-args)
+		:format-args
+		(copy-list (nthcdr 5 error-handler-args))
+		:error-handler-args (copy-list error-handler-args))))
+      (cond (*catch-error* (throw :any-error err))
+	    ((let (flag) (do ((i 0 (the fixnum (1+ i)))
+			      (end (the fixnum(fill-pointer (the array
+							      *catch-error-stack*)))))
+			     ((>= i end))
 			   (declare (fixnum i end))
 			   (cond ((setq flag
 					(funcall (aref *catch-error-stack* i)
-						      err))
+						 err))
 				  (throw flag err))))))
-	  (t    (apply (get *error-handler-function* :old-definition)
-		       error-handler-args)))))
+	    (t    (apply (get *error-handler-function* :old-definition)
+			 error-handler-args))))))
 
 (defun inf-signal (&rest error-handler-args)
  (apply *error-handler-function*
