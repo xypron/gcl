@@ -66,6 +66,8 @@ gcl (2.6.1-19) unstable; urgency=low
   * Better execstack flag handling in configure
   * Allow for commas in CFLAGS in sed command writing *cc*
   * Preliminary gprof profiling support
+  * Rework html documentation generation and installation, Closes:
+    #221774
 
  -- Camm Maguire <camm@enhanced.com>  Thu, 11 Dec 2003 21:45:31 +0000
 
