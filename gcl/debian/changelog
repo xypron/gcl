@@ -6,8 +6,9 @@ gcl (2.6.1-10) unstable; urgency=low
     pairs and reverse checking
   * small compiler change to remove unused C variables from optimized
     compiled macros
+  * Optional compiler init file is called gcl_cmpinit
 
- -- Camm Maguire <camm@enhanced.com>  Tue, 23 Sep 2003 18:26:15 +0000
+ -- Camm Maguire <camm@enhanced.com>  Tue, 23 Sep 2003 18:28:15 +0000
 
 gcl (2.6.1-9) unstable; urgency=low
 
