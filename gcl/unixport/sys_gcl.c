@@ -46,6 +46,8 @@ init_system()
   init_or_load(init_sloop,"../lsp/sloop.o");
   init_or_load(init_serror,"../lsp/serror.o"); 
   init_or_load(init_destructuring_bind,"../lsp/destructuring_bind.o");
+  init_or_load(init_defpackage,"../lsp/defpackage.o");
+  init_or_load(init_make_defpackage,"../lsp/make_defpackage.o");
 
 	
   init_or_load(init_cmpinline,"../cmpnew/cmpinline.o");
