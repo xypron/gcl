@@ -10,8 +10,7 @@ APPEND=../xbin/append
 
 OBJS	= arraylib.o assert.o defmacro.o defstruct.o describe.o evalmacros.o \
 	iolib.o listlib.o mislib.o module.o numlib.o packlib.o predlib.o \
-	seq.o seqlib.o setf.o top.o trace.o sloop.o debug.o info.o serror.o
-
+	seq.o seqlib.o setf.o top.o trace.o sloop.o debug.o info.o serror.o 
 
 
 COMPILE_FILE=$(PORTDIR)/saved_gcl $(PORTDIR) -system-p -c-file -data-file \
@@ -44,7 +43,7 @@ MPFILES=$(MPDIR)/mpi-386_no_under.o $(MPDIR)/libmport.a
 # root for the installation, eg /usr/local
 # This would cause make install to create /usr/local/bin/gcl and
 # /usr/local/lib/gcl-2-??/* with some basic files.
-prefix=/usr/local
+prefix=/fix/f/debian/mm/gcl/gcl-2.5.0/../tmp
 
 # where to place the info files
 INFO_DIR=/usr/info/
@@ -74,9 +73,9 @@ TCL_LIBS=-ldl  -lm
 NOTIFY=yes
 GCC=gcc
 
+RL_OBJS=
 
-
-
+RL_LIB=
 
 GCLDIR=/fix/f/debian/mm/gcl/gcl-2.5.0
 SHELL=/bin/sh
@@ -93,10 +92,12 @@ MACHINE=386-linux
 
 LBINDIR=/usr/local/bin
 
-OFLAG	=  -O 
-LIBS	= -lm 
+OFLAG	=  -g 
+#OFLAG	=  -O 
+#LIBS	= -lm 
 
-ODIR_DEBUG= -O4 
+#ODIR_DEBUG= -O4 
+ODIR_DEBUG= -g
 
 # This CC string will be used for compilation of the system,
 # and also in the compiler::*cc* variable for later compilation of
@@ -152,7 +153,7 @@ MPFILES=${GMP_DIR}libgmp.a
 
 
 
-all:	$(OBJS)
+all:	$(OBJS) $(RL_OBJS)
 
 
 
