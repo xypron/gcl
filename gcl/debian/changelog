@@ -44,8 +44,9 @@ gcl (2.6.1-1) unstable; urgency=low
   * Maintain a persisten *system-directory* binding
   * Push installed /h directory onto -I flags on cc command line
   * Escape old in-package behavior with #ifdef ANSI_COMMON_LISP
+  * define HAVE_XDR in linux.h
 
- -- Camm Maguire <camm@enhanced.com>  Thu,  4 Sep 2003 02:16:00 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu,  4 Sep 2003 02:17:30 +0000
 
 gcl (2.5.3-2) unstable; urgency=low
 
