@@ -60,8 +60,11 @@ gcl (2.6.1-19) unstable; urgency=low
     on save-system.
   * malloc -> gcl_gmp_alloc in recent setjmp frame protected bignum
     allocation
+  * Add -Wa,--execstack if on an exec-shield enabled system, can be
+    explicitly added otherwise by setting the CFLAGS variable before the
+    configure step
 
- -- Camm Maguire <camm@enhanced.com>  Tue,  2 Dec 2003 14:58:28 +0000
+ -- Camm Maguire <camm@enhanced.com>  Tue,  2 Dec 2003 15:16:39 +0000
 
 gcl (2.6.1-18) unstable; urgency=low
 

@@ -379,13 +379,19 @@ TCFLAGS="-Wall -DVOL=volatile -fsigned-char"
 if test "$GCC" = "yes" ; then
 	TCFLAGS="$TCFLAGS -fwritable-strings -pipe"
 fi
+if test -f /proc/sys/kernel/exec-shield ; then
+	exec_stat=`cat /proc/sys/kernel/exec-shield`
+	if test "$exec_stat" != "0" ; then
+		TCFLAGS="$TCFLAGS -Wa,--execstack"
+	fi
+fi
 
 TO3FLAGS=""
 TO2FLAGS=""
 if test "$enable_debug" = "yes" ; then
 	TCFLAGS="$TCFLAGS -g"
 	# for subconfigurations
-	CFLAGS=-g
+	CFLAGS="$CFLAGS -g"
 else
 	TO3FLAGS="-O3 -fomit-frame-pointer"
 	TO2FLAGS="-O"
