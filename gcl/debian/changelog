@@ -9,8 +9,10 @@ gcl (2.6.2-1) unstable; urgency=low
   * Fix bug in setting elements (si::aset) of 0 rank arrays uncovered by
     the random tester
   * No -fomit-frame-pointer on mingw
+  * Backport minimal ansi-test patches from HEAD to enable running of
+    the random tester
 
- -- Camm Maguire <camm@enhanced.com>  Sat,  5 Jun 2004 18:07:28 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat,  5 Jun 2004 18:11:24 +0000
 
 gcl (2.6.1-39) unstable; urgency=high
 
