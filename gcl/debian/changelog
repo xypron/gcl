@@ -1,3 +1,19 @@
+gcl (2.5.4-1) unstable; urgency=low
+
+  * New upstream release
+  * Type-punning warning fixes
+  * small_fixnum overflow fixes
+  * off by one fix in cerror
+  * Fix compiler error which had not recognized defpackage as a package
+    operation
+  * Fix tkl.lisp call to open-named-socket
+  * Make values-list and nreconc signal errors when they should on
+    dotted lists.
+  * Avoid use of windows.h types as macros.
+  * New config.{sub,guess}
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 16 Jul 2003 02:01:35 +0000
+
 gcl (2.5.3-2) unstable; urgency=low
 
   * gcc-3.3 all platforms
