@@ -35,8 +35,9 @@ gcl (2.5.4-1) unstable; urgency=low
   * Fix typo in o/sfasli.c
   * Rework debian package structure to handle stable and cvs packages
     simultaneously
+  * Add gazonk*.lsp to clean target
 
- -- Camm Maguire <camm@enhanced.com>  Fri, 22 Aug 2003 15:36:47 +0000
+ -- Camm Maguire <camm@enhanced.com>  Fri, 22 Aug 2003 17:05:18 +0000
 
 gcl (2.5.3-2) unstable; urgency=low
 
