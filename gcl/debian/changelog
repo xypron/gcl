@@ -4,8 +4,9 @@ gcl (2.6.1-19) unstable; urgency=low
     rebind
   * Remove duplicate tags from compiled C switch statements
   * Minor merges for DARWIN support
+  * Path to configure to make --enable-emacsdir work
 
- -- Camm Maguire <camm@enhanced.com>  Wed, 12 Nov 2003 15:42:28 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat, 15 Nov 2003 17:16:18 +0000
 
 gcl (2.6.1-18) unstable; urgency=low
 
