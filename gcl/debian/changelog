@@ -3,8 +3,10 @@ gcl (2.6.4-1) unstable; urgency=low
   * New upstream release
   * Make disassemble work when original system directory is gone
   * New debian/support files for debconf image default selection support
+  * More descriptive compiled C function names for use in gprof when
+    profiling is compiled in
 
- -- Camm Maguire <camm@enhanced.com>  Thu,  5 Aug 2004 22:01:06 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu,  5 Aug 2004 22:03:59 +0000
 
 gcl (2.6.3-1) unstable; urgency=high
 
