@@ -21,7 +21,7 @@
 (setq compiler::*cmpinclude* "<cmpinclude.h>") (load #"../cmpnew/cmpmain.lsp") (gbc t)
  (load #"../cmpnew/lfun_list.lsp")
  (gbc t) (load #"../cmpnew/cmpopt.lsp") (gbc t)
-(load #"../lsp/auto.lsp") (gbc t)
+(load #"../lsp/auto_new.lsp") (gbc t)
 
  (when compiler::*cmpinclude-string*
   (with-open-file (st "../h/cmpinclude.h")
@@ -94,17 +94,6 @@
  (unintern 'compiler)
  (unintern 'user)
  ;system-init
-
- ; init Readline word completion list for Gcl
- (if (fboundp 'si::readline-init)
-	(let (l)
-		(sloop::sloop for v in-package 'lisp do
-			(if (or (boundp v) (fboundp v))
-				(setq l (cons (symbol-name v) l))))
-		(sloop::sloop for v in-package 'keyword do
-			(if (or (boundp v) (fboundp v))
-				(setq l (cons (format nil ":~A" v) l))))
-		(si::readline-init t "Gcl" 1 l)))
 
  (if (fboundp 'user-init) (user-init))
  (si::set-up-top-level)
