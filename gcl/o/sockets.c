@@ -105,8 +105,14 @@ DEFUN_NEW("OPEN-NAMED-SOCKET",object,fSopen_named_socket,SI,1,1,NONE,OI,OO,OO,OO
 "Open a socket on PORT and return (cons fd portname) where file \
 descriptor is a small fixnum which is the write file descriptor for \
 the socket.  If PORT is zero do automatic allocation of port") 
-{ int s, n, rc; struct
-sockaddr_in addr;
+{
+#ifdef __MINGW32__
+    SOCKET s;
+#else    
+    int s;
+#endif    
+  int n, rc;
+  struct sockaddr_in addr;
 
 #ifdef __MINGW32__  
   if ( w32_socket_init() < 0 ) {
@@ -117,7 +123,11 @@ sockaddr_in addr;
   
   /* Using TCP layer */
   s = socket(PF_INET, SOCK_STREAM, 0);
+#ifdef __MINGW32__
+    if ( s == INVALID_SOCKET )  
+#else    
   if (s < 0)
+#endif      
     {
       perror("ERROR !!! socket creation failed in sock_connect_to_name\n");
       return Cnil;
@@ -175,7 +185,7 @@ sockaddr_in addr;
       return Cnil;
     }
 
-  return make_cons(make_fixnum(s), small_fixnum(ntohs(addr.sin_port)));
+  return make_cons(make_fixnum(s), make_fixnum(ntohs(addr.sin_port)));
 }
 
 DEFUN_NEW("CLOSE-FD",object,fSclose_fd,SI,1,1,NONE,OI,OO,OO,OO,(fixnum fd),
