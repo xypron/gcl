@@ -44,8 +44,9 @@ gcl (2.6.1-34) unstable; urgency=low
     generation
   * Backport of ignorable declaration keyword for new dotimes macro
   * si::*OPTIMIZE-MAXIMUM-PAGES* support
+  * rebuild pcl generated lisp files
 
- -- Camm Maguire <camm@enhanced.com>  Sat,  3 Apr 2004 19:18:02 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat,  3 Apr 2004 19:27:18 +0000
 
 gcl (2.6.1-33) unstable; urgency=low
 
