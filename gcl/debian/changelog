@@ -1,8 +1,9 @@
 gcl (2.6.1-2) unstable; urgency=low
 
   * Add windows/install.lsp to clean target
+  * Add in macosx files to stable and cvs head
 
- -- Camm Maguire <camm@enhanced.com>  Thu,  4 Sep 2003 14:59:13 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu,  4 Sep 2003 15:11:54 +0000
 
 gcl (2.6.1-1) unstable; urgency=low
 
