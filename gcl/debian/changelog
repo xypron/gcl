@@ -41,8 +41,9 @@ gcl (2.6.1-1) unstable; urgency=low
   * Fixes to debian/rules
   * Remove unused definitions of Vcs
   * Increase default maxpages and stack sizes
+  * Maintain a persisten *system-directory* binding
 
- -- Camm Maguire <camm@enhanced.com>  Thu,  4 Sep 2003 02:07:22 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu,  4 Sep 2003 02:11:58 +0000
 
 gcl (2.5.3-2) unstable; urgency=low
 
