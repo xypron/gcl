@@ -16,8 +16,9 @@ gcl (2.6.1-21) unstable; urgency=low
   * Clean windows/sysdir.bat
   * Check for zero args in new gcd code
   * Default hole is maxpages/10, holesize configure option added
+  * Fix syntax errors in older reloaction code: sfaslelf.c
 
- -- Camm Maguire <camm@enhanced.com>  Fri, 16 Jan 2004 16:55:18 +0000
+ -- Camm Maguire <camm@enhanced.com>  Fri, 16 Jan 2004 16:57:50 +0000
 
 gcl (2.6.1-20) unstable; urgency=low
 
