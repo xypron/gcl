@@ -6,8 +6,31 @@ gcl (2.6.1-40) unstable; urgency=low
   * Proper check for C stack array body address in gbc.c and sgbc.c
   * Fix bug in setting elements (si::aset) of 0 rank arrays uncovered by
     the random tester
+  * No -fomit-frame-pointer on mingw
+  * Backport minimal ansi-test patches from HEAD to enable running of
+    the random tester
+  * installed tcl/tk patch for mingw
+  * Fix banner license detection code in lsp/gcl_mislib.lsp as
+    *features* entries are now keywords
+  * o/makefile changes to work around trailing slash -I arguments gcc
+    bug on mingw
+  * Patch to mingwin.c:fix_filename to close long standing 'maxima
+    ignore-errors filename corruption' bug on mingw
+  * Check for too large rank supplied to make-array1
+  * Fix potential stack overwrite bug in quick_call_sfun/eval.c
+  * Add -mprferred-stack-boundary=8 on amd64, as constant integers used
+    in a call must be retrievable with va_arg(,fixnum)
+  * Revert preferred-stack-boundary option on amd64 as it does not play
+    well with external libraries, also eliminate -m64 to allow for user
+    settings.  Cast fixnum constant C arguments in gcl_cmploc.lsp
+    explicitly to (long) to ensure they can be extracted via
+    va_arg(,fixnum)
+  * reenable SA_SIGINFO on amd64 to restore SGC there
+  * Include elf.h in FreeBSD.h
+  * Allow for elf_abi.h in FreeBSD.h
+  * Add README.openbsd file
 
- -- Camm Maguire <camm@enhanced.com>  Mon, 31 May 2004 18:34:11 -0400
+ -- Camm Maguire <camm@enhanced.com>  Mon, 14 Jun 2004 17:08:23 +0000
 
 gcl (2.6.1-39) unstable; urgency=high
 
