@@ -938,7 +938,7 @@
 		    (when (caddr opt) (c2bind-loc (caddr opt) t)))
 	  (when (and (not first) (or (ll-rest ll) (ll-keywords ll)))
 	    (wt-nl "first=va_arg(ap,object);"))))
-	  (setq labels (nreverse labels))
+      (setq labels (nreverse labels))
       
       (let ((label (next-label)))
 	(wt-nl "--narg; ")
