@@ -263,7 +263,7 @@ fasload(object faslfile) {
 
     current=round_up(current,1<<s->alignment_power);
 
-    current+=s->_raw_size;
+    current+=bfd_section_size(b,s);
 
   }
   curr_size=(unsigned long)current;
@@ -288,7 +288,7 @@ fasload(object faslfile) {
 
     m=round_up(m,1<<s->alignment_power);
     s->output_section->vma=(unsigned long)m;
-    m+=s->_raw_size;
+    m+=bfd_section_size(b,s);
 	     
   }
 
@@ -306,7 +306,7 @@ fasload(object faslfile) {
     struct bfd_link_hash_entry *h;
 
     if (!strncmp(entry_name_ptr,q[u]->name,5)) {
-      init_address=q[u]->value;
+      init_address=q[u]->value+(q[u]->section->output_section->vma-(unsigned long)memory->cfd.cfd_start);
       continue;
     }
 
@@ -344,6 +344,8 @@ fasload(object faslfile) {
 
    for (s=b->sections;s;s=s->next) {
      
+     unsigned long ss=bfd_section_size(b,s);
+
      if (!(s->flags & SEC_LOAD))
        continue;
      
@@ -353,9 +355,10 @@ fasload(object faslfile) {
 					     v,0,q)) 
        FEerror("Cannot get relocated section contents\n",0);
 
-     memcpy((void *)(unsigned long)s->output_section->vma,v,s->_raw_size);
+     memcpy((void *)(unsigned long)s->output_section->vma,v,ss);
      
    }
+
  }
    
   dum.sm.sm_object1=faslfile;
