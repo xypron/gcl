@@ -1531,6 +1531,8 @@ Lsharp_exclamation_reader()
 		return;
 	}
 	vs_base[0] = read_object(vs_base[0]);
+	if (sharp_eq_context_max > 0)
+		vs_base[0]=patch_sharp(vs_base[0]);
 	ieval(vs_base[0]);
 	vs_popp;
 }
