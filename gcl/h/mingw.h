@@ -188,6 +188,11 @@ extern DBEGIN_TY _stacktop, _stackbottom, _dbegin;
 #define WRITEC_NEWLINE(strm) (writec_stream('\r',strm),\
                          writec_stream('\n', strm))
 
+extern char *GCLExeName ( void );
+#define GET_FULL_PATH_SELF(a_) do {\
+   (a_)=GCLExeName();\
+} while(0)
+
 /* Begin for cmpinclude */
 
 
