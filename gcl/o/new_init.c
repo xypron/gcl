@@ -3,6 +3,10 @@ NewInit(){
 
 DEFUNO("BYE",int,fLbye,LISP
    ,0,1,0 ,II,OO,OO,OO,Lby,"")
+DEFUNO("QUIT",int,fLquit,LISP
+   ,0,1,0 ,II,OO,OO,OO,Lquit,"")
+DEFUNO("EXIT",int,fLexit,LISP
+   ,0,1,0 ,II,OO,OO,OO,Lexit,"")
 DEFUNO("IDENTITY",object,fLidentity,LISP
    ,1,1,0 ,OO,OO,OO,OO,Lidentity,"")
 DEFUNO("LISP-IMPLEMENTATION-VERSION",object,fLlisp_implementation_version,LISP
