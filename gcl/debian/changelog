@@ -20,8 +20,10 @@ gcl (2.6.2-1) unstable; urgency=low
     ignore-errors filename corruption' bug on mingw
   * Check for too large rank supplied to make-array1
   * Fix potential stack overwrite bug in quick_call_sfun/eval.c
+  * Add -mprferred-stack-boundary=8 on amd64, as constant integers used
+    in a call must be retrievable with va_arg(,fixnum)
 
- -- Camm Maguire <camm@enhanced.com>  Thu, 10 Jun 2004 21:06:21 -0400
+ -- Camm Maguire <camm@enhanced.com>  Thu, 10 Jun 2004 21:09:59 -0400
 
 gcl (2.6.1-39) unstable; urgency=high
 
