@@ -400,6 +400,12 @@ AC_SUBST(CC)
 TCFLAGS="-Wall -DVOL=volatile -fsigned-char"
 if test "$GCC" = "yes" ; then
 	TCFLAGS="$TCFLAGS -fwritable-strings -pipe"
+	case $use in
+	     *mingw*)
+	        echo "WARNING: Remove -fno-zero-initialized-in-bss from makedefs if gcc less than 3.3.1."
+	        echo "         It is ptherwise needed for the Unexec stuff to work."
+		TCFLAGS="$TCFLAGS -fno-zero-initialized-in-bss -mms-bitfields";;
+        esac
 fi
 #if test -f /proc/sys/kernel/exec-shield ; then
 #	exec_stat=`cat /proc/sys/kernel/exec-shield`
@@ -411,7 +417,14 @@ fi
 
 TO3FLAGS=""
 TO2FLAGS=""
-TFPFLAG="-fomit-frame-pointer"
+
+case "$use" in
+  *mingw*)
+	TFPFLAG="-fomit-frame-pointer";;
+  *)
+	TFPFLAG="-fomit-frame-pointer";;
+esac
+
 if test "$enable_gprof" = "yes" ; then
 	TCFLAGS="$TCFLAGS -pg"
 	TLIBS="$TLIBS -pg"
@@ -424,7 +437,12 @@ if test "$enable_debug" = "yes" ; then
 	# for subconfigurations
 	CFLAGS="$CFLAGS -g"
 else
-	TO3FLAGS="-O3 $TFPFLAG"
+	case "$use" in
+	  *mingw*)
+		TO3FLAGS="-O3 $TFPFLAG";;
+	  *)
+		TO3FLAGS="-O3 $TFPFLAG";;
+	esac
 	TO2FLAGS="-O"
 fi
 

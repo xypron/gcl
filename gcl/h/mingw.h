@@ -142,12 +142,7 @@ extern DBEGIN_TY _stacktop, _stackbottom, _dbegin;
 #define FCLOSE_SETBUF_OK 
 #define	IEEEFLOAT
 #define I386
-#define ADDITIONAL_FEATURES \
-	 ADD_FEATURE("I386"); \
-         ADD_FEATURE("WINNT"); \
-         ADD_FEATURE("BROKEN_O4_OPT"); \
-         ADD_FEATURE("MINGW32");
-  
+
 #undef SET_REAL_MAXPAGE  
 #define SET_REAL_MAXPAGE \
 	 init_shared_memory(); real_maxpage=MAXPAGE;
@@ -180,13 +175,9 @@ extern DBEGIN_TY _stacktop, _stackbottom, _dbegin;
 	if (core_end != (sbrk(PAGESIZE*(n - m))))
 
 #define USE_INTERNAL_REAL_TIME_FOR_RUNTIME
-#define SHARP_EQ_CONTEXT_SIZE 1024
 
 /* Use this pending test in configure */
 #define NO_MKSTEMP
-
-/* #define WRITEC_NEWLINE(strm) (writec_stream('\r',strm),\ */
-/*                          writec_stream('\n', strm)) */
 
 #define DOES_CRLF
 
