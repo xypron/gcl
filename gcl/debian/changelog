@@ -33,8 +33,10 @@ gcl (2.6.2-1) unstable; urgency=low
   * Add README.openbsd file
   * readme.mingw updates
   * solaris.h updates for custreloc option
+  * Close possibility of malloc failure due to intervening gbc arising
+    from the misordering of allocation calls
 
- -- Camm Maguire <camm@enhanced.com>  Thu, 17 Jun 2004 20:38:04 -0400
+ -- Camm Maguire <camm@enhanced.com>  Wed, 23 Jun 2004 19:23:13 +0000
 
 gcl (2.6.1-39) unstable; urgency=high
 
