@@ -29,8 +29,10 @@ gcl (2.6.5-1) unstable; urgency=high
     compile-file to process pathnames with whitespace on Windows
   * Fix corner case fixnum arithmetic on 64bit machines
   * Rework gmp_wrappers semantics for older gcc
+  * Explicitly mprotect loaded code pages PROT_EXEC on x86 Linux, as FC3
+    now requires it.
 
- -- Camm Maguire <camm@enhanced.com>  Thu, 13 Jan 2005 22:44:47 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu, 13 Jan 2005 22:46:09 +0000
 
 gcl (2.6.4-1) unstable; urgency=high
 
