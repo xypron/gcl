@@ -21,8 +21,13 @@ gcl (2.6.1-34) unstable; urgency=low
   * Import si::info into 'user
   * , -> # as sed separator
   * Minro warning removals and fixups
+  * Binary searches through ordered arrays of referred and changed
+    variables for dramatic compiler performance improvement in the large
+    case -- support declarations and thereby optimizations of the form
+    (declare ((vector t) foo)), etc.
+  * Better 'time macro
 
- -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 02:47:36 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 17:29:41 +0000
 
 gcl (2.6.1-33) unstable; urgency=low
 
