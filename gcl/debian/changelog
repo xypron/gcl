@@ -1,3 +1,9 @@
+gcl (2.6.1-37) unstable; urgency=low
+
+  * mprotect pages PROT_EXEC as CLEAR_CACHE step on amd64-linux
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 13 Apr 2004 02:39:50 +0000
+
 gcl (2.6.1-36) unstable; urgency=low
 
   * Improve optimize-maximum-pages algorithm
