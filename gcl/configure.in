@@ -56,6 +56,7 @@ main()
   FILE *fp = fopen("conftest1","w");
   fprintf(fp,"0x%x",((unsigned int) b) & ~0xffffff);
   fclose(fp);
+  return 0;
 }],dbegin=`cat conftest1`,dbegin=0,dbegin=0)
 AC_DEFINE_UNQUOTED(DBEGIN,$dbegin \
 /* where data begins */
@@ -71,6 +72,7 @@ main()
   FILE *fp = fopen("conftest1","w");
   fprintf(fp,"%d",((int) &b));
   fclose(fp);
+  return 0;
 }],cstack_address=`cat conftest1`,cstack_address=0,cstack_address=0)
 AC_DEFINE_UNQUOTED(CSTACK_ADDRESS,$cstack_address \
 )
