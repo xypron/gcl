@@ -3438,7 +3438,7 @@ fi
 	echo "# Subconfigure of BFD done"
 	echo "# ------------------------"
 	echo "#"
-	TLIBS="$TLIBS `pwd`/binutils/bfd/libbfd.a `pwd`/binutils/libiberty/libiberty.a"
+#	TLIBS="$TLIBS `pwd`/binutils/bfd/libbfd.a `pwd`/binutils/libiberty/libiberty.a"
 	cat >> confdefs.h <<\EOF
 #define HAVE_LIBBFD 1
 EOF
