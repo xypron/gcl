@@ -1,4 +1,4 @@
-gcl (2.6.4-2) unstable; urgency=high
+gcl (2.6.5-1) unstable; urgency=high
 
   * New gmp_wrappers.{c,h} files that prevent all GBC within gmp,
     obviating the need for gmp patches and a local gmp configure.  FIXME
