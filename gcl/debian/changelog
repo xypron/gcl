@@ -22,8 +22,9 @@ gcl (2.6.6-1) unstable; urgency=high
   * Fix fixnum print bug on 64bit
   * Fix nil types in room report
   * 64bit fixes to fixnum_add and fixnum_sub
+  * Fix Mac SGC/save bug, at least in part
 
- -- Camm Maguire <camm@enhanced.com>  Sun, 16 Jan 2005 00:35:53 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sun, 16 Jan 2005 02:28:50 +0000
 
 gcl (2.6.5-1) unstable; urgency=high
 
