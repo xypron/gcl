@@ -234,7 +234,7 @@ case $canonical in
      i*mingw*)
        if test "$use_common_binary" = "yes"; then
          host=i386-pc-mingw32
-	 PROCESSOR_FLAGS="-mcpu=i386 -march=i386 "
+	 PROCESSOR_FLAGS="-march=i386 "
          echo "The host is canonicalised to $host"
        fi
      use=mingw;;
