@@ -1,4 +1,4 @@
-gcl (2.5.4-1) unstable; urgency=low
+gcl (2.6.1-1) unstable; urgency=low
 
   * New upstream release
   * Type-punning warning fixes
@@ -41,6 +41,14 @@ gcl (2.5.4-1) unstable; urgency=low
   * Fixes to debian/rules
 
  -- Camm Maguire <camm@enhanced.com>  Tue,  2 Sep 2003 17:24:30 +0000
+
+gcl (2.6.0cvs-1) experimental; urgency=low
+
+  * Experimental Debian distribution for CVS snapshots
+  * reader enhancement to handle foo:(a b c)
+  * preliminary defgeneric method support
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 15 Jul 2003 13:41:33 -0400
 
 gcl (2.5.3-2) unstable; urgency=low
 
