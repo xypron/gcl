@@ -1,4 +1,4 @@
-gcl (2.6.4-1) unstable; urgency=low
+gcl (2.6.4-1) unstable; urgency=high
 
   * New upstream release
   * Make disassemble work when original system directory is gone
