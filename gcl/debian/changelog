@@ -8,8 +8,9 @@ gcl (2.6.1-32) unstable; urgency=low
   * Minor ifdefs needed for FreeBSD
   * Refer to exported non-static C stub of fSmake_vector1 in plt.c
     (needed on ia64)
+  * Readline 4.1/4.3 configure magic
 
- -- Camm Maguire <camm@enhanced.com>  Mon,  8 Mar 2004 22:40:16 +0000
+ -- Camm Maguire <camm@enhanced.com>  Tue,  9 Mar 2004 01:58:43 +0000
 
 gcl (2.6.1-31) unstable; urgency=low
 
