@@ -28,8 +28,9 @@ gcl (2.6.5-1) unstable; urgency=high
   * Don't try to write map file when not using GNU ld.  Also allow
     compile-file to process pathnames with whitespace on Windows
   * Fix corner case fixnum arithmetic on 64bit machines
+  * Rework gmp_wrappers semantics for older gcc
 
- -- Camm Maguire <camm@enhanced.com>  Thu, 13 Jan 2005 22:44:15 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu, 13 Jan 2005 22:44:47 +0000
 
 gcl (2.6.4-1) unstable; urgency=high
 
