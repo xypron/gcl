@@ -1,3 +1,13 @@
+gcl (2.6.1-11) unstable; urgency=low
+
+  * Add compilation step of compiling all lsp and cmpnew .lsp files from
+    an interpreted only saved_pre_gcl before the creation of saved_gcl -
+    - this enables us to use full optimization on these files while
+    getting the STREF constants right on 32bit and 64bit
+  * remove 'attic' from comment in gcl_loop.lsp
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 24 Sep 2003 15:50:56 +0000
+
 gcl (2.6.1-10) unstable; urgency=low
 
   * Mac OSX GET_FULL_PATH_SELF
