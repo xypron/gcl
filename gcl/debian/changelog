@@ -1,3 +1,9 @@
+gcl (2.6.1-30) unstable; urgency=low
+
+  * Fix rsym generated symbol tables for 64 bit platforms
+
+ -- Camm Maguire <camm@enhanced.com>  Thu,  4 Mar 2004 19:35:38 +0000
+
 gcl (2.6.1-29) unstable; urgency=low
 
   * Remove implicit dependency on gawk, optimize plt.c a little
