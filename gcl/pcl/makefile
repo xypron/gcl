@@ -19,7 +19,7 @@ SETUP='(load "sys-package.lisp")' \
 	'(setq compiler::*default-c-file* t)'\
 	'(setq compiler::*default-data-file* t)'\
 	'(setq compiler::*default-system-p* t)' \
-	'\#+winnt (si::use-fast-links nil) (setq compiler::*keep-gaz* t)'
+	'(setq compiler::*keep-gaz* t)'
 
 all: $(addsuffix .c,$(AFILES)) $(addsuffix .o,$(AFILES)) 
 
