@@ -10,8 +10,10 @@ gcl (2.6.4-1) unstable; urgency=low
   * lintian fix in string-match
   * Prototype for alloca for lint
   * Improve gprof support
+  * Improve sgc page allocation which optimize-maximum-pages is in
+    effect and the hole is overrun
 
- -- Camm Maguire <camm@enhanced.com>  Thu,  5 Aug 2004 22:26:14 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu,  5 Aug 2004 22:31:10 +0000
 
 gcl (2.6.3-1) unstable; urgency=high
 
