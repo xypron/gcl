@@ -270,6 +270,14 @@ main(int argc, char **argv, char **envp) {
 	    rl.rlim_cur > MAX_STACK_SIZE)
 	  rl.rlim_cur=MAX_STACK_SIZE;
 	cssize = rl.rlim_cur/4 - 4*CSGETA;
+
+	getrlimit(RLIMIT_DATA, &rl);
+	if (rl.rlim_cur != RLIM_INFINITY &&
+	    (rl.rlim_max == RLIM_INFINITY ||
+	     rl.rlim_max > rl.rlim_cur)) {
+	  rl.rlim_cur = rl.rlim_max;
+	  setrlimit(RLIMIT_DATA, &rl);
+	}
 #endif	
 #endif
 
