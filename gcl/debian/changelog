@@ -1,3 +1,10 @@
+gcl (2.6.1-26) unstable; urgency=low
+
+  * Rework compiler::*ld-libs*, compiler::link, and unixport/makefile to
+    accomodate mingw need for firstfile.o and lastfile.o
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 17 Feb 2004 16:08:03 +0000
+
 gcl (2.6.1-25) unstable; urgency=low
 
   * rl_putc_em a carriage return after invoking readline to ensure the

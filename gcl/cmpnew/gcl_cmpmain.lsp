@@ -767,6 +767,18 @@ SYSTEM_SPECIAL_INIT
   
 )
 
+(defun mysub (str it new)
+  (let ((x (search it str)))
+    (if x
+	(concatenate 'string
+		     (subseq str 0 x)
+		     new
+		     (mysub
+		      (subseq str (+ (length it) x) (length str))
+		      it
+		      new))
+      str)))
+
 (defun link (files image &optional post extra-libs (run-user-init t) &aux raw init) 
 
   (make-user-init files "user-init")
@@ -783,7 +795,7 @@ SYSTEM_SPECIAL_INIT
 				  (setq sfiles (concatenate 'string sfiles " " tem))))
 			  sfiles) 
 	   si::*system-directory*
-	   *ld-libs*
+	   (mysub *ld-libs* " ../" (concatenate 'string " " si::*system-directory* "../"))
 	   (if (stringp extra-libs) extra-libs "")))
 
   (delete-file "user-init.o")
