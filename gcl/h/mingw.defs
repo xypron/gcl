@@ -84,7 +84,6 @@ TCL_EXES=
 # Don't do dvi
 
 GCL_DVI=
-GCL_HTML=gcl-si_toc.html gcl-tk_toc.html gcl_toc.html
 
 #
 # End h/mingw.defs
