@@ -58,8 +58,10 @@ gcl (2.6.1-19) unstable; urgency=low
   * Cleanup compiler warning in alloc.c
   * Eliminate unneeded transformatio of contniguous pages to other pages
     on save-system.
+  * malloc -> gcl_gmp_alloc in recent setjmp frame protected bignum
+    allocation
 
- -- Camm Maguire <camm@enhanced.com>  Mon,  1 Dec 2003 16:54:37 +0000
+ -- Camm Maguire <camm@enhanced.com>  Tue,  2 Dec 2003 14:58:28 +0000
 
 gcl (2.6.1-18) unstable; urgency=low
 
