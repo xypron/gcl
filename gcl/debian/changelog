@@ -10,7 +10,7 @@ gcl (2.6.1-13) unstable; urgency=low
   * Fix an obviou int overflow in ifloor (o/cmpaux.c), handle more
     proper fixnum/integer determination from declarations later
 
- -- Camm Maguire <camm@intech.m.enhanced.com>  Fri, 10 Oct 2003 02:34:11 +0000
+ -- Camm Maguire <camm@enhanced.com>  Fri, 10 Oct 2003 02:34:11 +0000
 
 gcl (2.6.1-12) unstable; urgency=low
 
