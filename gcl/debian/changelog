@@ -12,8 +12,10 @@ gcl (2.5.4-1) unstable; urgency=low
   * Avoid use of windows.h types as macros.
   * New config.{sub,guess}
   * Windows installer updates from CVS HEAD
+  * fix potential longjmp clobber in read.d;add some windows files to
+    main makefile clean target;
 
- -- Camm Maguire <camm@enhanced.com>  Thu, 17 Jul 2003 17:49:35 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat, 19 Jul 2003 16:41:52 -0400
 
 gcl (2.5.3-2) unstable; urgency=low
 
