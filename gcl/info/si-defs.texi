@@ -913,7 +913,6 @@ to increase the stack.
 
 
 @end defun
-
 @defun RUN-PROCESS (string arglist)
 Package:SI
 
