@@ -123,7 +123,9 @@ int index;
 E:
 	vs_push(make_fixnum(index));
 	/* FIXME message should indicate out of range */
-	FEwrong_type_argument(sLpositive_fixnum,vs_head);
+	Icall_error_handler(sKwrong_type_argument,
+		     make_simple_string("The index, ~S, is too large."),
+		     1,vs_head);
 	return(Cnil);
 }
 
@@ -257,7 +259,7 @@ E:
 		case aet_short:
 		case aet_ushort:
 			for (i = s, j = 0;  i < e;  i++, j++)
-				USHORT(x, j) = USHORT(sequence, i);
+				USHORT_GCL(x, j) = USHORT_GCL(sequence, i);
 			break;
 		case aet_char:
 		case aet_uchar:
@@ -414,7 +416,7 @@ object seq;
 		case aet_short:
 		case aet_ushort:
 			for (j = k - 1, i = 0;  j >=0;  --j, i++)
-				USHORT(y, j) = USHORT(x, i);
+				USHORT_GCL(y, j) = USHORT_GCL(x, i);
 			break;
 		case aet_char:
 		case aet_uchar:
@@ -517,9 +519,9 @@ object seq;
 		case aet_ushort:
 			for (i = 0, j = k - 1;  i < j;  i++, --j) {
 				unsigned short y;
-				y = USHORT(x, i);
-				USHORT(x, i) = USHORT(x, j);
-				USHORT(x, y) = y;
+				y = USHORT_GCL(x, i);
+				USHORT_GCL(x, i) = USHORT_GCL(x, j);
+				USHORT_GCL(x, y) = y;
 			}
 			return(seq);
 		case aet_char:
