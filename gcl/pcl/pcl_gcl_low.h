@@ -9,7 +9,6 @@ static void L9();
 static void L10();
 static void L12();
 static void L24();
-static void L34();
 #define VC1
 #define VC2
 #define VC3
@@ -127,15 +126,19 @@ static object LI33();
 #define VMS29
 #define VMV29
 #define VMR29(VMT29) return(VMT29);
-#define VC30
+static object LI34();
+#define VMB30
+#define VMS30
+#define VMV30
+#define VMR30(VMT30) return(VMT30);
 static object LI35();
 #define VMB31
 #define VMS31
 #define VMV31
 #define VMR31(VMT31) return(VMT31);
 static object LI36();
-#define VMB32 register object *VOL base=vs_top; object  V203 ,V199 ,V198 ,V197 ,V196 ,V195 ,V190 ,V181;
-#define VMS32  register object *VOL sup=vs_top+8;vs_top=sup;
+#define VMB32 register object *VOL base=vs_top; object  V203 ,V199 ,V198 ,V197 ,V192 ,V183;
+#define VMS32  register object *VOL sup=vs_top+7;vs_top=sup;
 #define VMV32 vs_check;
 #define VMR32(VMT32) vs_top=base ; return(VMT32);
 static void LC39();
@@ -150,9 +153,9 @@ static void LC37();
 #define VM35 2
 #define VM34 3
 #define VM33 6
-#define VM32 8
+#define VM32 7
 #define VM31 0
-#define VM30 2
+#define VM30 0
 #define VM29 0
 #define VM28 0
 #define VM27 13
@@ -216,7 +219,7 @@ static char * VVi[78]={
 (char *)(LI31),
 (char *)(LI32),
 (char *)(LI33),
-(char *)(L34),
+(char *)(LI34),
 (char *)(LI35),
 (char *)(LI36),
 (char *)(&LC37)

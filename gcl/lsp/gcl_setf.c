@@ -1753,7 +1753,8 @@ static void L19()
 	base[5]= Cnil;
 	} else {
 	base[5]= (V276->c.c_car);
-	V276=V276->c.c_cdr;}
+	V276=V276->c.c_cdr;
+	}
 	if(!endp(V276))invalid_macro_call();}
 	{object V277;
 	{register object V278;
@@ -1907,7 +1908,8 @@ static void L21()
 	base[3]= small_fixnum(1);
 	} else {
 	base[3]= (V299->c.c_car);
-	V299=V299->c.c_cdr;}
+	V299=V299->c.c_cdr;
+	}
 	if(!endp(V299))invalid_macro_call();}
 	if(!(type_of(base[2])==t_symbol)){
 	goto T570;}
@@ -2001,7 +2003,8 @@ static void L22()
 	base[3]= small_fixnum(1);
 	} else {
 	base[3]= (V314->c.c_car);
-	V314=V314->c.c_cdr;}
+	V314=V314->c.c_cdr;
+	}
 	if(!endp(V314))invalid_macro_call();}
 	if(!(type_of(base[2])==t_symbol)){
 	goto T586;}

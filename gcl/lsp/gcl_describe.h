@@ -73,10 +73,10 @@ static object LI15();
 #define VC17 object  V136 ,V135 ,V134 ,V133 ,V132 ,V131 ,V130 ,V129 ,V128;
 #define VC18
 #define VC19
-#define VC20 object  V150 ,V149 ,V146 ,V145;
-#define VC21 object  V191 ,V190 ,V189 ,V188 ,V187 ,V186 ,V181 ,V171 ,V170 ,V169 ,V168 ,V167 ,V166 ,V161;
+#define VC20 object  V152 ,V150 ,V149 ,V146 ,V145;
+#define VC21 object  V192 ,V191 ,V190 ,V189 ,V188 ,V187 ,V182 ,V172 ,V171 ,V170 ,V169 ,V168 ,V167 ,V162;
 static void L21();
-#define VC22 object  V195 ,V194;
+#define VC22 object  V196 ,V195;
 static void L20();
 #define VC23
 #define VM23 7
@@ -130,8 +130,8 @@ static object  LnkTLI195(object,...);
 static object  (*LnkLI195)() = (object (*)()) LnkTLI195;
 static void LnkT194();
 static void (*Lnk194)() = LnkT194;
-static void LnkT193();
-static void (*Lnk193)() = LnkT193;
+static object  LnkTLI193(object,...);
+static object  (*LnkLI193)() = (object (*)()) LnkTLI193;
 static object  LnkTLI192(object,...);
 static object  (*LnkLI192)() = (object (*)()) LnkTLI192;
 static object  LnkTLI191(object,...);

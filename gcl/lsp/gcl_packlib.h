@@ -3,6 +3,7 @@ static void L1();
 static void L3();
 static void L4();
 static void L5();
+static void L8();
 static void L9();
 static void L10();
 #define VC1 object  V5 ,V4 ,V3;
@@ -24,16 +25,12 @@ static object LI7();
 #define VMS7  register object *sup=vs_top+1;vs_top=sup;
 #define VMV7 vs_reserve(1);
 #define VMR7(VMT7) vs_top=base ; return(VMT7);
-static object LI8(object,object,...);
-#define VMB8 register object *base=vs_top; object  V134 ,V133 ,V132 ,V131 ,V130 ,V129 ,V128 ,V123 ,V114 ,V106 ,V105 ,V104 ,V103 ,V102 ,V101 ,V96;
-#define VMS8  register object *sup=vs_top+8;vs_top=sup;
-#define VMV8 vs_reserve(8);
-#define VMR8(VMT8) vs_top=base ; return(VMT8);
+#define VC8 object  V133 ,V132 ,V131 ,V130 ,V129 ,V128 ,V127 ,V122 ,V113 ,V105 ,V104 ,V103 ,V102 ,V101 ,V100 ,V95;
 #define VC9
-#define VC10 object  V200 ,V199 ,V198 ,V197 ,V196 ,V195 ,V194 ,V193 ,V192 ,V191 ,V190 ,V189 ,V188 ,V187 ,V186 ,V185 ,V184 ,V183 ,V182 ,V181 ,V180 ,V179 ,V178 ,V177 ,V176 ,V175 ,V174 ,V173 ,V172 ,V171 ,V170 ,V169 ,V168 ,V167 ,V166 ,V165 ,V164 ,V163 ,V162 ,V161 ,V160 ,V159 ,V158 ,V157 ,V156 ,V155 ,V154 ,V153 ,V152 ,V151;
+#define VC10 object  V198 ,V197 ,V196 ,V195 ,V194 ,V193 ,V192 ,V191 ,V190 ,V189 ,V188 ,V187 ,V186 ,V185 ,V184 ,V183 ,V182 ,V181 ,V180 ,V179 ,V178 ,V177 ,V176 ,V175 ,V174 ,V173 ,V172 ,V171 ,V170 ,V169 ,V168 ,V167 ,V166 ,V165 ,V164 ,V163 ,V162 ,V161 ,V160 ,V159 ,V158 ,V157 ,V156 ,V155 ,V154 ,V153 ,V152 ,V151 ,V150 ,V149;
 #define VM10 8
-#define VM9 4
-#define VM8 8
+#define VM9 6
+#define VM8 10
 #define VM7 1
 #define VM6 6
 #define VM5 6
@@ -50,7 +47,7 @@ static char * VVi[70]={
 (char *)(L5),
 (char *)(LI6),
 (char *)(LI7),
-(char *)(LI8),
+(char *)(L8),
 (char *)(L9),
 (char *)(L10)
 };
@@ -59,8 +56,8 @@ static void LnkT68();
 static void (*Lnk68)() = LnkT68;
 static object  LnkTLI67(object,...);
 static object  (*LnkLI67)() = (object (*)()) LnkTLI67;
-static object  LnkTLI66(object,...);
-static object  (*LnkLI66)() = (object (*)()) LnkTLI66;
+static void LnkT66();
+static void (*Lnk66)() = LnkT66;
 static void LnkT65();
 static void (*Lnk65)() = LnkT65;
 static object  LnkTLI63(object,...);
