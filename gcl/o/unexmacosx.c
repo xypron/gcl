@@ -1022,7 +1022,7 @@ static void stub_free (malloc_zone_t *zone, void *ptr) {
     my_free (ptr);
 }
 
-void init_darwin_zone_compat ()
+void gcl_init_darwin_zone_compat ()
 {
     extern unsigned malloc_num_zones;
     malloc_zone_t *default_zone;

@@ -389,6 +389,8 @@ fi
 
 AC_CHECK_PROGS(AWK,gawk nawk awk,"")
 
+# gcc on ppc cannot compile our new_init.c with full opts --CM
+TONIFLAGS=""
 case $use in 
      *linux)
 	case $use in
@@ -400,22 +402,22 @@ case $use in
 #			TCFLAGS="$TCFLAGS -ffloat-store";;
 		hppa*)
 			TCFLAGS="$TCFLAGS -ffunction-sections"
-			TO3FLAGS="-O -fomit-frame-pointer"
-			TO2FLAGS="-O"
+			if test "$enable_debug" != "yes" ; then TO3FLAGS="-O -fomit-frame-pointer" ; fi
+			if test "$enable_debug" != "yes" ; then TO2FLAGS="-O" ; fi
 			;;
 		arm*)
 			TCFLAGS="$TCFLAGS -mlong-calls";;	
 		powerpc*) 
 			if $CC -v 2>&1 | grep -q "gcc version 3.2" ; then
 			   echo Reducing optimization for buggy gcc-3.2
-			   TO3FLAGS="-O -fomit-frame-pointer"
+			   if test "$enable_debug" != "yes" ; then TONIFLAGS="-O -fomit-frame-pointer" ; fi
 			fi;
 			echo Probing for longcall
 			if ! $CC -v 2>&1 | $AWK '/^gcc version / {split($3,A,".");if (A[[1]]+0>=3 && A[[2]]+0>=3) exit 1;}'; then
 			   echo Enabling longcall on gcc 3.3 or later
 			   TCFLAGS="$TCFLAGS -mlongcall"
 			   echo Reducing optimization for buggy gcc 3.3 or later
-			   TO3FLAGS="-O -fomit-frame-pointer"
+			   if test "$enable_debug" != "yes" ; then TONIFLAGS="-O -fomit-frame-pointer" ; fi
 			fi;;
 	esac;;
 esac
@@ -874,7 +876,7 @@ AC_CHECK_LIB(mingwex,main,LIBS="${LIBS} -lmingwex",true)
 EXTRA_LOBJS=
 if test "$try_japi" = "yes" ; then
    AC_CHECK_HEADERS(japi.h,[AC_DEFINE(HAVE_JAPI_H)
-				 EXTRA_LOBJS="${EXTRA_LOBJS} japi.o"
+				 EXTRA_LOBJS="${EXTRA_LOBJS} gcl_japi.o"
 			 	 LIBS="${LIBS} -ljapi -lws2_32"] )
 fi
 if test "$use" = "mingw" ; then
@@ -984,8 +986,8 @@ if test "$enable_readline" = "yes" ; then
 	AC_CHECK_LIB(readline,main,
 		AC_DEFINE(HAVE_READLINE) 
 		TLIBS="$TLIBS -lreadline -lncurses"
-		RL_OBJS=readline.o
-		RL_LIB=lsp/readline.o,,-lncurses)
+		RL_OBJS=gcl_readline.o
+		RL_LIB=lsp/gcl_readline.o,,-lncurses)
 fi
 
 AC_SUBST(RL_OBJS)
@@ -1463,6 +1465,9 @@ FINAL_CFLAGS="$TCFLAGS $PROCESSOR_FLAGS"
 AC_SUBST(FINAL_CFLAGS)
 CFLAGS="$TCFLAGS $TO3FLAGS $PROCESSOR_FLAGS -I\$(GCLDIR)/o"
 AC_SUBST(CFLAGS)
+# Work around bug with gcc on ppc -- CM
+NIFLAGS="$TCFLAGS $TONIFLAGS $PROCESSOR_FLAGS -I\$(GCLDIR)/o"
+AC_SUBST(NIFLAGS)
 O3FLAGS=$TO3FLAGS
 AC_SUBST(O3FLAGS)
 O2FLAGS=$TO2FLAGS

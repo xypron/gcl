@@ -2552,7 +2552,7 @@ DEFVAR("*READ-SUPPRESS*",sLAread_suppressA,LISP,Cnil,"");
 
 
 void
-init_read()
+gcl_init_read()
 {
 	struct rtent *rtab;
 	object *dtab;
@@ -2653,7 +2653,7 @@ init_read()
 	dtab[')'] = make_cf(Lsharp_right_parenthesis_reader);
 */
 
-	init_backq();
+	gcl_init_backq();
 
 	Vreadtable
  	= make_special("*READTABLE*",
@@ -2699,7 +2699,7 @@ init_read()
 }
 
 void
-init_read_function()
+gcl_init_read_function()
 {
 	make_function("READ", Lread);
 	make_function("READ-PRESERVING-WHITESPACE",

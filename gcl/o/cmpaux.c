@@ -88,7 +88,7 @@ DEF_ORDINARY("%INIT",sSPinit,SI,"");
 
 void Lidentity(void);
 void
-init_cmpaux(void)
+gcl_init_cmpaux(void)
 {
 
 
@@ -433,7 +433,7 @@ char *s;
 #endif
 
 void
-init_or_load1(void (*fn)(void),char *file)
+gcl_init_or_load1(void (*fn)(void),char *file)
 {int n=strlen(file);
  if (file[n-1]=='o')
    { object memory;
@@ -470,7 +470,7 @@ function.")
 
   int i;
 
-  i=init_cmp_anon();
+  i=gcl_init_cmp_anon();
   if (i<0) 
     FEerror("No such anonymous function",0);
 
