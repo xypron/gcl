@@ -18,6 +18,26 @@ along with GNU Emacs; see the file COPYING.  If not, write to
 the Free Software Foundation, Inc., 59 Temple Place - Suite 330,
 Boston, MA 02111-1307, USA.  */
 
+/*
+
+This file is part of GNU Common Lisp, herein referred to as GCL
+
+GCL is free software; you can redistribute it and/or modify it under
+the terms of the GNU LIBRARY GENERAL PUBLIC LICENSE as published by
+the Free Software Foundation; either version 2, or (at your option)
+any later version.
+
+GCL is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Library General Public 
+License for more details.
+
+You should have received a copy of the GNU Library General Public License 
+along with GCL; see the file COPYING.  If not, write to the Free Software
+Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+
+*/
+
 /* Contributed by Andrew Choi (akochoi@mac.com).  */
 
 /* Documentation note.
@@ -95,8 +115,12 @@ Boston, MA 02111-1307, USA.  */
 #include <sys/types.h>
 #include <unistd.h>
 #include <mach/mach.h>
+#include <mach/mach_error.h>
 #include <mach-o/loader.h>
+#include <mach-o/nlist.h>
 #include <objc/malloc.h>
+
+#include <sys/mman.h>
 
 #define VERBOSE 1
 
@@ -109,7 +133,7 @@ Boston, MA 02111-1307, USA.  */
 #define VM_DATA_TOP (20 * 1024 * 1024)
 
 /* Used by malloc_freezedry and malloc_jumpstart.  */
-int malloc_cookie;
+extern int malloc_cookie;
 
 /* Type of an element on the list of regions to be dumped.  */
 struct region_t {
@@ -158,23 +182,25 @@ int infd, outfd;
 
 int in_dumped_exec = 0;
 
-malloc_zone_t *emacs_zone = 0L;
+malloc_zone_t *gcl_zone = 0L;
+
+#define MAX_MARKED_REGIONS 1024
+
+vm_range_t marked_regions [MAX_MARKED_REGIONS];
 
 unsigned num_marked_regions;
 
-#include <mach/mach_error.h>
-#include <mach-o/nlist.h>
+/* Size of the heap.  */
+int big_heap = BIG_HEAP_SIZE;
 
-#ifndef BIG_HEAP_SIZE
-#define BIG_HEAP_SIZE   0x5000000
-#endif
+/* Start of the heap.  */
+char *mach_mapstart = 0;
 
-int	big_heap = BIG_HEAP_SIZE;
+/* End of the heap.  */
+char *mach_maplimit = 0;
 
-char	*mach_maplimit = 0;
-char	*mach_brkpt = 0;
-char	*mach_mapstart = 0;
-
+/* Position ot the break within the heap.  */
+char *mach_brkpt = 0;
 
 /* Read n bytes from infd into memory starting at address dest.
    Return true if successful, false otherwise.  */
@@ -295,7 +321,7 @@ print_regions ()
     {
       zone = malloc_zone_from_ptr ((void *) address);
       
-      print_region (address, size, info.protection, info.max_protection, zone ? zone->zone_name : "n/a");
+      print_region (address, size, info.protection, info.max_protection, zone ? zone->zone_name : "(no zone)");
 
       if (object_name != MACH_PORT_NULL)
 	mach_port_deallocate (target_task, object_name);
@@ -337,7 +363,7 @@ build_region_list ()
 	break;
       
       zone = malloc_zone_from_ptr ((void *) address);
-      zone_name = zone ? (zone->zone_name ? zone->zone_name : "n/a") : "n/a";
+      zone_name = zone ? (zone->zone_name ? zone->zone_name : "(no zone name)") : "(no zone)";
       
 #if VERBOSE
       print_region (address, size, info.protection, info.max_protection, zone_name);
@@ -395,7 +421,7 @@ build_region_list ()
 }
 
 
-#define MAX_UNEXEC_REGIONS 30
+#define MAX_UNEXEC_REGIONS 256
 
 int num_unexec_regions;
 vm_range_t unexec_regions[MAX_UNEXEC_REGIONS];
@@ -422,14 +448,14 @@ unexec_reader (task_t task, vm_address_t address, vm_size_t size, void **ptr)
 }
 
 void
-find_emacs_zone_regions ()
+find_gcl_zone_regions ()
 {
   num_unexec_regions = 0;
 
-  emacs_zone->introspect->enumerator (mach_task_self(), 0,
+  gcl_zone->introspect->enumerator (mach_task_self(), 0,
 				      MALLOC_PTR_REGION_RANGE_TYPE
 				      | MALLOC_ADMIN_REGION_RANGE_TYPE,
-				      (vm_address_t) emacs_zone,
+				      (vm_address_t) gcl_zone,
 				      unexec_reader,
 				      unexec_regions_recorder);
 }
@@ -475,7 +501,7 @@ static void
 print_load_command (struct load_command *lc)
 {
   print_load_command_name (lc->cmd);
-  printf ("%10lx", lc->cmdsize);
+  printf ("%#10lx", lc->cmdsize);
 
   if (lc->cmd == LC_SEGMENT)
     {
@@ -484,13 +510,13 @@ print_load_command (struct load_command *lc)
       int j;
 
       scp = (struct segment_command *) lc;
-      printf (" %-16.16s %#10lx %#8lx\n",
+      printf (" %-16.16s %#10lx %#10lx\n",
 	      scp->segname, scp->vmaddr, scp->vmsize);
 
       sectp = (struct section *) (scp + 1);
       for (j = 0; j < scp->nsects; j++)
 	{
-	  printf ("                           %-16.16s %#10lx %#8lx\n",
+	  printf ("                               %-16.16s %#10lx %#10lx\n",
 		  sectp->sectname, sectp->addr, sectp->size);
 	  sectp++;
 	}
@@ -560,18 +586,18 @@ read_load_commands ()
 	}
     }
 
-  printf ("Highest address of load commands in input file: %#8x\n",
+  printf ("Highest address of load commands in input file: %#10x\n",
 	  infile_lc_highest_addr);
 
-  printf ("Lowest offset of all sections in __TEXT segment: %#8lx\n",
+  printf ("Lowest offset of all sections in __TEXT segment: %#10lx\n",
 	  text_seg_lowest_offset);
 
   printf ("--- List of Load Commands in Input File ---\n");
-  printf ("# cmd              cmdsize name                address     size\n");
+  printf ("no cmd                 cmdsize name                address       size\n");
 
   for (i = 0; i < nlc; i++)
     {
-      printf ("%1d ", i);
+      printf ("%2d ", i);
       print_load_command (lca[i]);
     }
 }
@@ -596,7 +622,7 @@ copy_segment (struct load_command *lc)
       sectp++;
     }
 
-  printf ("Writing segment %-16.16s at %#8lx - %#8lx (sz: %#8lx)\n",
+  printf ("Writing segment %-16.16s at %#10lx - %#10lx (sz: %#10lx)\n",
 	  scp->segname, scp->fileoff, scp->fileoff + scp->filesize,
 	  scp->filesize);
 
@@ -634,7 +660,7 @@ copy_data_segment (struct load_command *lc)
     return;
   }
 
-  printf ("Writing segment %-16.16s at %#8lx - %#8lx (sz: %#8lx)\n",
+  printf ("Writing segment %-16.16s at %#10lx - %#10lx (sz: %#10lx)\n",
 	  scp->segname, scp->fileoff, scp->fileoff + scp->filesize,
 	  scp->filesize);
   
@@ -682,7 +708,7 @@ copy_data_segment (struct load_command *lc)
       else
 	unexec_error ("unrecognized section name in __DATA segment");
 
-      printf ("        section %-16.16s at %#8lx - %#8lx (sz: %#8lx)\n",
+      printf ("        section %-16.16s at %#10lx - %#10lx (sz: %#10lx)\n",
 	      sectp->sectname, sectp->offset, sectp->offset + sectp->size,
 	      sectp->size);
 
@@ -722,25 +748,26 @@ copy_data_segment (struct load_command *lc)
       sc.vmsize = unexec_regions[j].size;
       sc.fileoff = file_offset;
       sc.filesize = unexec_regions[j].size;
-      sc.maxprot = VM_PROT_READ | VM_PROT_WRITE;
-      sc.initprot = VM_PROT_READ | VM_PROT_WRITE;
+   /* the heap will contain executable code, so promote maxprot to allow execution */ 
+      sc.maxprot = VM_PROT_READ | VM_PROT_WRITE | VM_PROT_EXECUTE;
+      sc.initprot = VM_PROT_READ | VM_PROT_WRITE | VM_PROT_EXECUTE;
       sc.nsects = 1;
       sc.flags = 0;
       
       if (sc.vmaddr == (unsigned long) mach_mapstart && sc.vmsize == (mach_maplimit - mach_mapstart)) {
       #ifdef VERBOSE
-        printf ("old sc.filesize = %lx (heap size)\n",sc.filesize);
+	/* printf ("old sc.filesize = %lx (heap size)\n",sc.filesize); */
       #endif
         sc.filesize -= (mach_maplimit - mach_brkpt);
       #ifdef VERBOSE
-        printf ("new sc.filesize = %lx (actual heap size)\n",sc.filesize);
+        /* printf ("new sc.filesize = %lx (actual heap size)\n",sc.filesize); */
       #endif
       }
       
       strncpy (section.sectname,SECT_DATA,sizeof(section.sectname));
       strncpy (section.segname,SEG_DATA,sizeof(section.segname));
       section.addr = unexec_regions[j].address;
-      section.size = sc.filesize /* unexec_regions[j].size */;
+      section.size = sc.filesize;
       section.offset = file_offset;
       section.align = 4;
       section.reloff = 0;
@@ -749,7 +776,7 @@ copy_data_segment (struct load_command *lc)
       section.reserved1 = 0;
       section.reserved2 = 0;
       
-      printf ("Writing segment %-16.16s at %#8lx - %#8lx (sz: %#8lx)\n",
+      printf ("Writing segment %-16.16s at %#10lx - %#10lx (sz: %#10lx)\n",
 	      sc.segname, sc.fileoff, sc.fileoff + sc.filesize, sc.filesize);
 
       if (!unexec_write (sc.fileoff, (void *) sc.vmaddr, sc.filesize))
@@ -905,33 +932,39 @@ dump_it ()
     unexec_error ("cannot write final header contents");
 }
 
-#define MAX_MARKED_REGIONS 1024
+/* Mark a range of virtual memory to be dumped upon unexec()'ing.  */
 
-vm_range_t marked_regions[MAX_MARKED_REGIONS];
-
-void mark_region (unsigned long address, unsigned long size)
+void
+mark_region (unsigned long address, unsigned long size)
 {
     if (num_marked_regions < MAX_MARKED_REGIONS)
     {
-        marked_regions[num_marked_regions].address = address;
-        marked_regions[num_marked_regions].size = size;
+      marked_regions[num_marked_regions].address = address;
+      marked_regions[num_marked_regions].size = size;
     
-        num_marked_regions++;
+      num_marked_regions++;
     }
     else {
-        printf ("warning: too many marked regions\n");
+      fprintf (stderr, "warning: too many marked regions\n");
+      fflush (stderr);
     }
 }
 
-void add_marked_regions ()
+static void
+add_marked_regions ()
 {
     unsigned n;
     
     num_unexec_regions = 0;
     
     for (n=0 ; n < num_marked_regions ; n++) {
-        printf ("marked regions %#8x (sz: %#8x)\n", marked_regions[n].address, marked_regions[n].size);
+      if (num_marked_regions < MAX_UNEXEC_REGIONS) {
+     /* printf ("marked regions %#8x (sz: %#8x)\n", marked_regions[n].address, marked_regions[n].size); */
         unexec_regions[num_unexec_regions++] = marked_regions[n];
+      } else {
+	fprintf (stderr, "warning: too many unexec regions\n");
+	fflush (stderr);
+      }
     }
 }
 
@@ -942,7 +975,7 @@ void add_marked_regions ()
 void
 unexec (char *outfile, char *infile, void *start_data, void *start_bss,
         void *entry_address)
-{  
+{ 
   infd = open (infile, O_RDONLY, 0);
   if (infd < 0)
     {
@@ -968,7 +1001,7 @@ unexec (char *outfile, char *infile, void *start_data, void *start_bss,
   build_region_list ();
   read_load_commands ();
   
-/*find_emacs_zone_regions ();*/
+/*find_gcl_zone_regions ();*/
   add_marked_regions ();
   
   in_dumped_exec = 1;
@@ -978,84 +1011,108 @@ unexec (char *outfile, char *infile, void *start_data, void *start_bss,
   close (outfd);
 }
 
-void
-unexec_init_emacs_zone ()
+static size_t stub_size (malloc_zone_t *zone, const void *ptr)
 {
-  if (!emacs_zone) {
-    emacs_zone = malloc_create_zone (0, 0);
-    malloc_set_zone_name (emacs_zone, "EmacsZone");
-  }
-  else {
-    if (!malloc_zone_check (emacs_zone))
-      unexec_error ("emacs_zone is smashed\n");
-    malloc_zone_register (emacs_zone);
-  }
+    extern object malloc_list;
+    object *p;
+    
+    for (p = &malloc_list ; *p && !endp(*p) ; p = &((*p)->c.c_cdr)) {
+        size_t size = (*p)->c.c_car->st.st_dim;
+        void *base = (*p)->c.c_car->st.st_self;  
+        if (ptr >= base && ptr < base + size) {
+            return (size);
+        }
+    }
+    return (0);
 }
 
-static size_t stub_size (malloc_zone_t *zone, const void *ptr) {
-    extern size_t my_size (const void *);
-    return my_size (ptr);
-}
-
-static void *stub_malloc (malloc_zone_t *zone, size_t size) {
+static void *stub_malloc (malloc_zone_t *zone, size_t size)
+{
     extern void *my_malloc (size_t);
     return my_malloc (size);
 }
 
-static void *stub_calloc (malloc_zone_t *zone, size_t num_items, size_t size) {
+static void *stub_calloc (malloc_zone_t *zone, size_t num_items, size_t size)
+{
     extern void *my_calloc (size_t, size_t);
     return my_calloc (num_items, size);
 }
 
-static void *stub_valloc (malloc_zone_t *zone, size_t size) {
+static void *stub_valloc (malloc_zone_t *zone, size_t size)
+{
     extern void *my_valloc (size_t);
     return my_valloc (size);
 }
 
-static void *stub_realloc (malloc_zone_t *zone, void *ptr, size_t size) {
+static void *stub_realloc (malloc_zone_t *zone, void *ptr, size_t size)
+{
     extern void *my_realloc (void *, size_t);
     return my_realloc (ptr, size);
 }
 
-static void stub_free (malloc_zone_t *zone, void *ptr) {
+static void stub_free (malloc_zone_t *zone, void *ptr)
+{
     extern void my_free (void *ptr);
     my_free (ptr);
 }
 
-void gcl_init_darwin_zone_compat ()
+/* Create a new zone to accommodate GCL's heap and make it the default zone.  */
+
+void init_darwin_zone_compat ()
 {
-    extern unsigned malloc_num_zones;
-    malloc_zone_t *default_zone;
-        
-    default_zone = malloc_default_zone ();
+  extern unsigned malloc_num_zones;
+  extern malloc_zone_t **malloc_zones;
+  unsigned malloc_num_zones_copy;
+  malloc_zone_t **malloc_zones_copy;
+  malloc_zone_t *default_zone;
+  kern_return_t rtn;
+  vm_size_t s;
+  unsigned i;
+
+  default_zone = malloc_default_zone ();
+  
+  if ((gcl_zone = malloc_create_zone (0,0)) == NULL) {
+    fprintf (stderr, "init_darwin_zone_compat(): malloc_create_zone() failed\n");
+    exit (1);
+  }
     
-    emacs_zone = malloc_create_zone (0,0);
+  gcl_zone->size       = (void *) stub_size;
+  gcl_zone->malloc     = (void *) stub_malloc;
+  gcl_zone->calloc     = (void *) stub_calloc;
+  gcl_zone->valloc     = (void *) stub_valloc;
+  gcl_zone->realloc    = (void *) stub_realloc;
+  gcl_zone->free       = (void *) stub_free;
+
+  /* Maybe we'll want to implement the zone introspector some day.  */
     
-    emacs_zone->size       = (void *) stub_size;
-    emacs_zone->malloc     = (void *) stub_malloc;
-    emacs_zone->calloc     = (void *) stub_calloc;
-    emacs_zone->valloc     = (void *) stub_valloc;
-    emacs_zone->realloc    = (void *) stub_realloc;
-    emacs_zone->free       = (void *) stub_free;
- /* if the zone introspector is ever called, the program will crash */
-    
- /* we could support any number of zones, but I'm being lazy */
-    assert (malloc_num_zones <= 2);
-    
-    if (default_zone)
-    {
-        malloc_zone_unregister (default_zone);
-        malloc_zone_unregister (emacs_zone);
-            
-        malloc_zone_register (emacs_zone);
-        malloc_zone_register (default_zone);
-    }
+  malloc_num_zones_copy = malloc_num_zones;
+  s = malloc_num_zones * sizeof (malloc_zone_t *);
+  
+  if ((rtn = vm_allocate (mach_task_self (), (vm_address_t *) &malloc_zones_copy, s, 1)) != KERN_SUCCESS) {
+    mach_error ("init_darwin_zone_compat(): vm_allocate() failed", rtn);
+    exit (1);
+  }
+
+  memcpy (malloc_zones_copy, malloc_zones, s);
+
+  for (i=0 ; i < malloc_num_zones_copy ; i++) {
+    malloc_zone_unregister (malloc_zones_copy [i]);
+  }
+
+  /* Make our zone the default zone.  */
+  malloc_zone_register (gcl_zone);
+  
+  for (i=0 ; i < malloc_num_zones_copy ; i++) {
+    if (malloc_zones_copy [i] != gcl_zone)
+      malloc_zone_register (malloc_zones_copy [i]);
+  }
+
+  vm_deallocate (mach_task_self (), (vm_address_t) malloc_zones_copy, s);
+  
+  malloc_set_zone_name (gcl_zone, "GNU Common Lisp");
 }
 
-void term_darwin_zone_compat ()
-{
-
-}
+/* Replacement for broken sbrk(2).  */
 
 char *my_sbrk (int incr)
 {
@@ -1063,19 +1120,19 @@ char *my_sbrk (int incr)
     kern_return_t       rtn;
     
     if (mach_brkpt == 0) {
-       if ((rtn = vm_allocate(mach_task_self(), (vm_address_t *) &mach_brkpt, big_heap, 1)) != KERN_SUCCESS) {
+       if ((rtn = vm_allocate (mach_task_self (), (vm_address_t *) &mach_brkpt, big_heap, 1)) != KERN_SUCCESS) {
 	    mach_error ("my_sbrk(): vm_allocate() failed", rtn);
 	    return ((char *)-1);
 	}
         if (!mach_brkpt) {
-         /* FIX-ME: this fprintf call will most probably fail because memory isn't initialized */
-	    fprintf (stderr, "my_sbrk(): cannot allocate heap\n");
+	 /* Call this instead of fprintf() because no allocation is performed.  */
+ 	    malloc_printf ("my_sbrk(): cannot allocate heap\n");
 	    return ((char *)-1);        
         }
         mark_region ((unsigned long) mach_brkpt, (unsigned long) big_heap);
         
-        mach_mapstart = mach_brkpt; 
-	mach_maplimit = mach_brkpt + big_heap;
+        mach_mapstart = mach_brkpt;
+        mach_maplimit = mach_brkpt + big_heap;
     }
     if (incr == 0) {
 	return (mach_brkpt);
@@ -1086,11 +1143,73 @@ char *my_sbrk (int incr)
 	    mach_brkpt = ptr;
 	    return (temp);
 	} else {
-	    fprintf (stderr, "my_sbrk(): no more memory\n");
-	    fflush (stderr);
+	    malloc_printf ("my_sbrk(): no more memory\n");
 	    return ((char *)-1);
 	}
     }
+}
+
+/* The file has non Mach-O stuff appended.  We need to now where the Mach-O stuff ends.
+   Put this here, although it pertains to fasload()'ing, because we'll stop using sfaslmacosx.c.  */
+
+int seek_to_end_ofile (FILE *fp)
+{
+    struct mach_header mach_header;
+    char *hdrbuf;
+    struct load_command *load_command;
+    struct segment_command *segment_command;
+    struct section *section;
+    struct symtab_command *symtab_command;
+    struct symseg_command *symseg_command;
+    int len, cmd, seg;
+    int end_sec, end_ofile;
+    
+    end_ofile = 0;
+    fseek(fp, 0L, 0);
+    len = fread((char *)&mach_header, sizeof(struct mach_header), 1, fp);
+    if (len == 1 && mach_header.magic == MH_MAGIC) {
+        hdrbuf = (char *)malloc(mach_header.sizeofcmds);
+	len = fread(hdrbuf, mach_header.sizeofcmds, 1, fp);
+	if (len != 1) {
+	    fprintf(stderr, "seek_to_end_ofile(): failure reading Mach-O load commands\n");
+	    return 0;
+	}
+	load_command = (struct load_command *) hdrbuf;
+	for (cmd = 0; cmd < mach_header.ncmds; ++cmd) {
+	    switch (load_command->cmd) {
+	    case LC_SEGMENT:
+		segment_command = (struct segment_command *) load_command;
+		section = (struct section *) ((char *)(segment_command + 1));
+		for (seg = 0; seg < segment_command->nsects; ++seg, ++section) {
+		    end_sec = section->offset + section->size;
+		    if (end_sec > end_ofile)
+			end_ofile = end_sec;
+		}
+		break;
+	    case LC_SYMTAB:
+		symtab_command = (struct symtab_command *) load_command;
+		end_sec = symtab_command->symoff + symtab_command->nsyms * sizeof(struct nlist);
+		if (end_sec > end_ofile)
+		    end_ofile = end_sec;
+		end_sec = symtab_command->stroff + symtab_command->strsize;
+		if (end_sec > end_ofile)
+		    end_ofile = end_sec;
+		break;
+	    case LC_SYMSEG:
+		symseg_command = (struct symseg_command *) load_command;
+		end_sec = symseg_command->offset + symseg_command->size;
+		if (end_sec > end_ofile)
+		    end_ofile = end_sec;
+		break;
+	    }
+	    load_command = (struct load_command *)
+	      ((char *)load_command + load_command->cmdsize);
+	}
+	free(hdrbuf);
+	fseek(fp, end_ofile, 0);
+	return 1;
+    }
+    return 0;
 }
 
 #ifdef UNIXSAVE
