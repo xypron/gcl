@@ -15,8 +15,10 @@ gcl (2.6.1-34) unstable; urgency=low
   * Proper string type determination for *link-array*
   * .ini files depend on plt.h
   * plttest.c cannot depend on include.h
+  * Address longstanding FIXmE in gensym, so that two strings are not
+    allocated for each gensym
 
- -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 02:07:43 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 02:13:10 +0000
 
 gcl (2.6.1-33) unstable; urgency=low
 
