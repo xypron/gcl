@@ -43,8 +43,9 @@ gcl (2.6.1-34) unstable; urgency=low
   * Improved dotimes macro which avoids unnecessary fixnum garbage
     generation
   * Backport of ignorable declaration keyword for new dotimes macro
+  * si::*OPTIMIZE-MAXIMUM-PAGES* support
 
- -- Camm Maguire <camm@enhanced.com>  Fri,  2 Apr 2004 18:43:01 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat,  3 Apr 2004 19:18:02 +0000
 
 gcl (2.6.1-33) unstable; urgency=low
 
