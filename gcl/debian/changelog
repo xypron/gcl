@@ -6,8 +6,9 @@ gcl (2.6.1-34) unstable; urgency=low
     compiler::link
   * fix small bug when info is passed bad second argument
   * Don't try to open map file if doesn't stat (macosx)
+  * Add earlier forgotten branch patch to sfaslbfd.c for macosx
 
- -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 01:36:14 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 01:37:42 +0000
 
 gcl (2.6.1-33) unstable; urgency=low
 
