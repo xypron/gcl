@@ -1,3 +1,10 @@
+gcl (2.6.1-13) unstable; urgency=low
+
+  * Fix compiler optimization bug in gcl_cmpopt.lsp -- missing parens
+    around inliner for max and min
+
+ -- Camm Maguire <camm@intech.m.enhanced.com>  Wed,  8 Oct 2003 23:08:17 +0000
+
 gcl (2.6.1-12) unstable; urgency=low
 
   * Restore mpz_to_mpz{1} in gmp_big.c, can be written by compiler
