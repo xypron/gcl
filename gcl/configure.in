@@ -982,12 +982,12 @@ AC_EGREP_HEADER([gettimeofday],
 
 AC_CHECK_LIB(m,sin,LIBS="${LIBS} -lm",true)
 AC_CHECK_LIB(mingwex,main,LIBS="${LIBS} -lmingwex",true)
-# AC_CHECK_LIB(japi,j_start,LIBS="${LIBS} -ljapi -lws2_32",true)
+
 EXTRA_LOBJS=
 if test "$try_japi" = "yes" ; then
    AC_CHECK_HEADERS(japi.h,[AC_DEFINE(HAVE_JAPI_H)
 				 EXTRA_LOBJS="${EXTRA_LOBJS} gcl_japi.o"
-			 	 LIBS="${LIBS} -ljapi -lws2_32"] )
+			 	 LIBS="${LIBS} -ljapi -lwsock32"] )
 fi
 if test "$use" = "mingw" ; then
  if test "$try_xdr" = "yes" ; then
