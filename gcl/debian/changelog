@@ -4,8 +4,10 @@ gcl (2.6.1-10) unstable; urgency=low
   * Preliminary subtypep checking for 'satisfies
   * preliminary 'satisfies support in subtypep, more predicate type
     pairs and reverse checking
+  * small compiler change to remove unused C variables from optimized
+    compiled macros
 
- -- Camm Maguire <camm@enhanced.com>  Tue, 23 Sep 2003 18:16:08 +0000
+ -- Camm Maguire <camm@enhanced.com>  Tue, 23 Sep 2003 18:26:15 +0000
 
 gcl (2.6.1-9) unstable; urgency=low
 
