@@ -45,8 +45,10 @@ gcl (2.6.1-1) unstable; urgency=low
   * Push installed /h directory onto -I flags on cc command line
   * Escape old in-package behavior with #ifdef ANSI_COMMON_LISP
   * define HAVE_XDR in linux.h
+  * reduce resolution of contblock mark_table in gbc.c to match new
+    minimum granularity introduced via CPTR_ALIGN
 
- -- Camm Maguire <camm@enhanced.com>  Thu,  4 Sep 2003 02:17:30 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu,  4 Sep 2003 02:18:33 +0000
 
 gcl (2.5.3-2) unstable; urgency=low
 
