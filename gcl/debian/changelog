@@ -5,8 +5,9 @@ gcl (2.6.1-24) unstable; urgency=low
   * runtime SGC fault recovery test
   * Protect read/fread in case SGC is enabled with safe (restartable)
     versions
+  * SGC on for arm and hppa
 
- -- Camm Maguire <camm@enhanced.com>  Thu, 12 Feb 2004 05:23:21 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu, 12 Feb 2004 05:23:51 +0000
 
 gcl (2.6.1-23) unstable; urgency=low
 
