@@ -8,8 +8,11 @@ gcl (2.6.1-12) unstable; urgency=low
     when inlining args and args cause side effects, in inline-args,
     gcl_cmpinline.lsp
   * Fix bug related to gcc-3.3 fixes in set_exponent in num_co.c
+  * Remove pcl_methods.c patch. as is apparently no longer needed, TODO
+    -- make sure VOL modifier is inserted where needed to prevent
+    longjmp clobbers
 
- -- Camm Maguire <camm@enhanced.com>  Thu,  2 Oct 2003 14:04:10 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu,  2 Oct 2003 14:26:43 +0000
 
 gcl (2.6.1-11) unstable; urgency=low
 
