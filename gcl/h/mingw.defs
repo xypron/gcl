@@ -26,9 +26,9 @@ FINAL_CFLAGS = -fno-zero-initialized-in-bss -Wall -fwritable-strings -DVOL=volat
 # O3FLAGS      = -O -fomit-frame-pointer
 # O2FLAGS      = -O
 
-O3FLAGS      = -O2 -fomit-frame-pointer
-O2FLAGS      = -O2
-OFLAG        = -O2
+O3FLAGS      = -O2 -frename-registers  -fomit-frame-pointer
+O2FLAGS      = -O
+OFLAG        = -O
 
 # -O3 adds -finline-functions and -frename-registers
 
@@ -66,6 +66,11 @@ OFLAG        = -O2
 # If O3FLAGS = -O2 -frename-registers -fomit-frame-pointer
 #    O2FLAGS      = -O2
 #    OFLAG        = -O2   all OK ? cf case 2
+
+# CASE 10
+# If O3FLAGS = -O2 -fomit-frame-pointer
+#    O2FLAGS      = -O2
+#    OFLAG        = -O2 crashes as with case 2 cf cases 8 and 9
 
 
 #O3FLAGS      = -fdefer-pop -fmerge-constants -fthread-jumps -floop-optimize \
