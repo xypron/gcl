@@ -273,6 +273,9 @@ char **argv, **envp;
 		v_init_processes();
 		ovm_process_created = 1;
 #endif
+#ifdef HAVE_READLINE
+		init_readline_function();
+#endif
 	      again:
 		super_funcall(sStop_level);
 		if (type_of(sSAmultiply_stacksA->s.s_dbind)==t_fixnum)
