@@ -11,8 +11,9 @@ gcl (2.5.4-1) unstable; urgency=low
     dotted lists.
   * Avoid use of windows.h types as macros.
   * New config.{sub,guess}
+  * Windows installer updates from CVS HEAD
 
- -- Camm Maguire <camm@enhanced.com>  Wed, 16 Jul 2003 02:01:35 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu, 17 Jul 2003 17:49:35 +0000
 
 gcl (2.5.3-2) unstable; urgency=low
 
