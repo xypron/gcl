@@ -33,8 +33,10 @@ gcl (2.5.4-1) unstable; urgency=low
   * Fix debian/gcl-doc.docs for latest texinfo file splitting policy,
     Closes: #206017
   * Fix typo in o/sfasli.c
+  * Rework debian package structure to handle stable and cvs packages
+    simultaneously
 
- -- Camm Maguire <camm@enhanced.com>  Thu, 21 Aug 2003 18:44:27 +0000
+ -- Camm Maguire <camm@enhanced.com>  Fri, 22 Aug 2003 15:36:47 +0000
 
 gcl (2.5.3-2) unstable; urgency=low
 
