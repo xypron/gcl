@@ -1,3 +1,11 @@
+gcl (2.6.1-33) unstable; urgency=low
+
+  * Remove extraneous symbols from plt.h, autodetect and correct for
+    leading underscore in object symbols
+  * complete readline version detection commit
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 10 Mar 2004 20:51:50 +0000
+
 gcl (2.6.1-32) unstable; urgency=low
 
   * Try to automatically determine the form used for the explicitly
