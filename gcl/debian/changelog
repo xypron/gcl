@@ -1,3 +1,9 @@
+gcl (2.6.1-12) unstable; urgency=low
+
+  * Restore mpz_to_mpz{1} in gmp_big.c, can be written by compiler
+
+ -- Camm Maguire <camm@enhanced.com>  Fri, 26 Sep 2003 13:30:11 +0000
+
 gcl (2.6.1-11) unstable; urgency=low
 
   * Add compilation step of compiling all lsp and cmpnew .lsp files from
