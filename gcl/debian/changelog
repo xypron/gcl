@@ -1,3 +1,9 @@
+gcl (2.6.1-10) unstable; urgency=low
+
+  * Mac OSX GET_FULL_PATH_SELF
+
+ -- Camm Maguire <camm@enhanced.com>  Fri, 19 Sep 2003 16:44:15 +0000
+
 gcl (2.6.1-9) unstable; urgency=low
 
   * Close streams in fasldlsym.c
