@@ -24,8 +24,9 @@ gcl (2.6.1-26) unstable; urgency=low
   * Support for more informative banner reading features list
   * Support for both sigbus and sigsegv in sgbc.c as is customary in .h
     files
+  * mach-o compatible changes in sfaslbfd.c
 
- -- Camm Maguire <camm@enhanced.com>  Wed, 25 Feb 2004 22:59:43 +0000
+ -- Camm Maguire <camm@enhanced.com>  Wed, 25 Feb 2004 23:02:39 +0000
 
 gcl (2.6.1-25) unstable; urgency=low
 
