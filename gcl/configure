@@ -1232,7 +1232,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 ac_config_headers="$ac_config_headers h/gclincl.h"
 
 
-VERSION=2.5.4
+VERSION=`cat majvers`.`cat minvers`
 
 
 # some parts of this configure script are taken from the tcl configure.in

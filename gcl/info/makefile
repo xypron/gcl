@@ -5,6 +5,7 @@ INFO_DIR=/usr/local/lib/info
 
 GCL_DVI=gcl-tk.dvi gcl-si.dvi gcl.dvi
 GCL_HTML=gcl-si_toc.html gcl-tk_toc.html gcl_toc.html
+HTML_CMD=texi2html -split_chapter
 
 -include ../makedefs
 
@@ -30,7 +31,7 @@ GCL_MAN= chap-1.texi chap-2.texi chap-3.texi chap-4.texi chap-5.texi \
 gcl-si.dvi: ${GCL_SI} gcl-si.texi
 	TEXINPUTS=.:$$TEXINPUTS tex --interaction nonstopmode gcl-si.texi || true
 
-gcl-si.info:
+gcl-si.info: ${GCL_SI} gcl-si.texi
 	-$(MAKEINFO) gcl-si.texi	
 
 gcl-tk.dvi: ${GCL_TK} gcl-tk.texi
@@ -45,35 +46,35 @@ gcl.dvi: ${GCL_MAN} gcl.texi
 gcl.info: ${GCL_MAN} gcl.texi
 	-$(MAKEINFO) gcl.texi
 
-gcl-si_toc.html:
-	texi2html -split_chapter gcl-si.texi
+gcl-si_toc.html: ${GCL_SI} gcl-si.texi
+	$(HTML_CMD) gcl-si.texi
 
-gcl-tk_toc.html:
-	texi2html -split_chapter gcl-tk.texi
+gcl-tk_toc.html: ${GCL_TK} gcl-tk.texi
+	$(HTML_CMD) gcl-tk.texi
 
 gcl_toc.html:
-	texi2html -split_chapter gcl.texi
+	$(HTML_CMD) gcl.texi
 
 install-html: gcl-tk_toc.html gcl-si_toc.html gcl_toc.html
 	cp *.html /d/www/gcl
 
-install:
+install: $(GCL_DVI) $(GCL_HTML)
 	mkdir -p $(DESTDIR)${INFO_DIR}
 	[ -f $(DESTDIR)$(INFO_DIR)dir ] || touch $(DESTDIR)$(INFO_DIR)dir
-	! grep -q gcl-si $(DESTDIR)${INFO_DIR}dir || \
+	grep -q gcl-si $(DESTDIR)${INFO_DIR}dir || \
 	echo "* GCL Doc: (gcl-si.info).	GNU Common Lisp specific Documentation." >> $(DESTDIR)${INFO_DIR}dir
-	! grep -q gcl-tk $(DESTDIR)${INFO_DIR}dir || \
+	grep -q gcl-tk $(DESTDIR)${INFO_DIR}dir || \
 	echo "* GCL TK Doc: (gcl-tk.info).	TK window GCL interface." >> $(DESTDIR)${INFO_DIR}dir
-	! grep -q gcl.info $(DESTDIR)${INFO_DIR}dir || \
+	grep -q gcl.info $(DESTDIR)${INFO_DIR}dir || \
 	echo "* GCL Ansi Doc: (gcl.info).  Ansi Common Lisp Specification." >> $(DESTDIR)${INFO_DIR}dir
-	cp *.info* $(DESTDIR)${INFO_DIR}
-	mkdir -p $(DESTDIR)$(INFO_DIR)../doc/gcl-doc/gcl.html
-	mkdir -p $(DESTDIR)$(INFO_DIR)../doc/gcl-doc/gcl-si.html
-	mkdir -p $(DESTDIR)$(INFO_DIR)../doc/gcl-doc/gcl-tk.html
-	cp gcl_*html $(DESTDIR)$(INFO_DIR)../doc/gcl-doc/gcl.html
-	cp gcl-si_*html $(DESTDIR)$(INFO_DIR)../doc/gcl-doc/gcl-si.html
-	cp gcl-tk_*html $(DESTDIR)$(INFO_DIR)../doc/gcl-doc/gcl-tk.html
-	cp *dvi $(DESTDIR)$(INFO_DIR)../doc/gcl-doc
+	-cp *.info* $(DESTDIR)${INFO_DIR}
+	-mkdir -p $(DESTDIR)$(INFO_DIR)../doc/gcl-doc/gcl.html
+	-mkdir -p $(DESTDIR)$(INFO_DIR)../doc/gcl-doc/gcl-si.html
+	-mkdir -p $(DESTDIR)$(INFO_DIR)../doc/gcl-doc/gcl-tk.html
+	-cp gcl-*html $(DESTDIR)$(INFO_DIR)../doc/gcl-doc/gcl.html
+	-cp gcl-si*html $(DESTDIR)$(INFO_DIR)../doc/gcl-doc/gcl-si.html
+	-cp gcl-tk*html $(DESTDIR)$(INFO_DIR)../doc/gcl-doc/gcl-tk.html
+	-cp *dvi $(DESTDIR)$(INFO_DIR)../doc/gcl-doc
 
 FILE=gcl-si.texi
 srcs:
