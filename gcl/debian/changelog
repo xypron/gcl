@@ -28,8 +28,9 @@ gcl (2.6.1-34) unstable; urgency=low
   * Better 'time macro
   * rebuild pcl_gaz* files
   * cleanup room report and give more space to modern large heaps
+  * room report formatting
 
- -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 18:06:43 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sun, 21 Mar 2004 16:05:43 +0000
 
 gcl (2.6.1-33) unstable; urgency=low
 
