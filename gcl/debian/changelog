@@ -7,8 +7,9 @@ gcl (2.6.1-10) unstable; urgency=low
   * small compiler change to remove unused C variables from optimized
     compiled macros
   * Optional compiler init file is called gcl_cmpinit
+  * fasdmacros.lsp -> gcl_fasdmacros.lsp
 
- -- Camm Maguire <camm@enhanced.com>  Tue, 23 Sep 2003 18:28:15 +0000
+ -- Camm Maguire <camm@enhanced.com>  Tue, 23 Sep 2003 18:29:14 +0000
 
 gcl (2.6.1-9) unstable; urgency=low
 
