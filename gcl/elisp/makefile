@@ -14,7 +14,7 @@ MPFILES=$(MPDIR)/mpi-386_no_under.o $(MPDIR)/libmport.a
 # root for the installation, eg /usr/local
 # This would cause make install to create /usr/local/bin/gcl and
 # /usr/local/lib/gcl-2-??/* with some basic files.
-prefix=/usr/local
+prefix=/usr
 
 # where to place the info files
 INFO_DIR=/usr/info/
@@ -112,14 +112,15 @@ MPFILES=${GMP_DIR}libgmp.a
 
 
 install:
-	if test -d "${EMACS_SITE_LISP}" ; then cp *.el ${EMACS_SITE_LISP} ; fi
-	if test -f "${EMACS_DEFAULT_EL}" ; then \
-	cat ${EMACS_DEFAULT_EL} | sed -e '/BEGIN gcl/,/END gcl/d' > xxx ; \
-	mv ${EMACS_DEFAULT_EL} ${EMACS_DEFAULT_EL}.prev ; \
-	  rm -f  ${EMACS_DEFAULT_EL}c ; \
-          cat add-default.el >> xxx ; cp  xxx ${EMACS_DEFAULT_EL} ; \
+	mkdir -p $(DESTDIR)$(EMACS_SITE_LISP)
+	cp *.el $(DESTDIR)$(EMACS_SITE_LISP)
+	if test -f "$(DESTDIR)${EMACS_DEFAULT_EL}" ; then \
+	cat $(DESTDIR)${EMACS_DEFAULT_EL} | sed -e '/BEGIN gcl/,/END gcl/d' > xxx ; \
+	mv $(DESTDIR)${EMACS_DEFAULT_EL} $(DESTDIR)${EMACS_DEFAULT_EL}.prev ; \
+	  rm -f  $(DESTDIR)${EMACS_DEFAULT_EL}c ; \
+          cat add-default.el >> xxx ; cp  xxx $(DESTDIR)${EMACS_DEFAULT_EL} ; \
 	  rm -f xxx ; else \
-	cp  add-default.el ${EMACS_DEFAULT_EL} ; fi 
-	chmod a+r ${EMACS_DEFAULT_EL} 
+	cp  add-default.el $(DESTDIR)${EMACS_DEFAULT_EL} ; fi 
+	chmod a+r $(DESTDIR)${EMACS_DEFAULT_EL} 
 
 
