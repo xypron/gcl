@@ -2,8 +2,9 @@ gcl (2.6.1-7) unstable; urgency=low
 
   * Fix permissions bug in temporary gzipped file handling
   * Propagate control changes correctly with package extension
+  * Newer standards
 
- -- Camm Maguire <camm@enhanced.com>  Tue,  9 Sep 2003 16:55:52 +0000
+ -- Camm Maguire <camm@enhanced.com>  Tue,  9 Sep 2003 17:06:56 +0000
 
 gcl (2.6.1-6) unstable; urgency=low
 
