@@ -4,8 +4,9 @@ gcl (2.6.1-33) unstable; urgency=low
     leading underscore in object symbols
   * complete readline version detection commit
   * Backport support for new eval-when keywords
+  * Autodetect GNU ld and add -Wl,-Map only when appropriate
 
- -- Camm Maguire <camm@enhanced.com>  Wed, 10 Mar 2004 21:03:58 +0000
+ -- Camm Maguire <camm@enhanced.com>  Wed, 10 Mar 2004 22:51:44 +0000
 
 gcl (2.6.1-32) unstable; urgency=low
 
