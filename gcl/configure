@@ -2626,6 +2626,43 @@ rm -f conftest*
 
 fi
 
+# Extract the first word of "emacs", so it can be a program name with args.
+set dummy emacs; ac_word=$2
+echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+echo "configure:2633: checking for $ac_word" >&5
+if eval "test \"`echo '$''{'ac_cv_path_EMACS'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  case "$EMACS" in
+  /*)
+  ac_cv_path_EMACS="$EMACS" # Let the user override the test with a path.
+  ;;
+  ?:/*)			 
+  ac_cv_path_EMACS="$EMACS" # Let the user override the test with a dos path.
+  ;;
+  *)
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS=":"
+  ac_dummy="$PATH"
+  for ac_dir in $ac_dummy; do 
+    test -z "$ac_dir" && ac_dir=.
+    if test -f $ac_dir/$ac_word; then
+      ac_cv_path_EMACS="$ac_dir/$ac_word"
+      break
+    fi
+  done
+  IFS="$ac_save_ifs"
+  ;;
+esac
+fi
+EMACS="$ac_cv_path_EMACS"
+if test -n "$EMACS"; then
+  echo "$ac_t""$EMACS" 1>&6
+else
+  echo "$ac_t""no" 1>&6
+fi
+
+
+
 # check for where the emacs site lisp directory is.
 rm -f conftest.el
 cat >> conftest.el <<EOF
@@ -2640,9 +2677,13 @@ cat >> conftest.el <<EOF
 EOF
 
 echo $ac_n "checking emacs site lisp directory""... $ac_c" 1>&6
-echo "configure:2644: checking emacs site lisp directory" >&5
-EMACS_SITE_LISP=unknown
-EMACS_SITE_LISP=`emacs -q -batch --no-site-file -l conftest.el 2>&1 | sed -e /Loading/d `
+echo "configure:2681: checking emacs site lisp directory" >&5
+#EMACS_SITE_LISP=unknown
+if [ "$EMACS" != "" ] ; then
+	EMACS_SITE_LISP=`$EMACS -q -batch --no-site-file -l conftest.el 2>&1 | sed -e /Loading/d `
+else
+	EMACS_SITE_LISP=""
+fi
 echo "$ac_t""$EMACS_SITE_LISP" 1>&6
 
 
@@ -2659,10 +2700,16 @@ cat >> conftest.el <<EOF
 EOF
 
 echo $ac_n "checking emacs default.el""... $ac_c" 1>&6
-echo "configure:2663: checking emacs default.el" >&5
-EMACS_DEFAULT_EL=`emacs -q -batch --no-site-file -l conftest.el 2>&1 | sed -e /Loading/d | sed -e /load/d `
+echo "configure:2704: checking emacs default.el" >&5
+if [ "$EMACS" != "" ] ; then
+	EMACS_DEFAULT_EL=`$EMACS -q -batch --no-site-file -l conftest.el 2>&1 | sed -e /Loading/d | sed -e /load/d `
+else
+	EMACS_DEFAULT_EL=""
+fi
 if  test -f "${EMACS_DEFAULT_EL}"  ; then true;else
-  EMACS_DEFAULT_EL=${EMACS_SITE_LISP}/default.el
+  if test -d "$EMACS_SITE_LISP" ; then
+     EMACS_DEFAULT_EL=${EMACS_SITE_LISP}/default.el
+  fi
 fi
 echo "$ac_t""$EMACS_DEFAULT_EL" 1>&6
 
@@ -2682,8 +2729,10 @@ cat >> conftest.el <<EOF
 EOF
 
 echo $ac_n "checking emacs info/dir""... $ac_c" 1>&6
-echo "configure:2686: checking emacs info/dir" >&5
-INFO_DIR=`emacs -q -batch --no-site-file -l conftest.el 2>&1 | sed -e /Loading/d | sed -e /load/d `
+echo "configure:2733: checking emacs info/dir" >&5
+if [ "$EMACS" != "" ] ; then
+	INFO_DIR=`$EMACS -q -batch --no-site-file -l conftest.el 2>&1 | sed -e /Loading/d | sed -e /load/d `
+fi
 if  test -f "${INFO_DIR}dir"  ; then true;else
 if test -f /usr/info/dir ; then
   INFO_DIR=/usr/info/
@@ -2694,7 +2743,7 @@ echo "$ac_t""$INFO_DIR" 1>&6
 
 
 echo $ac_n "checking for tcl/tk""... $ac_c" 1>&6
-echo "configure:2698: checking for tcl/tk" >&5
+echo "configure:2747: checking for tcl/tk" >&5
 
 
 if test -d "${TCL_CONFIG_PREFIX}"  ; then true ; else
@@ -2712,7 +2761,7 @@ cp conftest.tcl foo.tcl
 # Extract the first word of "tclsh", so it can be a program name with args.
 set dummy tclsh; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:2716: checking for $ac_word" >&5
+echo "configure:2765: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_prog_TCLSH'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -2741,7 +2790,7 @@ fi
 # Extract the first word of "tclsh8.0", so it can be a program name with args.
 set dummy tclsh8.0; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:2745: checking for $ac_word" >&5
+echo "configure:2794: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_prog_TCLSH'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -2793,7 +2842,7 @@ cp conftest.tcl foo.tcl
 # Extract the first word of "wish", so it can be a program name with args.
 set dummy wish; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:2797: checking for $ac_word" >&5
+echo "configure:2846: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_prog_TKSH'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -2822,7 +2871,7 @@ fi
 # Extract the first word of "wish8.0", so it can be a program name with args.
 set dummy wish8.0; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:2826: checking for $ac_word" >&5
+echo "configure:2875: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_prog_TKSH'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -2871,7 +2920,7 @@ if test -f ${TCL_CONFIG_PREFIX}/../include/tcl.h ; then
   TCL_INCLUDE=-I${TCL_CONFIG_PREFIX}/../include
 fi
 echo $ac_n "checking for main in -llieee""... $ac_c" 1>&6
-echo "configure:2875: checking for main in -llieee" >&5
+echo "configure:2924: checking for main in -llieee" >&5
 ac_lib_var=`echo lieee'_'main | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -2879,14 +2928,14 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-llieee  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 2883 "configure"
+#line 2932 "configure"
 #include "confdefs.h"
 
 int main() {
 main()
 ; return 0; }
 EOF
-if { (eval echo configure:2890: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:2939: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -2911,7 +2960,7 @@ if test "$have_ieee" = "0" ; then
  TCL_LIBS=`echo ${TCL_LIBS} | sed -e "s:-lieee::g" `
 fi
 echo $ac_n "checking for dlopen in -ldl""... $ac_c" 1>&6
-echo "configure:2915: checking for dlopen in -ldl" >&5
+echo "configure:2964: checking for dlopen in -ldl" >&5
 ac_lib_var=`echo dl'_'dlopen | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -2919,7 +2968,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-ldl  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 2923 "configure"
+#line 2972 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -2930,7 +2979,7 @@ int main() {
 dlopen()
 ; return 0; }
 EOF
-if { (eval echo configure:2934: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:2983: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -3012,16 +3061,16 @@ echo "$ac_t""use=$use" 1>&6
 # the time handling for unixtime, add timezone
 
 echo $ac_n "checking alloca""... $ac_c" 1>&6
-echo "configure:3016: checking alloca" >&5
+echo "configure:3065: checking alloca" >&5
 if test "$cross_compiling" = yes; then
   gcl_ok=no
 else
   cat > conftest.$ac_ext <<EOF
-#line 3021 "configure"
+#line 3070 "configure"
 #include "confdefs.h"
 int main() { exit(alloca(500) != NULL ? 0 : 1);}
 EOF
-if { (eval echo configure:3025: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:3074: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   :
 else
@@ -3044,12 +3093,12 @@ else
   gcl_ok=no
 else
   cat > conftest.$ac_ext <<EOF
-#line 3048 "configure"
+#line 3097 "configure"
 #include "confdefs.h"
 #include <alloca.h>
   int main() { exit(alloca(500) != NULL ? 0 : 1)}
 EOF
-if { (eval echo configure:3053: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:3102: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   :
 else
@@ -3111,7 +3160,7 @@ rm -f makedefsafter
 
 if test $use_gmp = yes ; then
  echo $ac_n "checking use_gmp=yes, doing configure in gmp directory""... $ac_c" 1>&6
-echo "configure:3115: checking use_gmp=yes, doing configure in gmp directory" >&5
+echo "configure:3164: checking use_gmp=yes, doing configure in gmp directory" >&5
  case "${canonical}" in
    i[5-9]86* | pentium* | k6* | athlon*)
       (cd gmp ; ./configure --target=i486) ;;
@@ -3132,7 +3181,7 @@ fi
 # redhat/cygnus released for some reason a buggy version of gcc,
 # which no one else released.   Catch that here.
 echo $ac_n "checking Checking for buggy gcc version from redhat""... $ac_c" 1>&6
-echo "configure:3136: checking Checking for buggy gcc version from redhat" >&5
+echo "configure:3185: checking Checking for buggy gcc version from redhat" >&5
 if  2>&1 $CC -v | fgrep "gcc version 2.96" > /dev/null 
    then 
         BROKEN_O4_OPT=1
@@ -3304,6 +3353,7 @@ s%@HAVE_SV_ONSTACK@%$HAVE_SV_ONSTACK%g
 s%@HAVE_SIGSYS@%$HAVE_SIGSYS%g
 s%@HAVE_SIGEMT@%$HAVE_SIGEMT%g
 s%@MPI_FILE@%$MPI_FILE%g
+s%@EMACS@%$EMACS%g
 s%@EMACS_SITE_LISP@%$EMACS_SITE_LISP%g
 s%@EMACS_DEFAULT_EL@%$EMACS_DEFAULT_EL%g
 s%@INFO_DIR@%$INFO_DIR%g
