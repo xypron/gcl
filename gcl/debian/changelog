@@ -1,3 +1,9 @@
+gcl (2.6.1-27) unstable; urgency=low
+
+  * Modify default banner slightly
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 26 Feb 2004 15:31:07 +0000
+
 gcl (2.6.1-26) unstable; urgency=low
 
   * Rework compiler::*ld-libs*, compiler::link, and unixport/makefile to
