@@ -617,6 +617,8 @@ int level;
 	case t_fixnum:
 	{
 		object *vsp;
+		/*FIXME 64*/
+		fixnum i;
 
 		if (PRINTradix && PRINTbase != 10)
 			write_base();
