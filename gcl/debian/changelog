@@ -1,8 +1,9 @@
 gcl (2.6.2-4) unstable; urgency=low
 
   * Correctly parse gcc version strings in gmp3 subconfigure on arm
+  * Fix variable capture error in dotimes macro
 
- -- Camm Maguire <camm@enhanced.com>  Tue, 13 Jul 2004 10:25:09 -0400
+ -- Camm Maguire <camm@enhanced.com>  Tue, 13 Jul 2004 10:27:59 -0400
 
 gcl (2.6.2-3) unstable; urgency=low
 
