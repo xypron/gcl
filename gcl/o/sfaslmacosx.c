@@ -18,9 +18,9 @@ Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 */
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/param.h>
@@ -30,9 +30,7 @@ Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #include <mach-o/loader.h>
 #include <mach-o/dyld.h>
 
-/*
 #include "ptable.h"
-*/
 
 typedef int (*func) ();
 
@@ -136,7 +134,7 @@ static func prepare_bundle (object faslfile, char *filename)
     return (fptr);
 }
 
-int fasload2 (object faslfile)
+int fasload (object faslfile)
 {
     object faslstream;
     object memory;
@@ -214,4 +212,4 @@ void unlink_loaded_files () {
 
 }
 
-// #include "sfasli.c"
+#include "sfasli.c"
