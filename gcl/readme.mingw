@@ -94,18 +94,18 @@ BUILDING
 - The batch file "gclm.bat" can be used to make a Windows desktop 
   shortcut.
 
-- BFD fasloading, Stratified Garbage Collection (SGC) and GCL-TK don't work
-  under Windows.  The configuration options above provide a "traditional" GCL
-  executable which will build the current CVS version of Maxima.  The BFD
-  option will depend on someone with knowledge of BFD and PE-COFF linking
-  fixing some problems with the BFD library - I am slowly absorbing the info
-  needed, but we really need input from an expert.
+- BFD fasloading, Stratified Garbage Collection (SGC), readline and GCL-TK 
+  don't work under Windows.  The configuration options above provide a 
+  "traditional" GCL executable which will build the current CVS version of 
+  Maxima.  The BFD option will depend on someone with knowledge of BFD and 
+  PE-COFF linking fixing some problems with the BFD library - I am slowly 
+  absorbing the info needed, but we really need input from an expert.
 
-- A PCL/ANSI build ("configure --enable-ansi --enable-custreloc") can be 
-  obtained by adding "(si::use-fast-links nil)" to the end of the list of
-  commands in the SETUP makefile macro in "pcl/makefile".  I don't know 
-  why this is necessary on Windows.  The PCL/ANSI version of GCL is still
-  experimental and will not compile Maxima at present.
+- A PCL/ANSI build ("configure --enable-ansi") can be obtained by adding 
+  "(si::use-fast-links nil)" to the end of the list of commands in the 
+  SETUP makefile macro in "pcl/makefile".  I don't know why this is necessary
+  on Windows.  The PCL/ANSI version of GCL is still experimental and will not
+  compile CVS Maxima at present.
 
 
-Mike Thomas, 17 December 2002
+Mike Thomas, 8 January 2004
