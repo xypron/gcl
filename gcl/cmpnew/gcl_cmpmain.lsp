@@ -547,7 +547,7 @@ SYSTEM_SPECIAL_INIT
     (setq na  (namestring
 	       (make-pathname :name name :type (pathname-type(first args)))))
    #+(or dos winnt)
-      (format nil "~a -I~a ~a ~a -c -w ~a -o ~a"
+      (format nil "~a -I~a ~a ~a -c -w ~s -o ~s"
 	      *cc*
 	      (concatenate 'string si::*system-directory* "../h")
 	      (if (and (boundp '*c-debug*) *c-debug*) " -g " "")
@@ -560,7 +560,7 @@ SYSTEM_SPECIAL_INIT
 	      )
 
    #-(or dos winnt)
-   (format nil  "~a -I~a ~a ~a -c '~a' -o '~a' ~a"
+   (format nil  "~a -I~a ~a ~a -c ~s -o ~s ~a"
 	   *cc*
 	   (concatenate 'string si::*system-directory* "../h")
 	   (if (and (boundp '*c-debug*) *c-debug*) " -g " "")
@@ -826,7 +826,7 @@ SYSTEM_SPECIAL_INIT
 		     (setq sfiles (concatenate 'string sfiles " " (namestring tem)))))
 	       sfiles) 
 	     si::*system-directory*
-	     #+gnu-ld (format nil "-Wl,-Map ~a" (namestring map))
+	     #+gnu-ld (format nil "-Wl,-Map ~a" (namestring map)) #-gnu-ld ""
 	     (let* ((par (namestring (make-pathname :directory '(:parent))))
 		    (i (concatenate 'string " " par))
 		    (j (concatenate 'string " " si::*system-directory* par)))
