@@ -1,3 +1,10 @@
+gcl (2.6.1-6) unstable; urgency=low
+
+  * Remove build-dependency on autoconf as a temporary work around to
+    Debian autoconf's dependency bug on emacsen-common
+
+ -- Camm Maguire <camm@enhanced.com>  Tue,  9 Sep 2003 15:29:06 +0000
+
 gcl (2.6.1-5) unstable; urgency=low
 
   * Redefine temporary files in elisp/makefile
