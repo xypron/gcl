@@ -164,7 +164,7 @@ TTL:;
 	(void) (*Lnk10)();
 	return;
 }
-static void LnkT10(){ call_or_link(VV[10],(void **)&Lnk10);} /* LOAD-SHORT-DEFCOMBIN */
+static void LnkT10(){ call_or_link(VV[10],(void **)(void *)&Lnk10);} /* LOAD-SHORT-DEFCOMBIN */
 
 #ifdef SYSTEM_SPECIAL_INIT
 SYSTEM_SPECIAL_INIT

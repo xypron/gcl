@@ -120,7 +120,7 @@ ihs_top_function_name(ihs_ptr h)
 
 
 
-static object
+object
 Icall_error_handler(object error_name,object error_format_string,int nfmt_args,...)
 { object b[20];
   b[0]= error_name;
@@ -238,6 +238,7 @@ DEFUNO_NEW("CERROR",object,fLcerror,LISP
   b[3]=null_string;
   b[4]=fmt_string;
   i=4;
+  n--;
   va_start(ap,fmt_string);
   while (--n)
     b[++i]=va_arg(ap,object);

@@ -11886,18 +11886,18 @@ T5497:;
 	return;
 	}
 }
-static void LnkT261(){ call_or_link(VV[261],(void **)&Lnk261);} /* TYPEP */
-static void LnkT260(){ call_or_link(VV[260],(void **)&Lnk260);} /* TYPECASE-ERROR-STRING */
-static void LnkT259(){ call_or_link(VV[259],(void **)&Lnk259);} /* SLOT-UNBOUND-INTERNAL */
-static void LnkT258(){ call_or_link(VV[258],(void **)&Lnk258);} /* STRUCTURE-SUBTYPE-P */
-static object  LnkTLI257(object first,...){object V1;va_list ap;va_start(ap,first);V1=call_proc_new(VV[257],(void **)&LnkLI257,1,first,ap);va_end(ap);return V1;} /* BUILT-IN-WRAPPER-OF */
-static object  LnkTLI256(object first,...){object V1;va_list ap;va_start(ap,first);V1=call_proc_new(VV[256],(void **)&LnkLI256,1,first,ap);va_end(ap);return V1;} /* WRAPPER-FOR-STRUCTURE */
-static object  LnkTLI255(object first,...){object V1;va_list ap;va_start(ap,first);V1=call_proc_new(VV[255],(void **)&LnkLI255,1,first,ap);va_end(ap);return V1;} /* WRAPPER-OF */
-static object  LnkTLI254(object first,...){object V1;va_list ap;va_start(ap,first);V1=call_proc_new(VV[254],(void **)&LnkLI254,4098,first,ap);va_end(ap);return V1;} /* %CCLOSURE-ENV-NTHCDR */
-static void LnkT253(){ call_or_link(VV[253],(void **)&Lnk253);} /* CCLOSURE-ENV-NTHCDR */
-static object  LnkTLI231(object first,...){object V1;va_list ap;va_start(ap,first);V1=call_proc_new(VV[231],(void **)&LnkLI231,4,first,ap);va_end(ap);return V1;} /* LOAD-PRECOMPILED-IIS-ENTRY */
-static object  LnkTLI207(object first,...){object V1;va_list ap;va_start(ap,first);V1=call_proc_new(VV[207],(void **)&LnkLI207,4,first,ap);va_end(ap);return V1;} /* LOAD-PRECOMPILED-DFUN-CONSTRUCTOR */
-static object  LnkTLI198(object first,...){object V1;va_list ap;va_start(ap,first);V1=call_proc_new(VV[198],(void **)&LnkLI198,5,first,ap);va_end(ap);return V1;} /* LOAD-FUNCTION-GENERATOR */
+static void LnkT261(){ call_or_link(VV[261],(void **)(void *)&Lnk261);} /* TYPEP */
+static void LnkT260(){ call_or_link(VV[260],(void **)(void *)&Lnk260);} /* TYPECASE-ERROR-STRING */
+static void LnkT259(){ call_or_link(VV[259],(void **)(void *)&Lnk259);} /* SLOT-UNBOUND-INTERNAL */
+static void LnkT258(){ call_or_link(VV[258],(void **)(void *)&Lnk258);} /* STRUCTURE-SUBTYPE-P */
+static object  LnkTLI257(object first,...){object V1;va_list ap;va_start(ap,first);V1=call_proc_new(VV[257],(void **)(void *)&LnkLI257,1,first,ap);va_end(ap);return V1;} /* BUILT-IN-WRAPPER-OF */
+static object  LnkTLI256(object first,...){object V1;va_list ap;va_start(ap,first);V1=call_proc_new(VV[256],(void **)(void *)&LnkLI256,1,first,ap);va_end(ap);return V1;} /* WRAPPER-FOR-STRUCTURE */
+static object  LnkTLI255(object first,...){object V1;va_list ap;va_start(ap,first);V1=call_proc_new(VV[255],(void **)(void *)&LnkLI255,1,first,ap);va_end(ap);return V1;} /* WRAPPER-OF */
+static object  LnkTLI254(object first,...){object V1;va_list ap;va_start(ap,first);V1=call_proc_new(VV[254],(void **)(void *)&LnkLI254,4098,first,ap);va_end(ap);return V1;} /* %CCLOSURE-ENV-NTHCDR */
+static void LnkT253(){ call_or_link(VV[253],(void **)(void *)&Lnk253);} /* CCLOSURE-ENV-NTHCDR */
+static object  LnkTLI231(object first,...){object V1;va_list ap;va_start(ap,first);V1=call_proc_new(VV[231],(void **)(void *)&LnkLI231,4,first,ap);va_end(ap);return V1;} /* LOAD-PRECOMPILED-IIS-ENTRY */
+static object  LnkTLI207(object first,...){object V1;va_list ap;va_start(ap,first);V1=call_proc_new(VV[207],(void **)(void *)&LnkLI207,4,first,ap);va_end(ap);return V1;} /* LOAD-PRECOMPILED-DFUN-CONSTRUCTOR */
+static object  LnkTLI198(object first,...){object V1;va_list ap;va_start(ap,first);V1=call_proc_new(VV[198],(void **)(void *)&LnkLI198,5,first,ap);va_end(ap);return V1;} /* LOAD-FUNCTION-GENERATOR */
 
 #ifdef SYSTEM_SPECIAL_INIT
 SYSTEM_SPECIAL_INIT

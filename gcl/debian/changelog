@@ -1,3 +1,44 @@
+gcl (2.5.4-1) unstable; urgency=low
+
+  * New upstream release
+  * Type-punning warning fixes
+  * small_fixnum overflow fixes
+  * off by one fix in cerror
+  * Fix compiler error which had not recognized defpackage as a package
+    operation
+  * Fix tkl.lisp call to open-named-socket
+  * Make values-list and nreconc signal errors when they should on
+    dotted lists.
+  * Avoid use of windows.h types as macros.
+  * New config.{sub,guess}
+  * Windows installer updates from CVS HEAD
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 17 Jul 2003 17:49:35 +0000
+
+gcl (2.5.3-2) unstable; urgency=low
+
+  * gcc-3.3 all platforms
+
+ -- Camm Maguire <camm@enhanced.com>  Mon,  7 Jul 2003 16:10:25 +0000
+
+gcl (2.5.3-1) unstable; urgency=low
+
+  * New upstream release
+  * Restore object_to_float and object_to_double, cmpaux.c, Closes: #195470.
+  * Remove obsolete functiion multiply-bignum-stack from documentation,
+    si-defs.texi
+  * Unstatic object_to_float, object_to_double
+
+ -- Camm Maguire <camm@enhanced.com>  Mon,  2 Jun 2003 12:38:03 -0400
+
+gcl (2.5.2-1) unstable; urgency=low
+
+  * New upstream release
+  * Cleanup xdrfuns.c for Axiom
+  * Reenable xgcl build
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 20 Mar 2003 09:15:54 -0500
+
 gcl (2.5.1-1) unstable; urgency=high
 
   * some optimization now on hppa
