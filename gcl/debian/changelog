@@ -1,3 +1,9 @@
+gcl (2.6.1-23) unstable; urgency=low
+
+  * Remove calls to init-readline with new automatic readline setup
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 27 Jan 2004 20:27:20 +0000
+
 gcl (2.6.1-22) unstable; urgency=low
 
   * Build depend on emacs21 | emacsen
