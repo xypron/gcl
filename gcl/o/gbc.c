@@ -134,7 +134,7 @@ struct apage {
   char apage_self[PAGESIZE];
 };
 
-int maxpage;
+long maxpage;
 
 object sSAnotify_gbcA;
 

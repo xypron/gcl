@@ -4,8 +4,9 @@ gcl (2.6.1-37) unstable; urgency=low
   * Prevent recursive malloc calls for OpenBSD error reporting
   * Push dummy 0 time for child runtime on windows to be compatible with
     other platforms for now
+  * Make sure pages are mprotected PROT_EXEC for amd64 support
 
- -- Camm Maguire <camm@enhanced.com>  Tue, 13 Apr 2004 02:56:40 +0000
+ -- Camm Maguire <camm@enhanced.com>  Tue, 13 Apr 2004 21:00:22 +0000
 
 gcl (2.6.1-36) unstable; urgency=low
 
