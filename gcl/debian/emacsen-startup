@@ -15,4 +15,5 @@
                               (symbol-name flavor)
                               "/site-lisp/gcl") load-path))
 
-(autoload "gcl")
+(autoload 'run "gcl" "" t)
+(autoload 'dbl "dbl" "" t)

@@ -33,15 +33,14 @@ build-stamp: configure-stamp
 clean:
 	dh_testdir
 	dh_testroot
-	rm -f build-stamp configure-stamp install-stamp
+	rm -f build-stamp configure-stamp
 
 	-$(MAKE) clean
 
 	dh_clean
 
 install: DH_OPTIONS=
-install: install-stamp
-install-stamp: build-stamp
+install: build
 	dh_testdir
 	dh_testroot
 	dh_clean -k
@@ -50,17 +49,18 @@ install-stamp: build-stamp
 	$(MAKE) install DESTDIR=$$(pwd)/debian/tmp
 
 	rm -rf debian/tmp/usr/share
-	mkdir -p debian/tmp/usr/share/emacs
-	cp -a $$(find debian/tmp/usr/local -name site-lisp -type d) debian/tmp/usr/share/emacs
+	mkdir -p debian/tmp/usr/share/emacs/site-lisp
+	cp -a $$(find debian/tmp/usr/local -name site-lisp -type d) debian/tmp/usr/share/emacs/site-lisp/gcl
 	rm -rf debian/tmp/usr/local
 
 	cat debian/tmp/usr/lib/gcl-2.5.0/gcl-tk/demos/index.lsp | \
 		sed "s,$$(pwd)/debian/tmp,,1" >debian/foo
 	mv debian/foo debian/tmp/usr/lib/gcl-2.5.0/gcl-tk/demos/index.lsp
 
-	mkdir -p debian/tmp/usr/share/doc/gcl-doc/html
-	cp info/*html debian/tmp/usr/share/doc/gcl-doc/html/
-	cp info/*dvi debian/tmp/usr/share/doc/gcl-doc/
+	mkdir -p debian/tmp/usr/share/doc/gcl-doc/gcl-si.html
+	cp info/gcl-si*html debian/tmp/usr/share/doc/gcl-doc/gcl-si.html/
+	mkdir -p debian/tmp/usr/share/doc/gcl-doc/gcl-tk.html
+	cp info/gcl-tk*html debian/tmp/usr/share/doc/gcl-doc/gcl-tk.html/
 
 	rm -f debian/tmp/usr/bin/gcl.exe
 
@@ -70,8 +70,6 @@ install-stamp: build-stamp
 	find debian/tmp -type f -name "*.tcl" -exec chmod -x {} \;
 
 	dh_movefiles
-
-	touch install-stamp
 
 # Build architecture-independent files here.
 # Pass -i to all debhelper commands in this target to reduce clutter.

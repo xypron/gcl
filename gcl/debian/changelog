@@ -2,8 +2,16 @@ gcl (2.5.0-1) unstable; urgency=medium
 
   * New maintainer
   * New upstream release
+  * New release so far builds only on i386, Closes: #116070, Closes:
+    #123371
+  * New release so far builds only on i386, Closes: #115041
+  * Gcl must currently use its own copy of gmp, as the upstream version
+    of gmp uses malloc, which interferes with gcl's garbage collection
+    and relocation scheme.  The change from malloc to alloca has been
+    suggested to upstream gmp developers. Closes: #108910
+  * Tcl/Tk support now in. Closes: #113197
 
- -- Camm Maguire <camm@enhanced.com>  Thu, 20 Dec 2001 14:32:30 -0500
+ -- Camm Maguire <camm@enhanced.com>  Fri, 21 Dec 2001 00:03:43 -0500
 
 gcl (2.4.0-3) unstable; urgency=medium
 
