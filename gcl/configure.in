@@ -22,9 +22,6 @@ AC_ARG_ENABLE(vssize,[ --enable-vssize=XXXX will compile in a value stack of siz
 AC_ARG_ENABLE(machine,[ --enable-machine=XXXX will force the use of one of the definitions in h/XXXX.defs] ,
 [enable_machine=$enableval],[enable_machine=""])
 
-AC_ARG_ENABLE(static,[ --enable-static will link your GCL against static as opposed to shared system libraries ] ,
-[enable_static=$enableval],[enable_static="no"])
-
 AC_ARG_ENABLE(gmp,[ --enable-gmp=no will disable use of GMP gnu multiprecision arithmetic, (default is =yes)] ,
 [use_gmp=$enableval],[use_gmp="yes"])
 
@@ -237,18 +234,19 @@ def_statsysbfd="yes"
 def_custreloc="no"
 def_oldgmp="no"
 def_pic="no";
+def_static="no";
 case $use in 
      *linux)
 	ln -snf linux.defs h/$use.defs;
 	case $use in
-		amd64*)
-			TCFLAGS="$TCFLAGS -m64";;  
 		alpha*)
 			def_dlopen="yes" ; def_statsysbfd="no" ;;
 		mips*)
 			def_dlopen="yes" ; def_statsysbfd="no" ;;
+# def_static -- Function descriptors are currently realized at runtime in a non-reproducible fashion
+# on these architectures -- CM			
 		ia64*)
-			def_dlopen="yes" ; def_statsysbfd="no" ;;
+			def_dlopen="yes" ; def_statsysbfd="no" ; def_static = "yes" ;;
 		hppa*)
 			def_dlopen="yes" ; def_statsysbfd="no" def_pic="yes" ;;
 #		m68k*)
@@ -276,6 +274,8 @@ AC_ARG_ENABLE(custreloc,
 AC_ARG_ENABLE(debug,
 	[ --enable-debug builds gcl with -g in CFLAGS to enable running under gdb ]
 	,,enable_debug="no")
+AC_ARG_ENABLE(static,[ --enable-static will link your GCL against static as opposed to shared system libraries ] ,
+        [enable_static=$enableval],[enable_static="$def_static"])
 AC_ARG_ENABLE(pic,
 	[ --enable-pic builds gcl with -fPIC in CFLAGS ]
 	,,enable_pic="$def_pic")
@@ -326,6 +326,10 @@ fi
 if test "$load_opt" != "1" ; then
 	echo "Exactly one loader option must be chosen: dlopen=$enable_dlopen statsysbfd=$enable_statsysbfd dynsysbfd=$enable_dynsysbfd locbfd=$enable_locbfd custreloc=$enable_custreloc"
 	exit 1
+fi
+
+if test "$enable_static" = "yes" ; then
+   TLIBS="-static $TLIBS";
 fi
 
 ## finally warn if we did not find a recognized machine.s
@@ -381,6 +385,8 @@ AC_CHECK_PROGS(AWK,gawk nawk awk,"")
 case $use in 
      *linux)
 	case $use in
+		amd64*)
+			TCFLAGS="$TCFLAGS -m64";;  
 		alpha*)
 			TCFLAGS="$TCFLAGS -mieee";;
 #		m68k*)
@@ -392,10 +398,6 @@ case $use in
 			;;
 		arm*)
 			TCFLAGS="$TCFLAGS -mlong-calls";;	
-		ia64*)
-# Function descriptors are currently realized at runtime in a non-reporducible fashion
-# on these architectures -- CM			
-			TLIBS="-static $TLIBS";;
 		powerpc*) 
 			if $CC -v 2>&1 | grep -q "gcc version 3.2" ; then
 			   echo Reducing optimization for buggy gcc-3.2

@@ -849,7 +849,6 @@ Optional Features:
  --enable-maxpage=XXXX will compile in a page table of size XXX (eg '--enable-maxpage=64*1024' would give 64K pages allowing 256 MB if pages are 4K each)
  --enable-vssize=XXXX will compile in a value stack of size XXX
  --enable-machine=XXXX will force the use of one of the definitions in h/XXXX.defs
- --enable-static will link your GCL against static as opposed to shared system libraries
  --enable-gmp=no will disable use of GMP gnu multiprecision arithmetic, (default is =yes)
  --enable-notify=no will disable the automatic notification of gcl maintainers of successful builds/problems
  --enable-tkconfig=XXXX will force the use of a TK_CONFIG_PREFIX=XXXXX as place to look for tkConfig.sh and tclConfig.sh
@@ -871,6 +870,7 @@ Optional Features:
 
  --enable-debug builds gcl with -g in CFLAGS to enable running under gdb
 
+ --enable-static will link your GCL against static as opposed to shared system libraries
  --enable-pic builds gcl with -fPIC in CFLAGS
 
  --enable-oldgmp will link against gmp2 instead of gmp3
@@ -1342,14 +1342,6 @@ else
   enable_machine=""
 fi;
 
-# Check whether --enable-static or --disable-static was given.
-if test "${enable_static+set}" = set; then
-  enableval="$enable_static"
-  enable_static=$enableval
-else
-  enable_static="no"
-fi;
-
 # Check whether --enable-gmp or --disable-gmp was given.
 if test "${enable_gmp+set}" = set; then
   enableval="$enable_gmp"
@@ -1686,18 +1678,19 @@ def_statsysbfd="yes"
 def_custreloc="no"
 def_oldgmp="no"
 def_pic="no";
+def_static="no";
 case $use in
      *linux)
 	ln -snf linux.defs h/$use.defs;
 	case $use in
-		amd64*)
-			TCFLAGS="$TCFLAGS -m64";;
 		alpha*)
 			def_dlopen="yes" ; def_statsysbfd="no" ;;
 		mips*)
 			def_dlopen="yes" ; def_statsysbfd="no" ;;
+# def_static -- Function descriptors are currently realized at runtime in a non-reproducible fashion
+# on these architectures -- CM
 		ia64*)
-			def_dlopen="yes" ; def_statsysbfd="no" ;;
+			def_dlopen="yes" ; def_statsysbfd="no" ; def_static = "yes" ;;
 		hppa*)
 			def_dlopen="yes" ; def_statsysbfd="no" def_pic="yes" ;;
 #		m68k*)
@@ -1748,6 +1741,13 @@ if test "${enable_debug+set}" = set; then
 
 else
   enable_debug="no"
+fi;
+# Check whether --enable-static or --disable-static was given.
+if test "${enable_static+set}" = set; then
+  enableval="$enable_static"
+  enable_static=$enableval
+else
+  enable_static="$def_static"
 fi;
 # Check whether --enable-pic or --disable-pic was given.
 if test "${enable_pic+set}" = set; then
@@ -1811,6 +1811,10 @@ fi
 if test "$load_opt" != "1" ; then
 	echo "Exactly one loader option must be chosen: dlopen=$enable_dlopen statsysbfd=$enable_statsysbfd dynsysbfd=$enable_dynsysbfd locbfd=$enable_locbfd custreloc=$enable_custreloc"
 	exit 1
+fi
+
+if test "$enable_static" = "yes" ; then
+   TLIBS="-static $TLIBS";
 fi
 
 ## finally warn if we did not find a recognized machine.s
@@ -3006,6 +3010,8 @@ test -n "$AWK" || AWK=""""
 case $use in
      *linux)
 	case $use in
+		amd64*)
+			TCFLAGS="$TCFLAGS -m64";;
 		alpha*)
 			TCFLAGS="$TCFLAGS -mieee";;
 #		m68k*)
@@ -3017,10 +3023,6 @@ case $use in
 			;;
 		arm*)
 			TCFLAGS="$TCFLAGS -mlong-calls";;
-		ia64*)
-# Function descriptors are currently realized at runtime in a non-reporducible fashion
-# on these architectures -- CM
-			TLIBS="-static $TLIBS";;
 		powerpc*)
 			if $CC -v 2>&1 | grep -q "gcc version 3.2" ; then
 			   echo Reducing optimization for buggy gcc-3.2
