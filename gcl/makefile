@@ -55,11 +55,8 @@ TCL_LIBS=-ldl  -lm
 NOTIFY=yes
 GCC=gcc
 
-
-
-
-
-GCLDIR=/fix/f/debian/mm/gcl/gcl
+MP_INCLUDE=h/gmp.h
+GCLDIR=/home/camm/gcl/tmp/gcl-2.4.1
 SHELL=/bin/sh
 MACHINE=386-linux
 
@@ -74,12 +71,12 @@ MACHINE=386-linux
 
 LBINDIR=/usr/local/bin
 
-#OFLAG	=  -O 
-OFLAG	=  -g
+OFLAG	=  -O 
+#OFLAG	=  -g
 LIBS	= -lm 
 
-#ODIR_DEBUG= -O4 
-ODIR_DEBUG= -g
+ODIR_DEBUG= -O4 
+#ODIR_DEBUG= -g
 
 # This CC string will be used for compilation of the system,
 # and also in the compiler::*cc* variable for later compilation of
@@ -232,7 +229,7 @@ clean:
 	rm -f h/config.h h/gclincl.h h/cmpinclude.h
 	rm -rf gmp/.deps gmp/libgmp.a
 
-CMPINCLUDE_FILES=${HDIR}cmpincl1.h ${HDIR}gclincl.h ${HDIR}compbas.h ${HDIR}enum.h ${HDIR}object.h ${HDIR}vs.h \
+CMPINCLUDE_FILES=${HDIR}cmpincl1.h ${HDIR}gclincl.h ${HDIR}compbas.h ${HDIR}enum.h $(MP_INCLUDE) ${HDIR}object.h ${HDIR}vs.h \
 	${HDIR}bds.h ${HDIR}frame.h \
 	${HDIR}lex.h ${HDIR}eval.h    ${HDIR}funlink.h \
 	${HDIR}att_ext.h ${HDIR}new_decl.h ${HDIR}compbas2.h ${HDIR}/compat.h ${HDIR}/cmponly.h

@@ -1,7 +1,7 @@
        
 #(#! 
 (lisp::in-package (lisp::quote user::lisp))#! 
-(lisp::export (lisp::quote (lisp::make-array lisp::vector lisp::array-element-type lisp::array-rank lisp::array-dimension lisp::array-dimensions lisp::array-in-bounds-p lisp::array-row-major-index lisp::adjustable-array-p lisp::bit lisp::sbit lisp::bit-and lisp::bit-ior lisp::bit-xor lisp::bit-eqv lisp::bit-nand lisp::bit-nor lisp::bit-andc1 lisp::bit-andc2 lisp::bit-orc1 lisp::bit-orc2 lisp::bit-not lisp::array-has-fill-pointer-p lisp::fill-pointer lisp::vector-push lisp::vector-push-extend lisp::vector-pop lisp::adjust-array)))#! 
+(lisp::export (lisp::quote (lisp::make-array lisp::array-displacement lisp::vector lisp::array-element-type lisp::array-rank lisp::array-dimension lisp::array-dimensions lisp::array-in-bounds-p lisp::array-row-major-index lisp::adjustable-array-p lisp::bit lisp::sbit lisp::bit-and lisp::bit-ior lisp::bit-xor lisp::bit-eqv lisp::bit-nand lisp::bit-nor lisp::bit-andc1 lisp::bit-andc2 lisp::bit-orc1 lisp::bit-orc2 lisp::bit-not lisp::array-has-fill-pointer-p lisp::fill-pointer lisp::vector-push lisp::vector-push-extend lisp::vector-pop lisp::adjust-array)))#! 
 (lisp::in-package (lisp::quote lisp::system))
 #((lisp::bit lisp::unsigned-char lisp::signed-char lisp::unsigned-short lisp::signed-short lisp::fixnum) lisp::fixnum (lisp::bit lisp::unsigned-char lisp::signed-char lisp::unsigned-short lisp::signed-short) lisp::character lisp::string-char (lisp::string-char lisp::bit lisp::short-float lisp::long-float) "fill pointer for 1 dimensional arrays only" :initial-element :element-type :initial-contents "The rank of the array is ~R,~%~
                ~7@Tbut ~R ~:*~[indices are~;index is~:;indices are~] ~

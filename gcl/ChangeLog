@@ -1,3 +1,8 @@
+2002-06-07  Camm Maguire  <camm@intech19.enhanced.com>
+
+	* Backport of bug fixes from cvs head -- (declare (integer... 
+	supported, array-displacement supported, gmp numeric error fixed
+
 2002-02-01  Camm Maguire  <camm@intech19.enhanced.com>
 
 	* /cvsroot/gcl/gcl/h/solaris.h: Uncommented define of DBEGIN in h/solaris.h
