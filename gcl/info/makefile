@@ -113,7 +113,7 @@ MPFILES=${GMP_DIR}libgmp.a
 # end makedefs
 
 
-all: gcl-tk.info gcl-si.info
+all: gcl-tk.info gcl-si.info gcl-tk.dvi gcl-si.dvi gcl-si_toc.html gcl-tk_toc.html
 
 .texi.info:
 	rm -f $*.*gz
@@ -128,7 +128,7 @@ GCL_SI= number.texi sequence.texi character.texi list.texi io.texi \
 GCL_TK= general.texi widgets.texi control.texi
 
 gcl-si.dvi: ${GCL_SI} gcl-si.texi
-	tex gcl-si.texi
+	tex --interaction nonstopmode gcl-si.texi || true
 
 gcl-si.info:
 	makeinfo gcl-si.texi	
@@ -172,3 +172,4 @@ tex:
 	@echo so do 'make tex' again
 
 clean:
+	rm -f *.info* *.html *.dvi *.cp *.ky *.vr *.tp *.pg *.toc *.aux *.log *.fn
