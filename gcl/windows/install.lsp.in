@@ -120,8 +120,24 @@
 ; Now make a batch file to launch GCL
 (setq *dos-system-directory* (kill-double-backs (kill-forwards  *system-directory*)))
 
+; Now make a batch file to launch GCL
+(setq *dos-root-directory* (kill-double-backs (kill-forwards  *dos-system-directory*)))
+
+; Remove end dir separator
 (setq *dos-root-directory* 
-      (subseq *dos-system-directory* 0 (- (length *dos-system-directory*) 23)))
+      (subseq *dos-root-directory* 0 (search "\\"  *dos-root-directory*  :from-end t)))
+
+; Remove unixport and dir separator
+(setq *dos-root-directory* 
+      (subseq *dos-root-directory* 0 (search "\\"  *dos-root-directory*  :from-end t)))
+
+; Remove gcl-?.?.? and dir separator
+(setq *dos-root-directory* 
+      (subseq *dos-root-directory* 0 (search "\\"  *dos-root-directory*  :from-end t)))
+
+; Remove lib but not the dir separator
+(setq *dos-root-directory* 
+      (subseq *dos-root-directory* 0 (1+ (search "\\"  *dos-root-directory*  :from-end t))))
 
 (setq *dos-h-directory* 
       (format nil "~a~a" *dos-root-directory* "lib\\gcl-@VERSION@\\h"))
@@ -131,13 +147,19 @@
 
 (setq gclbatch (format nil "~a~a" *bin-directory* "gcl.bat"))
 
+;; Output CRLF line terminated batch file
+
+(setf crstr (make-string 1 :initial-element #\Return))
+(setf lfstr (make-string 1 :initial-element #\Linefeed))
+(defun crlf (s) (format s "~a~a" crstr lfstr))
+
 (with-open-file (s gclbatch :direction :output :if-exists :supersede)
-		(format s "@echo off~%")
-		(format s "set C_INCLUDE_PATH=~a~%" *dos-h-directory* )
-		(format s "path ~amingw\\bin;~alib\\gcl-@VERSION@\\unixport;%PATH%~%" *dos-root-directory* *dos-root-directory* )
-		(format s "start ~a@FLISP@.exe -dir ~a -libdir ~a -eval \"(setq si::*allow-gzipped-file* t)\" %1 %2 %3 %4 %5 %6 %7 %8 %9~%"
+		(format s "@echo off") (crlf s)
+		(format s "set C_INCLUDE_PATH=~a" *dos-h-directory* ) (crlf s)
+		(format s "path ~amingw\\bin;~alib\\gcl-@VERSION@\\unixport;%PATH%" *dos-root-directory* *dos-root-directory* ) (crlf s)
+		(format s "start ~a@FLISP@.exe -dir ~a -libdir ~a -eval \"(setq si::*allow-gzipped-file* t)\" %1 %2 %3 %4 %5 %6 %7 %8 %9"
 			*dos-system-directory*
 			(kill-double-forwards *system-directory*)
-			*lib-directory* ))
+			*lib-directory* ) (crlf s))
 
 (quit)
