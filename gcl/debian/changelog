@@ -4,8 +4,10 @@ gcl (2.6.2-4) unstable; urgency=low
   * Fix variable capture error in dotimes macro
   * Better sed separator for LI-CC in unixport/makefile
   * Fix segfault in string-match
+  * vs_top=sup -> (reset-top) where possible in compiler.  FIXME: a few
+    items of a different form which need to set *sup-used* too.
 
- -- Camm Maguire <camm@enhanced.com>  Tue, 13 Jul 2004 10:36:45 -0400
+ -- Camm Maguire <camm@enhanced.com>  Wed, 14 Jul 2004 14:29:54 -0400
 
 gcl (2.6.2-3) unstable; urgency=low
 
