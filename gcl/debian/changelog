@@ -1,3 +1,9 @@
+gcl (2.6.1-29) unstable; urgency=low
+
+  * Remove implicit dependency on gawk, optimize plt.c a little
+
+ -- Camm Maguire <camm@enhanced.com>  Wed,  3 Mar 2004 16:08:30 +0000
+
 gcl (2.6.1-28) unstable; urgency=low
 
   * make sure bfd fasload initializes dum.sm.sm_object1 for
