@@ -3,8 +3,9 @@ gcl (2.6.2-4) unstable; urgency=low
   * Correctly parse gcc version strings in gmp3 subconfigure on arm
   * Fix variable capture error in dotimes macro
   * Better sed separator for LI-CC in unixport/makefile
+  * Fix segfault in string-match
 
- -- Camm Maguire <camm@enhanced.com>  Tue, 13 Jul 2004 10:31:52 -0400
+ -- Camm Maguire <camm@enhanced.com>  Tue, 13 Jul 2004 10:36:45 -0400
 
 gcl (2.6.2-3) unstable; urgency=low
 
