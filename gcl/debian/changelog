@@ -13,8 +13,9 @@ gcl (2.6.1-34) unstable; urgency=low
   * Proper contblock/relblock determination when expanding string
     streams
   * Proper string type determination for *link-array*
+  * .ini files depend on plt.h
 
- -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 02:03:19 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 02:05:59 +0000
 
 gcl (2.6.1-33) unstable; urgency=low
 
