@@ -1,12 +1,12 @@
 Source: gcl
 Section: interpreters
 Priority: optional
-Maintainer: Baruch Even <baruch@debian.org>
-Build-Depends: debhelper (>> 3.0.0), perl-base, autoconf, libgmp3-dev
+Maintainer: Camm Maguire <camm@enhanced.com>
+Build-Depends: debhelper (>> 3.0.0), perl-base, autoconf
 Standards-Version: 3.5.2
 
 Package: gcl
-Architecture: i386 sparc
+Architecture: i386
 Depends: ${shlibs:Depends}
 Description: GNU Common Lisp compiler.
  The GNU Common Lisp compiler, based on Kyoto Common Lisp.

@@ -1,7 +1,0 @@
-usr/bin
-usr/lib/gcl/cmpnew
-usr/lib/gcl/elisp
-usr/lib/gcl/lsp
-usr/lib/gcl/misc
-usr/lib/gcl/unixport
-usr/share/doc/gcl/html

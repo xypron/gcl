@@ -3,7 +3,7 @@ gcl (2.5.0-1) unstable; urgency=medium
   * New maintainer
   * New upstream release
 
- -- Baruch Even <baruch@debian.org>  Thu, 20 Dec 2001 14:32:30 -0500
+ -- Camm Maguire <camm@enhanced.com>  Thu, 20 Dec 2001 14:32:30 -0500
 
 gcl (2.4.0-3) unstable; urgency=medium
 
