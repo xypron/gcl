@@ -1,3 +1,9 @@
+gcl (2.6.1-16) unstable; urgency=low
+
+  * Fix sh syntax in debian/gcl.sh
+
+ -- Camm Maguire <camm@intech.m.enhanced.com>  Sat, 18 Oct 2003 22:22:31 -0400
+
 gcl (2.6.1-15) unstable; urgency=low
 
   * Remove imod/ifloor functions in cmpaux.c and directly inline their
