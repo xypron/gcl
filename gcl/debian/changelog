@@ -11,8 +11,9 @@ gcl (2.6.1-10) unstable; urgency=low
   * All cmpinit.lsp files named gcl_cmpinit.lsp; allow full lisp
     optimization in all directories
   * collectfn -> gcl_collectfn in lsp/gcl_auto.lsp
+  * collectfn -> gcl_collectfn in cmpnew/gcl_make-fn.lsp
 
- -- Camm Maguire <camm@enhanced.com>  Tue, 23 Sep 2003 18:35:24 +0000
+ -- Camm Maguire <camm@enhanced.com>  Tue, 23 Sep 2003 18:36:15 +0000
 
 gcl (2.6.1-9) unstable; urgency=low
 
