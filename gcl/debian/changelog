@@ -2,8 +2,10 @@ gcl (2.6.1-26) unstable; urgency=low
 
   * Rework compiler::*ld-libs*, compiler::link, and unixport/makefile to
     accomodate mingw need for firstfile.o and lastfile.o
+  * Remove incompatible -fomit-frame-pointer when compiling with -pg
+    profiling
 
- -- Camm Maguire <camm@enhanced.com>  Tue, 17 Feb 2004 16:08:03 +0000
+ -- Camm Maguire <camm@enhanced.com>  Fri, 20 Feb 2004 03:52:57 +0000
 
 gcl (2.6.1-25) unstable; urgency=low
 
