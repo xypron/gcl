@@ -37,11 +37,14 @@ which is usually 60 maybe 100 or something else. */
 #include <sys/param.h>
 #endif
 #endif
+
 #ifndef HZ
-#define HZ 60
+/* #define HZ 60 */
+#define HZ 100
 #endif
 
-#define HZ1 (HZ > 100 ? 100 : HZ)
+/* #define HZ1 (HZ > 100 ? 100 : HZ) */
+#define HZ1 HZ
 
 #ifdef USE_ATT_TIME
 #  undef BSD

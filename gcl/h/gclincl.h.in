@@ -204,6 +204,7 @@
 #undef HOST_KERNEL
 #undef HOST_SYSTEM
 #undef GCL_GPROF_START
+#undef HZ
 
 /* The number of bytes in a long.  */
 #undef SIZEOF_LONG

@@ -16,8 +16,10 @@ gcl (2.6.6-1) unstable; urgency=high
   * Windows file/directory fixes in "o/unixfsys.c"
   * MinGW32 -march in configure - removes deprecation warnings
   * MinGW32 directory fix - "o/mingfile.c".
+  * Allow for sysconf to determine clock granularity at compile time to
+    fix time errors on the Itanium
 
- -- Camm Maguire <camm@enhanced.com>  Sat, 15 Jan 2005 16:48:36 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat, 15 Jan 2005 19:16:32 +0000
 
 gcl (2.6.5-1) unstable; urgency=high
 
