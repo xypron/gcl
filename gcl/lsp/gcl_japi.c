@@ -1,7 +1,7 @@
 
 #include "cmpinclude.h"
-#include "japi.h"
-void init_japi(){do_init(VV);}
+#include "gcl_japi.h"
+void init_gcl_japi(){do_init(VV);}
 #include <japi.h>
 /*	function definition for J_START	*/
 

@@ -720,11 +720,12 @@ fi
 
 AC_CHECK_SIZEOF(long,0)
 AC_MSG_CHECKING(sizeof struct contblock)
+echo `pwd`
 AC_TRY_RUN([#include <stdio.h>
 	#define EXTER
 	#include "$MP_INCLUDE"
-	#include "`pwd`/h/enum.h"
-	#include "`pwd`/h/object.h"
+	#include "h/enum.h"
+	#include "h/object.h"
 	int main(int argc,char **argv,char **envp) {
 	FILE *f=fopen("conftest1","w");
 	fprintf(f,"%u",sizeof(struct contblock));
@@ -735,6 +736,7 @@ AC_TRY_RUN([#include <stdio.h>
 	   echo Cannot find sizeof struct contblock;exit 1)
 AC_MSG_RESULT($sizeof_contblock)
 AC_DEFINE_UNQUOTED(SIZEOF_CONTBLOCK,$sizeof_contblock)
+
 
 
 AC_CHECK_HEADERS(endian.h,
