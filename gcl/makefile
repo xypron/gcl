@@ -25,7 +25,7 @@ MPFILES=$(MPDIR)/mpi-386_no_under.o $(MPDIR)/libmport.a
 # root for the installation, eg /usr/local
 # This would cause make install to create /usr/local/bin/gcl and
 # /usr/local/lib/gcl-2-??/* with some basic files.
-prefix=/usr/local
+prefix=/fix/f/debian/mm/gcl/gcl-2.5.0/../tmp
 
 # where to place the info files
 INFO_DIR=/usr/info/
@@ -55,9 +55,9 @@ TCL_LIBS=-ldl  -lm
 NOTIFY=yes
 GCC=gcc
 
+RL_OBJS=
 
-
-
+RL_LIB=
 
 GCLDIR=/fix/f/debian/mm/gcl/gcl-2.5.0
 SHELL=/bin/sh
@@ -74,10 +74,12 @@ MACHINE=386-linux
 
 LBINDIR=/usr/local/bin
 
-OFLAG	=  -O 
-LIBS	= -lm 
+OFLAG	=  -g 
+#OFLAG	=  -O 
+#LIBS	= -lm 
 
-ODIR_DEBUG= -O4 
+#ODIR_DEBUG= -O4 
+ODIR_DEBUG= -g
 
 # This CC string will be used for compilation of the system,
 # and also in the compiler::*cc* variable for later compilation of
@@ -150,7 +152,7 @@ all:   ${HDIR}cmpinclude.h
         if [ "${NOTIFY}" = "yes" ] ; then \
 	./xbin/notify "CC=${CC}" ;  fi ;\
 	else echo "The new image failed to compile collectfn.lsp" ;fi ; \
-	if [ "${TK_CONFIG_PREFIX}" != "unknown" ] ; \
+	if [ -d "${TK_CONFIG_PREFIX}" ] ; \
 	then (cd gcl-tk ; make) ; \
 	else echo "gcl-tk not made..missing include or lib" ; fi 
 	(cd info ; make)
@@ -177,7 +179,7 @@ command:
 merge:
 	${CC} -o merge merge.c
 
-LISP_LIB=cmpnew/collectfn.o lsp/gprof.lsp lsp/info.o lsp/profile.lsp gcl-tk/tkl.o  gcl-tk/tinfo.o gcl-tk/decode.tcl gcl-tk/demos/*.lsp gcl-tk/demos/*.lisp gcl-tk/demos/*.o
+LISP_LIB=cmpnew/collectfn.o lsp/gprof.lsp lsp/info.o lsp/profile.lsp gcl-tk/tkl.o  gcl-tk/tinfo.o gcl-tk/decode.tcl gcl-tk/demos/*.lsp gcl-tk/demos/*.lisp gcl-tk/demos/*.o $(RL_LIB)
 
 install-command:
 	rm -f ${prefix}/bin/gcl
