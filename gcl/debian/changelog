@@ -1,3 +1,10 @@
+gcl (2.6.1-24) unstable; urgency=low
+
+  * Revert unixport/makefile link order fix for windows, breaks
+    compiler::link, find another way
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 11 Feb 2004 19:12:41 -0500
+
 gcl (2.6.1-23) unstable; urgency=low
 
   * Remove calls to init-readline with new automatic readline setup

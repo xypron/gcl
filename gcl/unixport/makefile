@@ -6,6 +6,7 @@ LIBC	= -lc
 
 HDIR	= ../h
 ODIR	= ../o
+MDIR	= ../mod
 LSPDIR	= ../lsp
 CMPDIR	= ../cmpnew
 CLCSDIR = ../clcs
@@ -41,11 +42,12 @@ bfdfiles: $(shell find ../binutils -name "*.o")
 	done 
 	touch $@
 
-OOBJS:=$(shell j=$$(ar t $(ODIR)/gcllib.a) ; for i in $$(ls -1 $(ODIR)/*.o) ; do if ! echo $$j |grep $$(basename $$i) >/dev/null 2>&1 ; then echo $$i | fgrep -v $(FIRST_FILE) | fgrep -v $(LAST_FILE) ; fi ; done)
+OOBJS:=$(shell j=$$(ar t $(ODIR)/gcllib.a) ; for i in $$(ls -1 $(ODIR)/*.o) ; do if ! echo $$j |grep $$(basename $$i) >/dev/null 2>&1 ; then echo $$i ; fi ; done)
 OBJS:=$(OOBJS) $(shell ls -1 $(LSPDIR)/*.o)
 OBJS:=$(OBJS) $(shell ls -1 $(CMPDIR)/*.o | grep -v collectfn.o)
 
-PCLOBJS:=$(shell ls -1 $(PCLDIR)/*.o)
+MODOBJS:=$(shell ls -1 $(MDIR)/*.o)
+PCLOBJS:=$(MODOBJS) $(shell ls -1 $(PCLDIR)/*.o)
 ANSIOBJS:=$(PCLOBJS) $(shell ls -1 $(CLCSDIR)/*.o)
 
 $(LSPDIR)/auto_new.lsp: $(LSPDIR)/auto.lsp
@@ -57,6 +59,9 @@ init_gcl.lsp.tmp: init_gcl.lsp.in
 	cp $< $@
 
 init_pre_gcl.lsp.tmp: init_pre_gcl.lsp.in
+	cp $< $@
+
+init_mod_gcl.lsp.tmp: init_mod_gcl.lsp.in
 	cp $< $@
 
 init_xgcl.lsp.tmp: init_gcl.lsp.tmp
@@ -114,29 +119,32 @@ $(RSYM): $(SPECIAL_RSYM) $(HDIR)/mdefs.h
 $(HDIR)/mdefs.h: $(HDIR)/include.h
 	cat $(HDIR)/include.h | sed -e "/include/d" > $(HDIR)/mdefs.h
 
-libgcl.a: $(OBJS) sys_gcl.o gmpfiles bfdfiles
+libgcl.a: $(FIRST_FILE) $(OBJS) sys_gcl.o $(LAST_FILE) gmpfiles bfdfiles
 	rm -rf $@
 	$(ARRS) $@ $(filter %.o,$^) $(shell find gmp bfd -name "*.o")
 
-libpre_gcl.a: $(OOBJS) sys_pre_gcl.o gmpfiles bfdfiles
+libpre_gcl.a: $(FIRST_FILE) $(OOBJS) sys_pre_gcl.o $(LAST_FILE) gmpfiles bfdfiles
+	rm -rf $@
+	$(ARRS) $@ $(filter %.o,$^) $(shell find gmp bfd -name "*.o")
+
+libmod_gcl.a: $(FIRST_FILE) $(OBJS) $(MODOBJS) sys_mod_gcl.o $(LAST_FILE) gmpfiles bfdfiles
 	rm -rf $@
 	$(ARRS) $@ $(filter %.o,$^) $(shell find gmp bfd -name "*.o")
 
 libxgcl.a: libgcl.a
 	ln -snf $< $@
 
-libansi_gcl.a: $(OBJS) $(ANSIOBJS) sys_ansi_gcl.o gmpfiles bfdfiles
+libansi_gcl.a: $(FIRST_FILE) $(OBJS) $(ANSIOBJS) sys_ansi_gcl.o $(LAST_FILE) gmpfiles bfdfiles
 	rm -rf $@
 	$(ARRS) $@ $(filter %.o,$^) $(shell find gmp bfd -name "*.o")
 
-libpcl_gcl.a: $(OBJS) $(PCLOBJS) sys_pcl_gcl.o gmpfiles bfdfiles
+libpcl_gcl.a: $(FIRST_FILE) $(OBJS) $(PCLOBJS) sys_pcl_gcl.o $(LAST_FILE) gmpfiles bfdfiles
 	rm -rf $@
 	$(ARRS) $@ $(filter %.o,$^) $(shell find gmp bfd -name "*.o")
 
 raw_%: lib%.a libgclp.a $(SYSTEM_OBJS) $(EXTRAS)
-	$(CC) -o raw_$*$(EXE) $(FIRST_FILE) $(filter %.o,$^) \
-		-L. $(EXTRA_LD_LIBS) $(LD_LIBS_PRE) -l$* $(LD_LIBS_POST) \
-		$(LAST_FILE)
+	$(CC) -o raw_$*$(EXE) $(filter %.o,$^) \
+		-L. $(EXTRA_LD_LIBS) $(LD_LIBS_PRE) -l$* $(LD_LIBS_POST)
 
 clean:
 	rm -rf  saved_*$(EXE) raw_*$(EXE) *.o core a.out $(RSYM) \
