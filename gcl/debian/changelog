@@ -36,8 +36,9 @@ gcl (2.5.4-1) unstable; urgency=low
   * Rework debian package structure to handle stable and cvs packages
     simultaneously
   * Add gazonk*.lsp to clean target
+  * syntax fix to lsp/gprof.hc
 
- -- Camm Maguire <camm@enhanced.com>  Fri, 22 Aug 2003 17:05:18 +0000
+ -- Camm Maguire <camm@enhanced.com>  Fri, 22 Aug 2003 17:11:19 +0000
 
 gcl (2.5.3-2) unstable; urgency=low
 
