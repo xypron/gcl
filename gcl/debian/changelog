@@ -16,8 +16,9 @@ gcl (2.6.1-10) unstable; urgency=low
     files and recompile from lsp
   * Rebuild with opts enabled
   * Iterate sys-proclaim/rebuild generation once more
+  * Iterate sys-proclaim/rebuild for pcl and clcs
 
- -- Camm Maguire <camm@enhanced.com>  Tue, 23 Sep 2003 18:57:17 +0000
+ -- Camm Maguire <camm@enhanced.com>  Tue, 23 Sep 2003 19:33:27 +0000
 
 gcl (2.6.1-9) unstable; urgency=low
 

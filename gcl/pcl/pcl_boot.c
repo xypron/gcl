@@ -2664,24 +2664,24 @@ static void L38()
 	{object V383= (V382->c.c_car);
 	{object V384=getf(V383,VV[68],OBJNULL);
 	if(V384==OBJNULL){
-	base[2]= Cnil;
-	} else {
-	base[2]= V384;}}
+	base[2]= Cnil;} else {
+	base[2]= V384;
+	}}
 	{object V385=getf(V383,VV[69],OBJNULL);
 	if(V385==OBJNULL){
-	base[3]= Cnil;
-	} else {
-	base[3]= V385;}}
+	base[3]= Cnil;} else {
+	base[3]= V385;
+	}}
 	{object V386=getf(V383,VV[70],OBJNULL);
 	if(V386==OBJNULL){
-	base[4]= Cnil;
-	} else {
-	base[4]= V386;}}
+	base[4]= Cnil;} else {
+	base[4]= V386;
+	}}
 	{object V387=getf(V383,VV[71],OBJNULL);
 	if(V387==OBJNULL){
-	base[5]= Cnil;
-	} else {
-	base[5]= V387;}}
+	base[5]= Cnil;} else {
+	base[5]= V387;
+	}}
 	check_other_key(V383,4,VV[68],VV[69],VV[70],VV[71]);}
 	V382=V382->c.c_cdr;
 	base[6]= V382;}
