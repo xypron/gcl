@@ -28,8 +28,7 @@ Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include "include.h"
 
-void
-Lfboundp(void)
+LFD(Lfboundp)(void)
 {
 	object sym;
 
@@ -65,8 +64,7 @@ symbol_function(object sym)
 		(macro . function-closure)	for macros
 		(special . address)		for special forms.
 */
-void
-Lsymbol_function(void)
+LFD(Lsymbol_function)(void)
 {
 	object sym;
 
@@ -92,7 +90,7 @@ Lsymbol_function(void)
 }
 
 static void
-Fquote(object form)
+FFN(Fquote)(object form)
 {
 
 	if (endp(form))
@@ -104,7 +102,7 @@ Fquote(object form)
 }
 
 static void
-Ffunction(object form)
+FFN(Ffunction)(object form)
 {
 
 	object fun;
@@ -138,8 +136,7 @@ Ffunction(object form)
 		FEinvalid_function(fun);
 }
 
-void
-Lsymbol_value(void)
+LFD(Lsymbol_value)(void)
 {
 	object sym;
 	check_arg(1);
@@ -152,8 +149,7 @@ Lsymbol_value(void)
 		vs_base[0] = sym->s.s_dbind;
 }
 
-void
-Lboundp(void)
+LFD(Lboundp)(void)
 {
 	object sym;
 	check_arg(1);
@@ -166,8 +162,7 @@ Lboundp(void)
 		vs_base[0] = Ct;
 }
 
-void
-Lmacro_function(void)
+LFD(Lmacro_function)(void)
 {
 	check_arg(1);
 	if (type_of(vs_base[0]) != t_symbol)
@@ -178,8 +173,7 @@ Lmacro_function(void)
 		vs_base[0] = Cnil;
 }
 
-void
-Lspecial_form_p(void)
+LFD(Lspecial_form_p)(void)
 {
 	check_arg(1);
 	if (type_of(vs_base[0]) != t_symbol)
@@ -195,7 +189,7 @@ gcl_init_reference(void)
 {
 	make_function("SYMBOL-FUNCTION", Lsymbol_function);
 	make_function("FBOUNDP", Lfboundp);
-	make_special_form("QUOTE", Fquote);
+	sLquote=make_special_form("QUOTE", Fquote);
 	sLfunction = make_special_form("FUNCTION", Ffunction);
 	make_function("SYMBOL-VALUE", Lsymbol_value);
 	make_function("BOUNDP", Lboundp);

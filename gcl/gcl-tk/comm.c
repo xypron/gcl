@@ -42,7 +42,12 @@ available on FD, 0 if timeout reached and -1 if failed.")
   else
     return make_fixnum1(0);
 }
-
+#ifdef STATIC_FUNCTION_POINTERS
+object
+fScheck_fd_for_input(fixnum fd,fixnum timeout) {
+  return FFN(fScheck_fd_for_input)(fd,timeout);
+}
+#endif
 
 
 
@@ -178,7 +183,7 @@ int m;
     { bcopy(sfd->valid_data,sfd->read_buffer,sfd->valid_data_size);
       sfd->valid_data=sfd->read_buffer;}
    /* there is at least a packet size of space available */   
-  if ((fix(fScheck_fd_for_input(sfd->fd,sfd->write_timeout))>0));
+  if ((fix(FFN(fScheck_fd_for_input)(sfd->fd,sfd->write_timeout))>0));
      again:
         {char *start = sfd->valid_data+sfd->valid_data_size;
         nread = read(sfd->fd,start,
@@ -261,12 +266,18 @@ DEFUN_NEW("CLEAR-CONNECTION",object,fSclear_connection,SI,1,1,NONE,OI,OO,OO,OO,(
       "Read on FD until nothing left to read.  Return number of bytes read")
 {char buffer[0x1000];
  int n=0;
- while (fix(fScheck_fd_for_input(fd,0)))
+ while (fix(FFN(fScheck_fd_for_input)(fd,0)))
    { n+=read(fd,buffer,sizeof(buffer));
    }
  
  return make_fixnum1(n);
 }
+#ifdef STATIC_FUNCTION_POINTERS
+object
+fSclear_connection(fixnum fd) {
+  return FFN(fSclear_connection)(fd);
+}
+#endif
 
 
 
