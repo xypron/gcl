@@ -12,8 +12,9 @@ gcl (2.6.4-2) unstable; urgency=low
     and build automatically if needed either because gmp not present or
     patched symbols are needed; autodetect and set the _start symbol
     when using gprof
+  * Fix (setf (get ...) ...) return bug when interpreted
 
- -- Camm Maguire <camm@enhanced.com>  Thu, 12 Aug 2004 16:36:53 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu, 12 Aug 2004 16:41:08 +0000
 
 gcl (2.6.4-1) unstable; urgency=high
 
