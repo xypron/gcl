@@ -25,8 +25,9 @@ gcl (2.6.1-26) unstable; urgency=low
   * Support for both sigbus and sigsegv in sgbc.c as is customary in .h
     files
   * mach-o compatible changes in sfaslbfd.c
+  * Support for new debugging section names in sfaslelf.c
 
- -- Camm Maguire <camm@enhanced.com>  Wed, 25 Feb 2004 23:02:39 +0000
+ -- Camm Maguire <camm@enhanced.com>  Wed, 25 Feb 2004 23:04:01 +0000
 
 gcl (2.6.1-25) unstable; urgency=low
 
