@@ -983,10 +983,10 @@ init_main(void) {
 #endif	
 #endif
 
-#ifdef _WIN32
-  ADD_FEATURE("WINNT");
-  ADD_FEATURE("WIN32");
-#endif
+/* #ifdef _WIN32 */
+/*   ADD_FEATURE("WINNT"); */
+/*   ADD_FEATURE("WIN32"); */
+/* #endif */
 
 #ifdef IEEEFLOAT
   ADD_FEATURE("IEEE-FLOATING-POINT");
@@ -998,7 +998,10 @@ init_main(void) {
 /*   ADDITIONAL_FEATURES; */
 /* #endif */
   ADD_FEATURE(HOST_CPU);
-  ADD_FEATURE(HOST_OS);
+  ADD_FEATURE(HOST_KERNEL);
+#ifdef HOST_SYSTEM
+  ADD_FEATURE(HOST_SYSTEM);
+#endif
 #ifdef  BSD
   ADD_FEATURE("BSD");
 #endif
