@@ -8,8 +8,10 @@ gcl (2.6.1-10) unstable; urgency=low
     compiled macros
   * Optional compiler init file is called gcl_cmpinit
   * fasdmacros.lsp -> gcl_fasdmacros.lsp
+  * All cmpinit.lsp files named gcl_cmpinit.lsp; allow full lisp
+    optimization in all directories
 
- -- Camm Maguire <camm@enhanced.com>  Tue, 23 Sep 2003 18:29:14 +0000
+ -- Camm Maguire <camm@enhanced.com>  Tue, 23 Sep 2003 18:33:51 +0000
 
 gcl (2.6.1-9) unstable; urgency=low
 
