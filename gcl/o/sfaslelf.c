@@ -35,7 +35,7 @@ License for more details.
 #include <sys/types.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
-
+#include <string.h>
 
 #include <elf.h>
 

@@ -14,8 +14,9 @@ gcl (2.6.1-28) unstable; urgency=low
   * Eliminate extraneous warning message when allocating fewer pages
     than already allocated
   * Rework internal plt symbol address capture
+  * Cleanup sfaslelf compiler warning
 
- -- Camm Maguire <camm@enhanced.com>  Wed,  3 Mar 2004 00:24:14 +0000
+ -- Camm Maguire <camm@enhanced.com>  Wed,  3 Mar 2004 00:27:08 +0000
 
 gcl (2.6.1-27) unstable; urgency=low
 
