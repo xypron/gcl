@@ -16,7 +16,7 @@ MPFILES=$(MPDIR)/mpi-386_no_under.o $(MPDIR)/libmport.a
 # root for the installation, eg /usr/local
 # This would cause make install to create /usr/local/bin/gcl and
 # /usr/local/lib/gcl-2-??/* with some basic files.
-prefix=/usr/local
+prefix=/fix/f/debian/mm/gcl/gcl-2.5.0/../tmp
 
 # where to place the info files
 INFO_DIR=/usr/info/
@@ -46,9 +46,9 @@ TCL_LIBS=-ldl  -lm
 NOTIFY=yes
 GCC=gcc
 
+RL_OBJS=
 
-
-
+RL_LIB=
 
 GCLDIR=/fix/f/debian/mm/gcl/gcl-2.5.0
 SHELL=/bin/sh
@@ -65,10 +65,12 @@ MACHINE=386-linux
 
 LBINDIR=/usr/local/bin
 
-OFLAG	=  -O 
-LIBS	= -lm 
+OFLAG	=  -g 
+#OFLAG	=  -O 
+#LIBS	= -lm 
 
-ODIR_DEBUG= -O4 
+#ODIR_DEBUG= -O4 
+ODIR_DEBUG= -g
 
 # This CC string will be used for compilation of the system,
 # and also in the compiler::*cc* variable for later compilation of
@@ -147,14 +149,14 @@ install-html: gcl-tk_toc.html gcl-si_toc.html
 	cp *.html /d/www/gcl
 
 install:
-	if [  -d "${INFO_DIR}" ] ; then true ; else exit 0; fi
-	-if fgrep gcl-si ${INFO_DIR}/dir > /dev/null ; then true ; else \
-	echo "* GCL Doc: (gcl-si.info).	GNU Common Lisp specific Documentation." >> ${INFO_DIR}/dir ; fi
-	-if fgrep gcl-tk ${INFO_DIR}/dir > /dev/null ; then true ; else \
-	echo "* GCL TK Doc: (gcl-tk.info).	TK window GCL interface." >> ${INFO_DIR}/dir ; fi
-	-if fgrep gcl.info ${INFO_DIR}/dir > /dev/null ; then true ; else \
-	echo "* GCL Ansi Doc: (gcl.info).  Ansi Common Lisp Specification." >> ${INFO_DIR}/dir ; fi
-	-if [  -d "${INFO_DIR}" ] ; then 	cp *.info* ${INFO_DIR} ; fi
+#	if [  -d "${INFO_DIR}" ] ; then true ; else exit 0; fi
+#	-if fgrep gcl-si ${INFO_DIR}/dir > /dev/null ; then true ; else \
+#	echo "* GCL Doc: (gcl-si.info).	GNU Common Lisp specific Documentation." >> ${INFO_DIR}/dir ; fi
+#	-if fgrep gcl-tk ${INFO_DIR}/dir > /dev/null ; then true ; else \
+#	echo "* GCL TK Doc: (gcl-tk.info).	TK window GCL interface." >> ${INFO_DIR}/dir ; fi
+#	-if fgrep gcl.info ${INFO_DIR}/dir > /dev/null ; then true ; else \
+#	echo "* GCL Ansi Doc: (gcl.info).  Ansi Common Lisp Specification." >> ${INFO_DIR}/dir ; fi
+#	-if [  -d "${INFO_DIR}" ] ; then 	cp *.info* ${INFO_DIR} ; fi
 
 
 
