@@ -1,3 +1,9 @@
+gcl (2.6.1-3) unstable; urgency=low
+
+  * Fix static detection fr ia64; contblock size detection on arm
+
+ -- Camm Maguire <camm@enhanced.com>  Fri,  5 Sep 2003 21:29:17 +0000
+
 gcl (2.6.1-2) unstable; urgency=low
 
   * Add windows/install.lsp to clean target
