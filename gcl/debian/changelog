@@ -1,3 +1,12 @@
+gcl (2.5.3-2) unstable; urgency=low
+
+  * New upstream release
+  * Restore object_to_float and object_to_double, cmpaux.c, Closes: #195470.
+  * Remove obsolete functiion multiply-bignum-stack from documentation,
+    si-defs.texi
+
+ -- Camm Maguire <camm@enhanced.com>  Mon,  2 Jun 2003 10:13:17 -0400
+
 gcl (2.5.2-1) unstable; urgency=low
 
   * New upstream release
