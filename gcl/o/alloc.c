@@ -1485,6 +1485,16 @@ malloc(size_t size) {
 	     	RECREATE_HEAP
 #endif
 		;
+#ifdef       __MINGW32__ 
+                   /* If malloc() gets called by the C runtime before 
+                    * main starts and the shared memory is not yet 
+                    * initialised causing boofo. 
+                    * SET_REAL_MAXPAGE calls init_shared_memory(). 
+                    * This problem arose with gcc 3.4.2 and new libs. 
+                    */ 
+                   SET_REAL_MAXPAGE 
+                   ; 
+#endif 
 	   }
 	}
 
