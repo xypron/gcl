@@ -1,3 +1,10 @@
+gcl (2.6.1-39) unstable; urgency=high
+
+  * Fix segfault in referencing (sgc_)type_map out of bounds which can
+    occurr when C stack is below heap, as on alpha.
+
+ -- Camm Maguire <camm@enhanced.com>  Fri,  7 May 2004 21:32:36 +0000
+
 gcl (2.6.1-38) unstable; urgency=low
 
   * Make *features* entries keywords -- add canonical host cpu and
