@@ -19,8 +19,9 @@ gcl (2.6.2-1) unstable; urgency=low
   * Patch to mingwin.c:fix_filename to close long standing 'maxima
     ignore-errors filename corruption' bug on mingw
   * Check for too large rank supplied to make-array1
+  * Fix potential stack overwrite bug in quick_call_sfun/eval.c
 
- -- Camm Maguire <camm@enhanced.com>  Tue,  8 Jun 2004 15:33:55 -0400
+ -- Camm Maguire <camm@enhanced.com>  Thu, 10 Jun 2004 21:06:21 -0400
 
 gcl (2.6.1-39) unstable; urgency=high
 
