@@ -38,8 +38,9 @@ gcl (2.6.2-1) unstable; urgency=low
   * C_GC_OFFSET is 2 on m68k-linux
   * Add release notes, remove gcl document presumably based on dpANS for
     now
+  * Fixup bad extern declaration of signals_handled in usig.c
 
- -- Camm Maguire <camm@enhanced.com>  Fri, 25 Jun 2004 22:39:59 +0000
+ -- Camm Maguire <camm@enhanced.com>  Fri, 25 Jun 2004 22:43:52 +0000
 
 gcl (2.6.1-39) unstable; urgency=high
 
