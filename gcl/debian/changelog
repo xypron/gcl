@@ -6,8 +6,9 @@ gcl (2.6.1-19) unstable; urgency=low
   * Minor merges for DARWIN support
   * Path to configure to make --enable-emacsdir work
   * Check for readline/readline.h header before configuring for readline
+  * Improve system bfd library location detection
 
- -- Camm Maguire <camm@enhanced.com>  Sun, 16 Nov 2003 18:29:36 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sun, 16 Nov 2003 19:07:58 +0000
 
 gcl (2.6.1-18) unstable; urgency=low
 
