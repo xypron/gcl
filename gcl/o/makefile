@@ -17,14 +17,6 @@ LIBFILES= bcmp.o bcopy.o bzero.o user_init.o
 MAIN_DEBUG=
 DPP	= ../bin/dpp
 
-# If you have static GNU Readline 4.0 library, modify the following
-# Note that it is possible to configure Readline use ncurses instead termcap
-RL_PREFIX=/cdimage
-RL_LIB_SPEC=-L$(RL_PREFIX)/lib -lreadline -ltermcap
-RL_INCLUDE=-I$(RL_PREFIX)/include
-RL_OBJS=$(OD)readline.o
-
-
 # AUX_INFO=-aux-info $*.X
 .c.o:
 	$(CC) -c $(OFLAG) $(CFLAGS) $*.c $(AUX_INFO) 
@@ -58,7 +50,7 @@ MPFILES=$(MPDIR)/mpi-386_no_under.o $(MPDIR)/libmport.a
 # root for the installation, eg /usr/local
 # This would cause make install to create /usr/local/bin/gcl and
 # /usr/local/lib/gcl-2-??/* with some basic files.
-prefix=/usr/local
+prefix=/fix/f/debian/mm/gcl/gcl-2.5.0/../tmp
 
 # where to place the info files
 INFO_DIR=/usr/info/
@@ -88,9 +80,9 @@ TCL_LIBS=-ldl  -lm
 NOTIFY=yes
 GCC=gcc
 
+RL_OBJS=
 
-
-
+RL_LIB=
 
 GCLDIR=/fix/f/debian/mm/gcl/gcl-2.5.0
 SHELL=/bin/sh
@@ -107,10 +99,12 @@ MACHINE=386-linux
 
 LBINDIR=/usr/local/bin
 
-OFLAG	=  -O 
-LIBS	= -lm 
+OFLAG	=  -g 
+#OFLAG	=  -O 
+#LIBS	= -lm 
 
-ODIR_DEBUG= -O4 
+#ODIR_DEBUG= -O4 
+ODIR_DEBUG= -g
 
 # This CC string will be used for compilation of the system,
 # and also in the compiler::*cc* variable for later compilation of
