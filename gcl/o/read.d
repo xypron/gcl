@@ -2742,7 +2742,7 @@ read_fasl_vector1(in)
 object in;
 {
 	int dimcount, dim;
-	object *vsp;		
+	object *vsp,vspo;		
 	VOL object x;
 	int i;
 	bool e;
@@ -2755,7 +2755,7 @@ object in;
 		old_sharp_eq_context[SHARP_EQ_CONTEXT_SIZE];
 	int old_backq_level;
 
-	vsp=(object *)&vsp;
+	vsp=&vspo;
 	old_READtable = READtable;
 	old_READdefault_float_format = READdefault_float_format;
 	old_READbase = READbase;
