@@ -29,8 +29,9 @@ gcl (2.6.2-1) unstable; urgency=low
     va_arg(,fixnum)
   * reenable SA_SIGINFO on amd64 to restore SGC there
   * Include elf.h in FreeBSD.h
+  * Allow for elf_abi.h in FreeBSD.h
 
- -- Camm Maguire <camm@enhanced.com>  Sat, 12 Jun 2004 05:21:30 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat, 12 Jun 2004 16:21:33 +0000
 
 gcl (2.6.1-39) unstable; urgency=high
 
