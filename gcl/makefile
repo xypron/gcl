@@ -210,9 +210,9 @@ install1:
 	sed -e "s:GCL_TK_DIR=.*:GCL_TK_DIR=${INSTALL_LIB_DIR}/gcl-tk:g"  \
 	-e "s:TK_LIBRARY=.*:TK_LIBRARY=${TK_LIBRARY}:g" > \
 	${INSTALL_LIB_DIR}/gcl-tk/gcltksrv
-	-if [ "${TK_CONFIG_PREFIX}" != "unknown" ] ; then  \
+	-if [ -d "${TK_CONFIG_PREFIX}" ] ; then  \
 	chmod a+x ${INSTALL_LIB_DIR}/gcl-tk/gcltksrv ; fi
-	-if [ "${TK_CONFIG_PREFIX}" != "unknown" ] ; then  \
+	-if [ -d "${TK_CONFIG_PREFIX}" ] ; then  \
 	(cd ${INSTALL_LIB_DIR}/gcl-tk/demos ; \
 	echo '(load "../tkl.o")(TK::GET-AUTOLOADS (directory "*.lisp"))' | ${prefix}/bin/gcl) ; fi
 	(cd elisp ; make install)
