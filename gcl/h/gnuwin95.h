@@ -28,6 +28,8 @@
 #define BSD
 #endif
 
+#define IS_DIR_SEPARATOR(x) ((x=='/')||(x=='\\'))
+
 #undef NEED_GETWD
 #ifdef IN_UNIXFSYS
 #undef ATT

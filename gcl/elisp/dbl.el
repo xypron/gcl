@@ -54,11 +54,17 @@
 
 (require 'sshell)
 (require 'smart-complete)
+(define-key sshell-mode-map "\ep" 'smart-complete)
+(define-key sshell-mode-map "\M-p" 'smart-complete)
 (require 'gcl)
 (autoload 'maxima-mode "maxima-mode" "Major mode for editing maxima code and interacting with debugger" t)
 (autoload 'gcl-mode "gcl" "Major mode for editing maxima code and interacting with debugger" t)
+(or (rassoc 'maxima-mode auto-mode-alist)
 (setq auto-mode-alist (cons '("\\.ma?[cx]\\'" . maxima-mode) auto-mode-alist))
+)
+(or (rassoc 'gcl-mode auto-mode-alist)
 (setq auto-mode-alist (cons '("\\.li?sp\\'" . gcl-mode) auto-mode-alist))
+)
 
 (defvar dbl-prompt-pattern
    "\\(^\\|\n\\)[^ >]*[>$)%#:][>]*[ ]*"

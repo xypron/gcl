@@ -127,10 +127,30 @@ struct longfloat_struct {
 #define	Mlf(obje)	(obje)->LF.LFVAL
 #define lf(x) Mlf(x)
 
+
+
+#ifdef _MP_H
+
+#else
+typedef struct
+{
+  int _mp_alloc;		/* Number of *limbs* allocated and pointed
+				   to by the _mp_d field.  */
+  int _mp_size;			/* abs(_mp_size) is the number of limbs the
+				   last field points to.  If _mp_size is
+				   negative this is a negative number.  */
+  void *_mp_d;		/* Pointer to the limbs.  */
+} __mpz_struct;
+#endif
+
 struct bignum {
 			FIRSTWORD;
-	plong             *big_self;	/*  bignum body  */
-	int		big_length;	/*  bignum length  */
+#ifdef GMP
+  __mpz_struct big_mpz_t;
+#else
+  plong             *big_self;	/*  bignum body  */
+  int		big_length;	/*  bignum length  */
+#endif  
 };
 
 struct ratio {
@@ -341,10 +361,10 @@ struct ustring {
 #define SHORT(x,i) ((( short *)(x)->ust.ust_self)[i])
 
 #define BV_OFFSET(x) ((type_of(x)==t_bitvector ? x->bv.bv_offset : \
-		       type_of(x)== t_array ? x->a.a_offset : abort()))
+		       type_of(x)== t_array ? x->a.a_offset : abort(),0))
 
 #define SET_BV_OFFSET(x,val) ((type_of(x)==t_bitvector ? x->bv.bv_offset = val : \
-		       type_of(x)== t_array ? x->a.a_offset=val : abort()))
+		       type_of(x)== t_array ? x->a.a_offset=val : abort(),0))
 
 
 		       
@@ -503,7 +523,9 @@ enum gcl_sm_flags {
   gcl_sm_blocking=1,
   gcl_sm_tcp_async,
   gcl_sm_input,
-  gcl_sm_output
+  gcl_sm_output,
+  gcl_sm_had_error
+  
   
 };
   

@@ -1,3 +1,52 @@
+2001-04-15  Bill Schelter  <wfs@linux163.ma.utexas.edu>
+
+	*  Added changes to allow the loading .o files compiled
+	on -O4 under linux, and also added this to be the default
+	optimize level if speed = 3.   speed = 2 gives -O still
+
+2001-04-13  Bill Schelter  <wfs@sonia.ma.utexas.edu>
+
+	* fix the NULL_OR_ON_C_STACK macro for x86 linux in notcomp.h
+	  and in 386-linux.h
+
+2001-01-30  Bill Schelter  <wfs@sonia.ma.utexas.edu>
+
+	* many changes added for MS windows version..
+	* add check on CSTACK_ADDRESS to configure for NULL_OR_ON_C_STACK
+
+2000-10-27  Bill Schelter  <wfs@sonia.ma.utexas.edu>
+
+	*  o/file.d bug in close_stream
+	*  add xbin/386-linux-fix to knock the -O4 flag off of gcc if
+	it is version 2.96 because of a C compiler bug
+	*  fixes to configure.in to better find the tcl tk stuff.
+
+2000-06-01  Bill Schelter  <wfs@sonia.ma.utexas.edu>
+
+	* o/print.d: change printing of pathnames to use the more
+	standard #p"foo.bar"  instead of #"foo.bar"
+	* o/read.d: allow pathnames #p"foo.bar" instead of just #"foo.bar"
+	as many implementations do.
+	
+	
+
+2000-05-13  Bill Schelter  <wfs@sonia.ma.utexas.edu>
+
+	* fix readme file
+	* update gcl-2.3/mp/mpi-sol-sparc.s for the 'sparc' version.
+	* number of changes to 'configure.in' to handle finding
+	paths correctly. 
+
+2000-05-02  Bill Schelter  <wfs@linux119.ma.utexas.edu>
+
+	* rsym_elf.c (out;): strip off the @@GLIB* from symbols,
+	in the base image, since this is not added to .o files
+	With advent of GLIB2.0 this addition to the symbol was made.
+	This will allow dynamic linking of the raw_gcl with the C library.
+	* remove the -static default from the 386-linux.defs file,
+	so that links will by default be dynamic for libc ..
+	
+
 Fri Mar 28 16:23:18 1997  Bill Schelter  <wfs@marie.ma.utexas.edu>
 
 	* fix o/unexelf.c for section following bss overlapping it.

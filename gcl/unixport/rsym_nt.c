@@ -1,8 +1,11 @@
 /* defining IN_SFASL gets us fopen_binary  */
-#define IN_SFASL
-#include "config.h"
+
+/* #include "config.h" */
 #include <stdio.h>
+
 #include "ext_sym.h"
+
+
 
 
 struct lsymbol_table tab;
@@ -22,10 +25,10 @@ main(int argc,char *argv[])
       printf("faile: %s",buf);
       exit(1);
     }
-  { FILE *fp = fopen("_rsym1","r");
+  { FILE *fp = fopen("_rsym1","rb");
   FILE *symout;
   char buf1[1000];
-  symout=fopen(out,"wr");
+  symout=fopen(out,"wb");
   if (!symout)
     {perror(out); exit(1);};
   tab.n_symbols=0;

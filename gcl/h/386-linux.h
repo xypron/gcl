@@ -1,3 +1,4 @@
+/* #define GMP */
 #define BSD386
 #include "bsd.h"
 
@@ -75,15 +76,19 @@ do {static struct sigaction action; \
 /* is #define ELF_TEXT_BASE 0x8000000   on current linux */
 #define ELF_TEXT_BASE  DBEGIN
 
-
+/* on some linux x86 machines the C stack starts in positive number
+   range, however since we might compile on one and run on another
+   we will have to do this:
+*/   
+#define NULL_OR_ON_C_STACK(x) ((x)==0 || ((unsigned int)x) > (unsigned int)(pagetochar(MAXPAGE+1)))
 
 #undef SET_REAL_MAXPAGE
 #define SET_REAL_MAXPAGE do { struct rlimit data_rlimit; \
                                extern char etext; \
 			       real_maxpage = MAXPAGE ;\
      	getrlimit(RLIMIT_DATA, &data_rlimit); \
-			real_maxpage = ((unsigned int)&etext \
-			+ data_rlimit.rlim_cur - ELF_TEXT_BASE)/PAGESIZE; \
+			real_maxpage = ((unsigned int)&etext/PAGESIZE \
+			+ data_rlimit.rlim_cur/PAGESIZE - ELF_TEXT_BASE/PAGESIZE); \
 	if (real_maxpage > MAXPAGE) \
 		real_maxpage = MAXPAGE ; } while(0)
 
@@ -194,8 +199,13 @@ do { int c = 0; \
 /* if you are in an early version of linux without SIGBUS, uncomment
    the next line */
 /* #define SIGBUS SIGSEGV */
+#ifndef HAVE_SIGSYS
 #define SIGSYS SIGSEGV
+#endif
+
+#ifndef HAVE_SIGEMT
 #define SIGEMT SIGSEGV
+#endif
 
 
 /* get the fileno of a FILE* */
@@ -212,6 +222,9 @@ do { int c = 0; \
             main,start,input,ldarg,output)
 
 #define SET_SESSION_ID() (setpgrp() ? -1 : 0)
+
+
+
 
 /* NOTE: The following text will be automatically included in a
    constructed file cmpinclude.h */
