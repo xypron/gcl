@@ -53,11 +53,49 @@
 
 (setq *msys-system-directory* (msysarise *system-directory*))
 
-(setq *root-directory* 
-      (kill-double-forwards (kill-backs (subseq *system-directory* 0 (- (length *system-directory*) 23)))))
+;; The following few lines remove the lib/gcl-???/unixport string.
+;; Can't do this by simple string substitution as W98 paths are shortened.
+;; All depends on path format including end separator.
 
+; Canonicalise directory separators
+(setq *root-directory* 
+      (kill-double-forwards (kill-backs *system-directory*)))
+
+; Remove end dir separator
+(setq *root-directory* 
+      (subseq *root-directory* 0 (search "/"  *root-directory*  :from-end t)))
+
+; Remove unixport and dir separator
+(setq *root-directory* 
+      (subseq *root-directory* 0 (search "/"  *root-directory*  :from-end t)))
+
+; Remove gcl-?.?.? and dir separator
+(setq *root-directory* 
+      (subseq *root-directory* 0 (search "/"  *root-directory*  :from-end t)))
+
+; Remove lib but not the dir separator
+(setq *root-directory* 
+      (subseq *root-directory* 0 (1+ (search "/"  *root-directory*  :from-end t))))
+
+; Canonicalise directory separators
 (setq *msys-root-directory* 
-      (kill-double-forwards (kill-backs (subseq *system-directory* 0 (- (length *msys-system-directory*) 23)))))
+      (kill-double-forwards (kill-backs *msys-system-directory*)))
+
+; Remove end dir separator
+(setq *msys-root-directory* 
+      (subseq *msys-root-directory* 0 (search "/"  *msys-root-directory*  :from-end t)))
+
+; Remove unixport and dir separator
+(setq *msys-root-directory* 
+      (subseq *msys-root-directory* 0 (search "/"  *msys-root-directory*  :from-end t)))
+
+; Remove gcl-?.?.? and dir separator
+(setq *msys-root-directory* 
+      (subseq *msys-root-directory* 0 (search "/"  *msys-root-directory*  :from-end t)))
+
+; Remove lib but not the dir separator
+(setq *msys-root-directory* 
+      (subseq *msys-root-directory* 0 (1+ (search "/"  *msys-root-directory*  :from-end t))))
 
 (setq *lib-directory* 
       (format nil "~a~a" *root-directory* "lib/gcl-@VERSION@/"))
