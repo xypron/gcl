@@ -1,4 +1,12 @@
-gcl (2.6.1-37) unstable; urgency=low
+gcl (2.6.1-38) unstable; urgency=low
+
+  * Make *features* entries keywords -- add canonical host cpu and
+    kernel-system to *features*, disable h files specific
+    ADDITIONAL_FEATURES macro in main.c
+
+ -- Camm Maguire <camm@enhanced.com>  Thu, 22 Apr 2004 16:40:15 +0000
+
+gcl (2.6.1-37) unstable; urgency=high
 
   * mprotect pages PROT_EXEC as CLEAR_CACHE step on amd64-linux
   * Prevent recursive malloc calls for OpenBSD error reporting

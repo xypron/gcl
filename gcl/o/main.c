@@ -964,10 +964,10 @@ init_main(void) {
   {object features;
   
 #define ADD_FEATURE(name) \
-	 features=  make_cons(make_ordinary(name),features)
+	 features=  make_cons(make_keyword(name),features)
   
-  features=    make_cons(make_ordinary("COMMON"),
-			 make_cons(make_ordinary("KCL"), Cnil));
+  features=    make_cons(make_keyword("COMMON"),
+			 make_cons(make_keyword("KCL"), Cnil));
   ADD_FEATURE("AKCL");
   ADD_FEATURE("GCL");
 #ifdef BROKEN_O4_OPT
@@ -988,9 +988,11 @@ init_main(void) {
 #ifdef SGC
   ADD_FEATURE("SGC");
 #endif	 
-#ifdef  ADDITIONAL_FEATURES
-  ADDITIONAL_FEATURES;
-#endif
+/* #ifdef  ADDITIONAL_FEATURES */
+/*   ADDITIONAL_FEATURES; */
+/* #endif */
+  ADD_FEATURE(HOST_CPU);
+  ADD_FEATURE(HOST_OS);
 #ifdef  BSD
   ADD_FEATURE("BSD");
 #endif
