@@ -2,8 +2,9 @@ gcl (2.6.1-2) unstable; urgency=low
 
   * Add windows/install.lsp to clean target
   * Add in macosx files to stable and cvs head
+  * Fix bad debelper postinst, Closes: #208765
 
- -- Camm Maguire <camm@enhanced.com>  Thu,  4 Sep 2003 15:11:54 +0000
+ -- Camm Maguire <camm@enhanced.com>  Fri,  5 Sep 2003 13:15:11 +0000
 
 gcl (2.6.1-1) unstable; urgency=low
 
