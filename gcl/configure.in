@@ -193,9 +193,9 @@ fi
 AC_CHECK_FUNC(gethostbyname, , AC_CHECK_LIB(nsl, main, [LIBS="$LIBS -lnsl"]))
 
 AC_CHECK_LIB(readline,main,
-	AC_CHECK_LIB(termcap,main,
+	AC_CHECK_LIB(ncurses,main,
 		AC_DEFINE(HAVE_READLINE) 
-		LIBS="$LIBS -lreadline -ltermcap"
+		LIBS="$LIBS -lreadline -lncurses"
 		RL_OBJS=readline.o
 		RL_LIB=lsp/readline.o))
 
