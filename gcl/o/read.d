@@ -22,7 +22,7 @@ Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 	read.d
 */
 
-#define NEED_MP_H
+
 #include "include.h"
 
 
@@ -357,13 +357,20 @@ L:
 	 { eof_code;} \
        else res=code_char(ch);} \
       else \
-	{ if (stream_at_end(in)) \
-	    {eof_code;} \
-	else res=read_char(in);}} while(0)
+	{int ch ; \
+	if(stream_at_end(in)) {eof_code ;} \
+	ch = readc_stream(in); \
+         if (ch == EOF) { eof_code;} \
+         res = code_char(ch); \
+          }} while(0)
 #else
 #define read_char_to(res,in,eof_code) \
-  if(stream_at_end(in)) {eof_code ;} \
-  else res=read_char(in)
+ do {if(stream_at_end(in)) {eof_code ;} \
+  else { int ch = readc_stream(in); \
+         if (ch == EOF) { eof_code;} \
+         res = code_char(ch); \
+          } \
+   } while(0)
 #endif
 
 /*
@@ -667,7 +674,7 @@ BEGIN:
 		i++;
 	}
 	integer_part = (object)  big_register_0;
-	ZERO_BIG(big_register_0);
+	zero_big(big_register_0);
 	vs_push((object)integer_part);
 	if (i >= end)
 		goto NO_NUMBER;
@@ -681,11 +688,39 @@ BEGIN:
 	}
 	if ((d = digitp(s[i], radix)) < 0)
 		goto NO_NUMBER;
+#define MOST_POSITIVE_FIX (((unsigned int) (~0) ) /2)
+#define TEN_EXPT_9 1000000000
+
+      if (radix == 10 && TEN_EXPT_9 <MOST_POSITIVE_FIX ) {
+        int chunk = 0;
+        int sum = 0;
+	do {    sum = 10*sum+d;
+                chunk++;
+                if (chunk == 9) {
+		mul_int_big(1000000000, integer_part);
+		add_int_big(sum, integer_part);
+                chunk=0; sum=0;
+            } 
+	     i++;
+	} while (i < end && (d = digitp(s[i], radix)) >= 0);
+        if (chunk) {
+          int fac=10;
+          while(--chunk> 0) {fac *=10;}
+          mul_int_big(fac,integer_part);
+          add_int_big(sum,integer_part);
+        }
+
+    } else {
+                
+        
 	do {
 		mul_int_big(radix, integer_part);
 		add_int_big(d, integer_part);
 		i++;
 	} while (i < end && (d = digitp(s[i], radix)) >= 0);
+     }
+
+
 	if (i >= end)
 		goto MAKE_INTEGER;
 	if (s[i] == '.') {
@@ -723,7 +758,7 @@ MAKE_INTEGER:
 /**/
 	if (x == big_register_0)
 		big_register_0 = alloc_object(t_bignum);
-	ZERO_BIG(big_register_0);
+	zero_big(big_register_0);
 
 /**/
 	goto END;
@@ -823,7 +858,7 @@ MAKE_FLOAT:
 		goto NO_NUMBER;
 	}
 /**/
-	ZERO_BIG(big_register_0);
+	zero_big(big_register_0);
 
 
 /**/
@@ -835,14 +870,14 @@ DENOMINATOR:
 	vs_push(normalize_big_to_object(integer_part));
 /**/
 	if (vs_head == big_register_0)
-		big_register_0 = alloc_object(t_bignum);
-	ZERO_BIG(big_register_0);
+		big_register_0 = new_bignum();
+	zero_big(big_register_0);
 
 /**/
 	if ((d = digitp(s[i], radix)) < 0)
 		goto NO_NUMBER;
-	integer_part = alloc_object(t_bignum);
-	ZERO_BIG(integer_part);
+	integer_part = big_register_0;
+	/*	zero_big(integer_part); */
 	do {
 		mul_int_big(radix, integer_part);
 		add_int_big(d, integer_part);
@@ -861,7 +896,7 @@ NO_NUMBER:
 	*ep = i;
 	vs_reset;
 /**/
-	ZERO_BIG(big_register_0);
+	zero_big(big_register_0);
 
 
  /**/
@@ -893,18 +928,21 @@ int end, *ep, radix;
 		goto NO_NUMBER;
 	if ((d = digitp(s[i], radix)) < 0)
 		goto NO_NUMBER;
+        
 	do {
 		mul_int_big(radix, integer_part);
 		add_int_big(d, integer_part);
 		i++;
 	} while (i < end && (d = digitp(s[i], radix)) >= 0);
+
+
 	if (sign < 0)
 		set_big_sign(integer_part,-1);
 	x = normalize_big_to_object(integer_part);
 /**/
 	if (x == big_register_0)
 		big_register_0 = alloc_object(t_bignum);
-	ZERO_BIG(big_register_0);
+	zero_big(big_register_0);
 	
 /**/
 	*ep = i;
@@ -915,7 +953,7 @@ NO_NUMBER:
 	*ep = i;
 	vs_reset;
 /**/
-	ZERO_BIG(big_register_0);
+	zero_big(big_register_0);
 /**/
 	return(OBJNULL);
 }
@@ -1740,6 +1778,21 @@ Ldefault_dispatch_macro()
 }
 
 /*
+	#p" ... " returns the pathname with namestring ... .
+*/
+static
+Lsharp_p_reader()
+{
+	check_arg(3);
+	if (vs_base[2] != Cnil && !READsuppress)
+		extra_argument('p');
+	vs_pop;
+	vs_pop;
+	vs_base[0] = read_object(vs_base[0]);
+	vs_base[0] = coerce_to_pathname(vs_base[0]);
+}
+
+/*
 	#" ... " returns the pathname with namestring ... .
 */
 Lsharp_double_quote_reader()
@@ -2011,13 +2064,15 @@ READ:
 	else if (strm == Ct)
 		strm = symbol_value(sLAterminal_ioA);
 	check_type_stream(&strm);
-	if (stream_at_end(strm)) {
-		if (eof_errorp == Cnil && recursivep == Cnil)
-			@(return eof_value)
-		else
-			end_of_stream(strm);
-	}
-	@(return `read_char(strm)`)
+        {object x ;
+        read_char_to(x,strm,goto AT_EOF);
+        @(return `x`)
+          AT_EOF:
+	 if (eof_errorp == Cnil && recursivep == Cnil)
+		@(return eof_value)
+	 else
+		end_of_stream(strm);
+       }
 @)
 
 @(defun unread_char (c &optional (strm `symbol_value(sLAstandard_inputA)`))
@@ -2525,6 +2580,7 @@ init_read()
 */
 	dtab['|'] = make_cf(Lsharp_vertical_bar_reader);
 	dtab['"'] = make_cf(Lsharp_double_quote_reader);
+	dtab['p'] = make_cf(Lsharp_p_reader);
 	/*  This is specific to this implimentation  */
 	dtab['$'] = make_cf(Lsharp_dollar_reader);
 	/*  This is specific to this implimentation  */
@@ -2567,8 +2623,8 @@ init_read()
 	in_list_flag = FALSE;
 	dot_flag = FALSE;
 
-	big_register_0 = alloc_object(t_bignum);
-	ZERO_BIG(big_register_0);
+	big_register_0 = new_bignum();
+	zero_big(big_register_0);
  
 	enter_mark_origin(&big_register_0);
 /*

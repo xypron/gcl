@@ -376,7 +376,7 @@
 		      (let ((e
 			     (if (and (>= subnode 0)
 				      (f >=
-					 (string-match #u"\n - [A-Z]"
+					 (string-match #u"\n\n - [A-Z]"
 						       s (+ beg 1
 							    initial-offset)
 						       end)
@@ -466,7 +466,7 @@
 			 (if (eq file prev) nil (setq prev file)) name))
 	  (format t "~%Enter n, all, none, or multiple choices eg 1 3 : ")
 	  (let ((line (read-line)) (start 0) val)
-	    (if (equal line "") (setq line (read-line)))
+	    (while (equal line "") (setq line (read-line)))
 	    (while (multiple-value-setq
 		    (val start)
 		    (read-from-string line nil nil :start start))

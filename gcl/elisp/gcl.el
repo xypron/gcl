@@ -18,8 +18,10 @@
 (setq lisp-mode-hook  'remote-lisp)
 
 (autoload 'lisp-complete "lisp-complete" nil t)
+(autoload 'smart-complete "smart-complete" nil t)
 
-(global-set-key "p" 'lisp-complete)
+;(global-set-key "p" 'lisp-complete)
+(global-set-key "p" 'smart-complete)
 
 (defun remote-lisp (&rest l)
   (and (boundp 'lisp-mode-map)
@@ -364,5 +366,10 @@ so a second comment-region adds another comment character"
 	(send-string current-lisp-process "(trace ")
 	(send-region current-lisp-process (point) end)
 	(send-string current-lisp-process ")\n")))))
+
+(defun gcl-mode ()
+  (interactive)
+  (lisp-mode)
+  )
 
 (provide 'gcl)

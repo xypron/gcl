@@ -24,6 +24,8 @@ Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 	IMPLEMENTATION-DEPENDENT
 */
 
+#include <string.h>
+
 #define IN_MAIN
 
 #ifdef KCLOVM
@@ -134,6 +136,12 @@ char **argv, **envp;
 		error("can't get the program name");
 */
 	kcl_self = argv[0];
+#ifdef FIX_FILENAME
+	{ int n = strlen(kcl_self);
+	 FIX_FILENAME(Cnil,kcl_self);
+	 if (strlen(kcl_self)> n) error("name grew");
+	}
+#endif	
 	if (!initflag) {
 
 		system_directory= (char *) malloc(strlen(argv[0])+3);
@@ -237,6 +245,9 @@ char **argv, **envp;
 	if (initflag) {
 		if (saving_system) {
 			saving_system = FALSE;
+			terminal_io->sm.sm_object0->sm.sm_fp = stdin;
+			terminal_io->sm.sm_object1->sm.sm_fp = stdout;
+			init_big1();
 #ifdef INIT_CORE_END
 			INIT_CORE_END
 #endif			  
@@ -393,7 +404,6 @@ initlisp()
 	
 	NewInit();
 	init_typespec();
-	init_pari();
 	init_number();
 	init_character();
 
@@ -600,7 +610,12 @@ siLgetenv()
 		name[i] = vs_base[0]->st.st_self[i];
 	name[i] = '\0';
 	if ((value = getenv(name)) != NULL)
-		vs_base[0] = make_simple_string(value);
+		{vs_base[0] = make_simple_string(value);
+#ifdef FREE_GETENV_RESULT
+		free(value);
+		
+#endif		
+		}
 	else
 		vs_base[0] = Cnil;
 }
@@ -836,10 +851,18 @@ init_main()
 	   features=    make_cons(make_ordinary("COMMON"),
 		     make_cons(make_ordinary("KCL"), Cnil));
 	 ADD_FEATURE("AKCL");
-	 ADD_FEATURE("GCL");	 
+	 ADD_FEATURE("GCL");
+#ifdef BROKEN_O4_OPT
+	 ADD_FEATURE("BROKEN_O4_OPT");
+#endif
+#ifdef GMP
+	 ADD_FEATURE("GMP");
+#endif	 
 
 #ifdef UNIX
+#ifndef WINDOWSNT	 
 	ADD_FEATURE("UNIX");
+#endif	
 #endif
 #ifdef IEEEFLOAT
        ADD_FEATURE("IEEE-FLOATING-POINT");

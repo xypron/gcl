@@ -46,7 +46,12 @@ DEFUNO("FUNCTION-START",object,fSfunction_start,SI
    ,1,1,NONE,OO,OO,OO,OO,siLfunction_start,"")(funobj)
 object funobj;
 {/* 1 args */
- if(type_of(funobj)!=t_cfun) FEerror("not compiled function",0);
+ if(type_of(funobj)!=t_cfun
+    && type_of(funobj)!=t_sfun
+    && type_of(funobj)!=t_vfun
+    && type_of(funobj)!=t_afun
+    && type_of(funobj)!=t_gfun)
+    FEerror("not compiled function",0);
  funobj=make_fixnum((int) (funobj->cf.cf_self));
  RETURN1(funobj);
 }
@@ -123,7 +128,7 @@ object x0;
   n=x->st.st_fillp;
  check_type_string(&x);
  str=malloc(n+1);
-  str[n]=NULL;
+  str[n]=0;
  (void) strncpy(str,x->st.st_self,n);
  read_special_symbols(str);
   /* we sort them since these are used by the sfasl loader too */

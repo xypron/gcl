@@ -37,7 +37,7 @@ SGC is enabled.  */
 #define HAVE_ASM_SIGCONTEXT_H 1
 
 /* define if have struct sigcontext in one of above */
-#define HAVE_SIGCONTEXT 1
+/* #undef HAVE_SIGCONTEXT */
 
 
 /* define if have <sys/ioctl.h> */
@@ -64,11 +64,11 @@ SGC is enabled.  */
 #define LISTEN_USE_FCNTL 1
 
 /* if signal.h alone contains the stuff necessary for sgc */
-/* #undef SIGNAL_H_HAS_SIGCONTEXT */
+#define SIGNAL_H_HAS_SIGCONTEXT 1
 
 
 /* define if the profil system call is not defined in libc */
-#define NO_PROFILE 1 
+/* #undef NO_PROFILE */ 
 
 
 /* define if the _cleanup() function exists and should be called
@@ -81,4 +81,40 @@ SGC is enabled.  */
 /* #define ENDIAN_ALREADY_DEFINED */
 
 /* define if SV_ONSTACK is defined in signal.h */
-/* #undef HAVE_SV_ONSTACK */ 
+#define HAVE_SV_ONSTACK 1 
+
+
+/*
+   define to be a typical stack address.   We use this to decide
+   whether we can use a cheap test for NULL_OR_ON_C_STACK, or whether
+   it has to be more complex..
+
+*/
+
+#define CSTACK_ADDRESS -1073743692 
+
+/* define if SIGSYS is defined in signal.h */
+
+#define HAVE_SIGSYS 1
+
+/* define if SIGEMT is defined in signal.h */
+
+/* #undef HAVE_SIGEMT */
+
+
+/* define if setenv  is define */
+#define HAVE_SETENV 1
+
+/* define if putenv  is define */
+/* #undef HAVE_PUTENV */
+
+
+/* define if long long int works to multiply to ints, */
+
+#define HAVE_LONG_LONG 1
+
+/* define if want to use GMP */
+#define GMP 1
+
+/* have a broken version of C compiler which makes bad code for -O4 */
+/* #undef BROKEN_O4_OPT */ 

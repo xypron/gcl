@@ -52,7 +52,7 @@ SGC is enabled.  */
 #define HAVE_ASM_SIGCONTEXT_H 1
 
 /* define if have struct sigcontext in one of above */
-#define HAVE_SIGCONTEXT 1
+/* #undef HAVE_SIGCONTEXT */
 
 
 /* define if have <sys/ioctl.h> */
@@ -79,11 +79,11 @@ SGC is enabled.  */
 #define LISTEN_USE_FCNTL 1
 
 /* if signal.h alone contains the stuff necessary for sgc */
-/* #undef SIGNAL_H_HAS_SIGCONTEXT */
+#define SIGNAL_H_HAS_SIGCONTEXT 1
 
 
 /* define if the profil system call is not defined in libc */
-#define NO_PROFILE 1 
+/* #undef NO_PROFILE */ 
 
 
 /* define if the _cleanup() function exists and should be called
@@ -96,7 +96,43 @@ SGC is enabled.  */
 /* #define ENDIAN_ALREADY_DEFINED */
 
 /* define if SV_ONSTACK is defined in signal.h */
-/* #define HAVE_SV_ONSTACK */
+#define HAVE_SV_ONSTACK 1 
+
+
+/*
+   define to be a typical stack address.   We use this to decide
+   whether we can use a cheap test for NULL_OR_ON_C_STACK, or whether
+   it has to be more complex..
+
+*/
+
+#define CSTACK_ADDRESS -1073743884 
+
+/* define if SIGSYS is defined in signal.h */
+
+#define HAVE_SIGSYS 1
+
+/* define if SIGEMT is defined in signal.h */
+
+/* #undef HAVE_SIGEMT */
+
+
+/* define if setenv  is define */
+#define HAVE_SETENV 1
+
+/* define if putenv  is define */
+/* #undef HAVE_PUTENV */
+
+
+/* define if long long int works to multiply to ints, */
+
+#define HAVE_LONG_LONG 1
+
+/* define if want to use GMP */
+#define GMP 1
+
+/* have a broken version of C compiler which makes bad code for -O4 */
+/* #undef BROKEN_O4_OPT */ 
 
 #include <varargs.h>
 #include <setjmp.h>
@@ -288,10 +324,30 @@ struct longfloat_struct {
 #define	Mlf(obje)	(obje)->LF.LFVAL
 #define lf(x) Mlf(x)
 
+
+
+#ifdef _MP_H
+
+#else
+typedef struct
+{
+  int _mp_alloc;		/* Number of *limbs* allocated and pointed
+				   to by the _mp_d field.  */
+  int _mp_size;			/* abs(_mp_size) is the number of limbs the
+				   last field points to.  If _mp_size is
+				   negative this is a negative number.  */
+  void *_mp_d;		/* Pointer to the limbs.  */
+} __mpz_struct;
+#endif
+
 struct bignum {
 			FIRSTWORD;
-	plong             *big_self;	/*  bignum body  */
-	int		big_length;	/*  bignum length  */
+#ifdef GMP
+  __mpz_struct big_mpz_t;
+#else
+  plong             *big_self;	/*  bignum body  */
+  int		big_length;	/*  bignum length  */
+#endif  
 };
 
 struct ratio {
@@ -502,10 +558,10 @@ struct ustring {
 #define SHORT(x,i) ((( short *)(x)->ust.ust_self)[i])
 
 #define BV_OFFSET(x) ((type_of(x)==t_bitvector ? x->bv.bv_offset : \
-		       type_of(x)== t_array ? x->a.a_offset : abort()))
+		       type_of(x)== t_array ? x->a.a_offset : abort(),0))
 
 #define SET_BV_OFFSET(x,val) ((type_of(x)==t_bitvector ? x->bv.bv_offset = val : \
-		       type_of(x)== t_array ? x->a.a_offset=val : abort()))
+		       type_of(x)== t_array ? x->a.a_offset=val : abort(),0))
 
 
 		       
@@ -664,7 +720,9 @@ enum gcl_sm_flags {
   gcl_sm_blocking=1,
   gcl_sm_tcp_async,
   gcl_sm_input,
-  gcl_sm_output
+  gcl_sm_output,
+  gcl_sm_had_error
+  
   
 };
   
@@ -1722,6 +1780,7 @@ EXTER object sLnconc;
 /*  bds.c  */
 
 /*  big.c  */
+object make_integer_clear();
 object stretch_big();
 object copy_big();
 object copy_to_big();
@@ -1730,6 +1789,12 @@ object big_plus();
 object big_times();
 object normalize_big_to_object();
 double big_to_double();
+EXTER  struct bignum big_fixnum1_body,big_fixnum2_body;
+EXTER object big_fixnum1,big_fixnum2;
+object maybe_replace_big();
+
+
+
 
 /* bind.c */
 EXTER object ANDoptional;
@@ -1769,6 +1834,7 @@ object coerce_to_character();
 
 /*  cmpaux.c  */
 char object_to_char();
+char *object_to_string();
 float object_to_float();
 double object_to_double();
 
@@ -1994,6 +2060,9 @@ object get_gcd();
 object get_lcm();
 object one_plus();
 object one_minus();
+object fixnum_add();
+object fixnum_sub();
+object new_bignum();
 
 /*  num_co.c  */
 object double_to_integer();
@@ -2459,6 +2528,7 @@ EXTER object  sKinternal ;
 EXTER object  sKnicknames ; 
 EXTER object  sKuse ; 
 EXTER object  sLApackageA ; 
+EXTER  object   fSset_gmp_allocate_relocatable (); 
 EXTER  object   fSallocate_bigger_fixnum_range (); 
 EXTER  object   fScmod  (); 
 EXTER  object   fScplus  (); 
@@ -2601,6 +2671,7 @@ EXTER object  sSpretty_print_format ;
 EXTER object  sSAprint_nansA ; 
 EXTER  object   fLformat  (); 
 EXTER object  sSAindent_formatted_outputA ; 
+EXTER  object   fSsetenv (); 
 EXTER  object   fLdelete_file  (); 
 EXTER  object   fLerror  (); 
 EXTER  object   fLcerror  (); 
@@ -2678,6 +2749,11 @@ EXTER  object   fSgetpeername ();
 EXTER  object   fSgetsockname (); 
 EXTER  int   fSset_blocking (); 
 /* if already mp.h has been included skip */
+#ifdef _MP_H
+#ifdef GMP
+
+#else /* no gmp */
+
 typedef  plong *GEN1;
 /* if genpari.h not loaded */
 #ifndef MAXBLOC
@@ -2709,6 +2785,8 @@ EXTER GEN1 icopy_x;
 #define restore_avma avma = lvma
 #endif
 
+#endif /* NO GMP */
+#endif _MP_H
 
   /* copy x to y, increasing space by factor of 2  */
 object make_integer();
@@ -2879,7 +2957,7 @@ object on_stack_make_list();
 object make_integer();
   /* copy x to y, increasing space by factor of 2  */
 
-
+#ifndef GMP
 GEN otoi();
 /*
 object integ_temp;
@@ -2904,6 +2982,8 @@ GEN setq_io(),setq_ii();
 #define SETQ_II(x,alloc,val)   (x)=setq_ii(x,&alloc,val)
 #define IDECL(a,b,c) our_ulong b[4];a =(b[0]=0x1010000 +4,b);object c
 #endif
+
+#endif /* end no GMP */
 
 #define	cclosure_call	funcall
 

@@ -244,6 +244,8 @@ DEF_ORDINARY("INTERNAL",sKinternal,KEYWORD,"")
 DEF_ORDINARY("NICKNAMES",sKnicknames,KEYWORD,"")
 DEF_ORDINARY("USE",sKuse,KEYWORD,"")
 DEFVAR("*PACKAGE*",sLApackageA,LISP,lisp_package,"")
+DEFUN("SET-GMP-ALLOCATE-RELOCATABLE",object,fSset_gmp_allocate_relocatable,SI,1,1,0 ,OO,OO,OO,OO,
+      "Set the allocation to be relocatble ")
 DEFUN("ALLOCATE-BIGGER-FIXNUM-RANGE",object,fSallocate_bigger_fixnum_range,
       SI,2,2,0 ,OI,IO,OO,OO,"")
 DEFUNO("CMOD",object,fScmod,SI
@@ -429,6 +431,7 @@ DEFVAR("*PRINT-NANS*",sSAprint_nansA,SI,Cnil,"")
 DEFUNO("FORMAT",object,fLformat,LISP
    ,2,((1<< 6 ) -1) ,0 ,OO,OO,OO,OO,Lformat,"")
 DEFVAR("*INDENT-FORMATTED-OUTPUT*",sSAindent_formatted_outputA,SI,((object)&Cnil_body) ,"")
+DEFUN("SETENV",object,fSsetenv,SI,2,2,0 ,OO,OO,OO,OO,"Set environment VARIABLE to VALUE")
 DEFUNO("DELETE-FILE",object,fLdelete_file,LISP
    ,1,1,0 ,OO,OO,OO,OO,Ldelete_file,"")
 DEFUNO("ERROR",object,fLerror,LISP
@@ -496,6 +499,9 @@ DEFUN("USE-FAST-LINKS",object,fSuse_fast_links,SI,1,2,0 ,OO,OO,OO,OO,
       "Usage: (use-fast-links {nil,t} &optional fun) turns on or off the fast linking depending on FLAG, so that things will either go faster, or turns it off so that stack information is kept.  If SYMBOL is supplied and FLAG is nil, then this function is deleted from the fast links")
 DEF_ORDINARY("CDEFN",sScdefn,SI,"")
 DEFVAR("*LINK-ARRAY*",sLAlink_arrayA,LISP,((object)&Cnil_body) ,"")
+DEFUNO("PROFILE",object,fSprofile,SI
+   ,2,2,0 ,OO,OO,OO,OO,siLprofile,
+       "Sets up profiling with START-ADDRESS and  SCALE where scale is   between 0 and 256")
 DEFUNO("FUNCTION-START",object,fSfunction_start,SI
    ,1,1,0 ,OO,OO,OO,OO,siLfunction_start,"")
 DEFUNO("READ-EXTERNALS",object,fSread_externals,SI

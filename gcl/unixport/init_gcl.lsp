@@ -12,6 +12,7 @@
 (load "../gcl-tk/tk-package.lsp")
 (progn (allocate 'cons 100) (allocate 'string 40)
  (system:init-system) (gbc t)
+#+gmp (defun si::multiply-bignum-stack (n) "nothing")
  (si::multiply-bignum-stack 25)
  (or lisp::*link-array*
   (setq lisp::*link-array*
@@ -48,24 +49,26 @@
               ;(system::*quit-tags* nil) (system::*break-level* '())
               ;(system::*break-env* nil) (system::*ihs-base* 1)
               ;(system::*ihs-top* 1) (system::*current-ihs* 1)
-              (*break-enable* nil))
-             (system:error-set
-              '(progn
-		 (compile-file (si::get-command-arg "-compile")
-			       :output-file 
-			       (or (si::get-command-arg "-o")
-				   (si::get-command-arg "-compile"))
-			       :o-file
-			       (cond ((equalp
-					     (si::get-command-arg "-o-file")
-					       "nil") nil)
-				     ((si::get-command-arg "-o-file" t))
-				     (t t))
-			       :c-file (si::get-command-arg "-c-file" t)
-			       :h-file (si::get-command-arg "-h-file" t)
-			       :data-file (si::get-command-arg "-data-file" t)
-			       :system-p (si::get-command-arg "-system-p" t))))
-             (bye (if compiler::*error-p* 1 0))))
+              (*break-enable* nil) result)
+             (setq result
+		   (system:error-set
+		    '(progn
+		       (compile-file
+			(si::get-command-arg "-compile")
+			:output-file 
+			(or (si::get-command-arg "-o")
+			    (si::get-command-arg "-compile"))
+			:o-file
+			(cond ((equalp
+				(si::get-command-arg "-o-file")
+				"nil") nil)
+			      ((si::get-command-arg "-o-file" t))
+			      (t t))
+			:c-file (si::get-command-arg "-c-file" t)
+			:h-file (si::get-command-arg "-h-file" t)
+			:data-file (si::get-command-arg "-data-file" t)
+			:system-p (si::get-command-arg "-system-p" t)))))
+             (bye (if (or compiler::*error-p* (equal result '(nil))) 1 0))))
   (cond ((si::get-command-arg "-batch")
          (setq si::*top-level-hook* 'bye))
         ((si::get-command-arg "-f"))
