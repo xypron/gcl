@@ -1,3 +1,8 @@
+2002-11-25  Camm Maguire  <camm@intech19.enhanced.com>
+
+	* h/object.h minvers
+	Correct version reporting;fix bool definition conflicts with certain gcc versions
+
 2002-01-25  Camm Maguire  <camm@intech19.enhanced.com>
 
 	* /cvsroot/gcl/gcl/ChangeLog, /cvsroot/gcl/gcl/ChangeLog.orig:
