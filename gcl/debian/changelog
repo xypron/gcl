@@ -68,8 +68,9 @@ gcl (2.6.1-19) unstable; urgency=low
   * Preliminary gprof profiling support
   * Rework html documentation generation and installation, Closes:
     #221774
+  * Remove parentheses from setf class-name info node in chap-7.texi
 
- -- Camm Maguire <camm@enhanced.com>  Thu, 11 Dec 2003 21:45:31 +0000
+ -- Camm Maguire <camm@enhanced.com>  Tue, 30 Dec 2003 16:26:45 +0000
 
 gcl (2.6.1-18) unstable; urgency=low
 
