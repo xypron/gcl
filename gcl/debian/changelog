@@ -16,8 +16,10 @@ gcl (2.6.2-1) unstable; urgency=low
     8features* entries are now keywords
   * o/makefile changes to work around trailing slash -I arguments gcc
     bug on mingw
+  * Patch to mingwin.c:fix_filename to close long standing 'maxima
+    ignore-errors filename corruption' bug on mingw
 
- -- Camm Maguire <camm@enhanced.com>  Sat,  5 Jun 2004 18:16:20 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat,  5 Jun 2004 18:18:03 +0000
 
 gcl (2.6.1-39) unstable; urgency=high
 
