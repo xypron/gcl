@@ -131,8 +131,6 @@ LISP_LIB=cmpnew/gcl_collectfn.o cmpnew/gcl_collectfn.lsp lsp/gcl_gprof.lsp lsp/g
 install-command:
 	rm -f $(DESTDIR)$(prefix)/bin/gcl
 	(echo '#!/bin/sh' ; \
-	if gcc --version | grep -i mingw >/dev/null 2>&1 ; then echo "C_INCLUDE_PATH=`echo $$INSTALL_LIB_DIR`/h"; else echo "C_INCLUDE_PATH=$(INSTALL_LIB_DIR)/h:\$$C_INCLUDE_PATH"; fi ;\
-	echo "export C_INCLUDE_PATH";\
 	echo exec $(BINDIR)/$(FLISP)$(EXE) \\ ; \
 	echo '   -dir' $(INSTALL_LIB_DIR)/unixport/ \\ ; \
 	echo '   -libdir' $(INSTALL_LIB_DIR)/ \\ ; \
