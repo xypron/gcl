@@ -64,7 +64,7 @@
 ;;; is a list ( macro-name expansion-function).
 
 (defun c1flet (args &aux body ss ts is other-decl info
-                         (defs1 nil) (local-funs nil) (closures nil))
+                         (defs1 nil) (local-funs nil) (closures nil) (*info* (copy-info *info*)))
   (when (endp args) (too-few-args 'flet 1 0))
 
   (let ((*funs* *funs*))
@@ -173,7 +173,7 @@
 
 (defun c1labels (args &aux body ss ts is other-decl info
                       (defs1 nil) (local-funs nil) (closures nil)
-                      (fnames nil) (processed-flag nil) (*funs* *funs*))
+                      (fnames nil) (processed-flag nil) (*funs* *funs*) (*info* (copy-info *info*)))
   (when (endp args) (too-few-args 'labels 1 0))
 
   ;;; bind local-functions
