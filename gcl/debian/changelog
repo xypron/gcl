@@ -7,8 +7,9 @@ gcl (2.6.4-1) unstable; urgency=low
     profiling is compiled in
   * Compiler fix for proclaimed vararg functions
   * Allow sharp numbers to be bignums
+  * lintian fix in string-match
 
- -- Camm Maguire <camm@enhanced.com>  Thu,  5 Aug 2004 22:19:20 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu,  5 Aug 2004 22:20:46 +0000
 
 gcl (2.6.3-1) unstable; urgency=high
 
