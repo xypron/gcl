@@ -30,7 +30,7 @@ Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 void
 zero_divisor(void);
 
-object fixnum_add(int i, int j)
+object fixnum_add(fixnum i, fixnum j)
 {
 
   if (i>=0)
@@ -46,7 +46,7 @@ object fixnum_add(int i, int j)
    }
 }
 /* return i - j */
-object fixnum_sub(int i, int j)
+object fixnum_sub(fixnum i, fixnum j)
 {  
 
   if (i>=0)

@@ -328,8 +328,8 @@ typedef void (*funcvoid)(void);
 /* nsocket.c:575:OF */ extern int TcpOutputProc (int fd, char *buf, int toWrite, int *errorCodePtr); /* (fd, buf, toWrite, errorCodePtr) int fd; char *buf; int toWrite; int *errorCodePtr; */
 #endif
 /* nsocket.c:619:OF */ extern int getCharGclSocket (object strm, object block); /* (strm, block) object strm; object block; */
-/* num_arith.c:31:OF */ extern object fixnum_add (int i, int j); /* (i, j) int i; int j; */
-/* num_arith.c:48:OF */ extern object fixnum_sub (int i, int j); /* (i, j) int i; int j; */
+/* num_arith.c:31:OF */ extern object fixnum_add (fixnum i, fixnum j); /* (i, j) int i; int j; */
+/* num_arith.c:48:OF */ extern object fixnum_sub (fixnum i, fixnum j); /* (i, j) int i; int j; */
 /* num_arith.c:100:OF */ extern object number_plus (object x, object y); /* (x, y) object x; object y; */
 /* num_arith.c:246:OF */ extern object one_plus (object x); /* (x) object x; */
 /* num_arith.c:292:OF */ extern object number_minus (object x, object y); /* (x, y) object x; object y; */
