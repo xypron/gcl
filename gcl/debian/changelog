@@ -1,3 +1,10 @@
+gcl (2.6.1-31) unstable; urgency=low
+
+  * Adjustments to vs_top reset logic to clear (hopefully last)
+    remaining bug found by the random-tester
+
+ -- Camm Maguire <camm@enhanced.com>  Sat,  6 Mar 2004 14:47:57 +0000
+
 gcl (2.6.1-30) unstable; urgency=low
 
   * Fix rsym generated symbol tables for 64 bit platforms
