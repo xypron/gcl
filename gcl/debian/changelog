@@ -9,8 +9,9 @@ gcl (2.6.4-1) unstable; urgency=low
   * Allow sharp numbers to be bignums
   * lintian fix in string-match
   * Prototype for alloca for lint
+  * Improve gprof support
 
- -- Camm Maguire <camm@enhanced.com>  Thu,  5 Aug 2004 22:23:28 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu,  5 Aug 2004 22:26:14 +0000
 
 gcl (2.6.3-1) unstable; urgency=high
 
