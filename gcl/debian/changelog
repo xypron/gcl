@@ -4,8 +4,10 @@ gcl (2.6.1-31) unstable; urgency=low
     remaining bug found by the random-tester
   * Allow args-info-referred-vars to match replaced vars, clearing bug
     report submitted by Matt Kauffman
+  * Rework plt code yet again to be compatible with compiler::link for
+    axiom, and mingw32
 
- -- Camm Maguire <camm@enhanced.com>  Sat,  6 Mar 2004 14:48:14 +0000
+ -- Camm Maguire <camm@enhanced.com>  Mon,  8 Mar 2004 12:16:46 +0000
 
 gcl (2.6.1-30) unstable; urgency=low
 
