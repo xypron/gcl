@@ -55,8 +55,9 @@ gcl (2.6.1-19) unstable; urgency=low
     'frame and  alloca otherwise.  New macro bignum-expansion-storage.
     FIXME, ensure that IDECL does not need similar modification.
   * Cleanup a few compiler warnings in the compiler
+  * Cleanup compiler warning in alloc.c
 
- -- Camm Maguire <camm@enhanced.com>  Mon,  1 Dec 2003 16:52:07 +0000
+ -- Camm Maguire <camm@enhanced.com>  Mon,  1 Dec 2003 16:53:01 +0000
 
 gcl (2.6.1-18) unstable; urgency=low
 
