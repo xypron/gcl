@@ -195,6 +195,7 @@ install1:
 	if gcc --version | grep -i mingw >/dev/null 2>&1 ; then cp gcl.ico $(prefix)/bin ; fi
 	if gcc --version | grep -i mingw >/dev/null 2>&1 ; then rm -rf $(prefix)/install; mkdir $(prefix)/install ; cp windows/install.lsp $(prefix)/install ; cp windows/sysdir.bat $(prefix)/bin ; fi
 	-if gcc --version | grep -i mingw >/dev/null 2>&1 ; then rm -rf $(prefix)/doc; mkdir $(prefix)/doc; cp info/*.html $(prefix)/doc ; fi
+	-if gcc --version | grep -i mingw >/dev/null 2>&1 ; then rm -rf $(prefix)/doc; mkdir $(prefix)/doc; cp -rp info/gcl info/gcl-si info/gcl-tk  $(prefix)/doc ; fi
 
 clean:
 	(cd $(BINDIR); $(MAKE) clean)
