@@ -22,8 +22,9 @@ gcl (2.6.5-1) unstable; urgency=high
   * Cleanup gmp_wrapper code, check for in-place calls as write in one
     step is not guaranteed in gmp according to its developers
   * Rebuild against binutils 2.15, Closes: #266253, Closes: #263983
+  * New upstream release
 
- -- Camm Maguire <camm@enhanced.com>  Tue, 17 Aug 2004 18:22:27 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu, 13 Jan 2005 22:40:21 +0000
 
 gcl (2.6.4-1) unstable; urgency=high
 
