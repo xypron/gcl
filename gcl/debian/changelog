@@ -26,8 +26,9 @@ gcl (2.6.1-26) unstable; urgency=low
     files
   * mach-o compatible changes in sfaslbfd.c
   * Support for new debugging section names in sfaslelf.c
+  * powerpc-macosx h and defs files from cvs head
 
- -- Camm Maguire <camm@enhanced.com>  Wed, 25 Feb 2004 23:04:01 +0000
+ -- Camm Maguire <camm@enhanced.com>  Wed, 25 Feb 2004 23:08:59 +0000
 
 gcl (2.6.1-25) unstable; urgency=low
 
