@@ -7,8 +7,9 @@ gcl (2.6.2-4) unstable; urgency=low
   * vs_top=sup -> (reset-top) where possible in compiler.  FIXME: a few
     items of a different form which need to set *sup-used* too.
   * Correct room report to show proper percentages when sgc is on
+  * Read in RELOC environment variable if set as default in debian/rules
 
- -- Camm Maguire <camm@enhanced.com>  Wed, 14 Jul 2004 16:48:03 -0400
+ -- Camm Maguire <camm@enhanced.com>  Wed, 14 Jul 2004 18:42:29 -0400
 
 gcl (2.6.2-3) unstable; urgency=low
 
