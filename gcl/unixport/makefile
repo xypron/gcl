@@ -81,12 +81,12 @@ MACHINE=386-linux
 
 LBINDIR=/usr/local/bin
 
-OFLAG	=  -g 
+OFLAG	=  -g -Wall
 #OFLAG	=  -O 
 #LIBS	= -lm 
 
 #ODIR_DEBUG= -O4 
-ODIR_DEBUG= -g
+ODIR_DEBUG= -g -Wall
 
 # This CC string will be used for compilation of the system,
 # and also in the compiler::*cc* variable for later compilation of
@@ -168,6 +168,7 @@ LSPOBJS	= $(LSPDIR)/defmacro.o $(LSPDIR)/evalmacros.o $(LSPDIR)/top.o \
 	$(LSPDIR)/seq.o $(LSPDIR)/seqlib.o $(LSPDIR)/trace.o \
 	$(LSPDIR)/sloop.o  $(LSPDIR)/debug.o \
 	$(LSPDIR)/serror.o $(LSPDIR)/info.o $(LSPDIR)/destructuring_bind.o \
+        $(LSPDIR)/defpackage.o $(LSPDIR)/make_defpackage.o \
 	$(addprefix $(LSPDIR)/,$(RL_OBJS))
 
 CMPOBJS	= $(CMPDIR)/cmpinline.o $(CMPDIR)/cmputil.o $(CMPDIR)/cmptype.o \
