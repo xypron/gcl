@@ -1,3 +1,9 @@
+gcl (2.5.3-2) unstable; urgency=low
+
+  * gcc-3.3 all platforms
+
+ -- Camm Maguire <camm@enhanced.com>  Mon,  7 Jul 2003 16:10:25 +0000
+
 gcl (2.5.3-1) unstable; urgency=low
 
   * New upstream release
