@@ -25,7 +25,7 @@
 (defmacro with-server ((app-name debug-level) . body)
   (multiple-value-bind (ds b)
 		       (si::find-declarations body)
-		       `(if (= 0 (j_start))
+		       `(if (= 0 (jpr::j_start))
 			    (format t (format nil "~S can't connect to the Japi GUI server." ,app-name))
 			  (progn
 			    (j_setdebug ,debug-level)
@@ -53,6 +53,16 @@
 			  (unwind-protect
 			      (progn ,@b)
 			    (j_dispose ,canvas-var-name)))))
+
+;; Use a text area and clean up afterwards even if trouble ensues
+(defmacro with-text-area ((text-area-var-name panel-obj x-size y-size) . body)
+  (multiple-value-bind (ds b)
+		       (si::find-declarations body)
+		       `(let ((,text-area-var-name (j_textarea ,panel-obj ,x-size ,y-size)))
+			  ,@ds
+			  (unwind-protect
+			      (progn ,@b)
+			    (j_dispose ,text-area-var-name)))))
 
 ;; Use a pulldown menu bar and clean up afterwards even if trouble ensues
 (defmacro with-menu-bar ((bar-var-name frame-obj) . body)
@@ -93,6 +103,17 @@
 			  (unwind-protect
 			      (progn ,@b)
 			    (j_dispose ,var-name)))))
+
+;; Use a panel and clean up afterwards even if trouble ensues
+(defmacro with-panel ((panel-var-name frame-obj) . body)
+  (multiple-value-bind (ds b)
+		       (si::find-declarations body)
+		       `(let ((,panel-var-name (j_panel ,frame-obj)))
+			  ,@ds
+			  (unwind-protect
+			      (progn ,@b)
+			    (j_dispose ,panel-var-name)))))
+
 
 ;; Run a five second frame in a Japi server
 (with-server ("GCL Japi library test GUI 1" 0)
@@ -224,7 +245,6 @@
 		 (pya (inta-ptr ya))
 		 (x 0)
 		 (y 0)
-		 (hold-start ())
 		 (get-mouse-xy (lambda (obj)
 				 (progn (j_getmousepos obj pxa pya)
 					(setf x (aref xa 0))
@@ -233,16 +253,14 @@
 		 (starty 0))
 	    (do ((obj (j_nextaction) (j_nextaction)))
 		((= obj frame) t)
-		(when (and hold-start (= obj pressed))
+		(when (= obj pressed)
 		  (funcall get-mouse-xy pressed)
 		  (setf startx x)
-		  (setf starty y)
-		  (setf hold-start t))
+		  (setf starty y))
 		(when (= obj dragged)
 		  (funcall get-mouse-xy dragged)
 		  (j_drawrect canvas1 startx starty (- x startx) (- y starty)))
 		(when (= obj released)
-		  (setf hold-start ())
 		  (funcall get-mouse-xy released)
 		  (j_drawrect canvas1 startx starty (- x startx) (- y starty)))
 		(when (= obj entered)
@@ -258,3 +276,92 @@
 		  (funcall get-mouse-xy exited)
 		  (j_drawline canvas2 startx starty x y))))))))))))))
 
+;; Text editor demo
+(with-server 
+ ("GCL Japi library test text editor" 0)
+ (with-frame
+  (frame "A simple editor")
+  (j_setgridlayout frame 1 1)
+  (with-panel
+   (panel frame)
+   (j_setgridlayout panel 1 1)
+   (with-menu-bar
+    (menubar frame)
+    (with-menu
+     (file-mi menubar "File")
+     (with-menu-item
+      (new-mi file-mi "New")
+      (with-menu-item
+       (save-mi file-mi "Save")
+       (j_seperator file-mi)
+       (with-menu-item
+	(quit-mi file-mi "Quit")
+
+    (with-menu
+     (edit-mi menubar "Edit")
+     (with-menu-item
+      (select-all-mi edit-mi "Select All")
+      (j_seperator edit-mi)
+      (with-menu-item
+       (cut-mi edit-mi "Cut")
+       (with-menu-item
+	(copy-mi edit-mi "Copy")
+	(with-menu-item
+	 (paste-mi edit-mi "Paste")
+       
+    (with-text-area
+     (text panel 15 4)
+     (j_setfont text J_DIALOGIN J_BOLD 18)
+     (let ((new-text (format nil "JAPI (Java Application~%Programming Interface)~%a platform and language~%independent API")))
+       (j_settext text new-text)
+       (j_show frame)
+       (j_pack frame)
+       (j_setrows text 4)
+       (j_setcolumns text 15)
+       (j_pack frame)
+       ;; Allocate immovable storage for passing data back from C land.
+       ;; Uses the GCL only make-array keyword :static
+       (let* ((xa (make-array 1 :initial-element 0 :element-type 'fixnum :static t))
+	      (ya (make-array 1 :initial-element 0 :element-type 'fixnum :static t))
+	      (pxa (inta-ptr xa))
+	      (pya (inta-ptr ya))
+	      (x 0)
+	      (y 0)
+	      (get-mouse-xy (lambda (obj)
+			      (progn (j_getmousepos obj pxa pya)
+				     (setf x (aref xa 0))
+				     (setf y (aref ya 0)))))
+	      (startx 0)
+	      (starty 0)
+	      (selstart 0)
+	      (selend 0)
+	      (text-buffer (make-array 64000 :initial-element 0 :element-type 'character :static t))
+	      (p-text-buffer (inta-ptr text-buffer)))
+	 (do ((obj (j_nextaction) (j_nextaction)))
+	     ((or (= obj frame) (= obj quit-mi))t)
+	     (when (= obj panel)
+	       (format t "Size changed to ~D rows ~D columns~%" (j_getrows text) (j_getcolumns text))
+	       (format t "Size changed to ~D x ~D pixels~%" (j_getwidth text) (j_getheight text)))
+	     (when (= obj text) (format t "Text changed (len=~D)~%" (j_getlength text) ))
+	     (when (= obj new-mi) (j_settext new-text))
+	     (when (= obj save-mi) (j_gettext text p-text-buffer))
+	     (when (= obj select-all-mi) (j_selectall text))
+	     (when (or (= obj cut-mi)
+		       (= obj copy-mi)
+		       (= obj paste-mi))
+	       (setf selstart (j_getselstart text))
+	       (setf selend (j_getselend text)))
+	     (when (= obj cut-mi)
+	       (j_getseltext text p-text-buffer)
+	       (j_delete text selstart selend)
+	       (j_selecttext text selstart selstart))
+	     (when (= obj copy-mi) (j_getseltext text p-text-buffer))
+	     (when (= obj paste-mi)
+	       (if (= selstart selend)
+		   (j_inserttext text p-text-buffer (j_getcurpos text))
+		 (j_replacetext text p-text-buffer selstart selend))
+	       (j_setcurpos text selstart)))))))))))))))))))
+
+
+
+     
