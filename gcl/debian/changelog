@@ -2,8 +2,13 @@ gcl (2.6.1-16) unstable; urgency=low
 
   * Fix sh syntax in debian/gcl.sh
   * init_or_load1 -> gcl_init_or_load1 in xgcl-2/sysinit.lsp
+  * Load weak symbols as well as undefined symbols in
+    bfd_build_symbol_table, for the purposes of the static build
+    possibility
+  * Map t and nil stream indicators properly in optimized compiled
+    references to read_char1 and read_byte1 (in read.d)
 
- -- Camm Maguire <camm@intech.m.enhanced.com>  Sat, 18 Oct 2003 22:24:34 -0400
+ -- Camm Maguire <camm@enhanced.com>  Thu, 23 Oct 2003 16:43:15 +0000
 
 gcl (2.6.1-15) unstable; urgency=low
 
