@@ -11,8 +11,9 @@ gcl (2.6.3-1) unstable; urgency=high
   * Remove local bfd libraries from libs variables as their objects are
     incorporated into libgcl and as the source directory may not be
     available at runtime
+  * Remove pcl/pcl_gazonk*lsp build-generated files from source
 
- -- Camm Maguire <camm@enhanced.com>  Thu, 15 Jul 2004 12:26:32 -0400
+ -- Camm Maguire <camm@enhanced.com>  Thu, 15 Jul 2004 14:26:44 -0400
 
 gcl (2.6.2-3) unstable; urgency=low
 
