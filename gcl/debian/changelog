@@ -1,8 +1,9 @@
 gcl (2.6.1-30) unstable; urgency=low
 
   * Fix rsym generated symbol tables for 64 bit platforms
+  * Make sure 'unwind' in frame.c does nt go below frs_org
 
- -- Camm Maguire <camm@enhanced.com>  Thu,  4 Mar 2004 19:35:38 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat,  6 Mar 2004 01:51:18 +0000
 
 gcl (2.6.1-29) unstable; urgency=low
 
