@@ -1,3 +1,9 @@
+gcl (2.6.1-5) unstable; urgency=low
+
+  * Redefine temporary files in elisp/makefile
+
+ -- Camm Maguire <camm@enhanced.com>  Mon,  8 Sep 2003 21:49:09 +0000
+
 gcl (2.6.1-4) unstable; urgency=low
 
   * Fix to sfasli.c to avoid defining symbols in other than *UND*
