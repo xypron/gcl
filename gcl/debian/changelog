@@ -40,8 +40,10 @@ gcl (2.6.1-34) unstable; urgency=low
     and ansi loop can be used simultaneously
   * Handle arguments which are zero in LCM
   * Fix typo in configure.in
+  * Improved dotimes macro which avoids unnecessary fixnum garbage
+    generation
 
- -- Camm Maguire <camm@enhanced.com>  Fri,  2 Apr 2004 17:35:15 +0000
+ -- Camm Maguire <camm@enhanced.com>  Fri,  2 Apr 2004 18:40:49 +0000
 
 gcl (2.6.1-33) unstable; urgency=low
 
