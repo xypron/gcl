@@ -86,6 +86,9 @@
 /* readline support */
 #undef HAVE_READLINE
 
+/* bfd support */
+#undef HAVE_LIBBFD
+
 /* Define if you have the getcwd function.  */
 #undef HAVE_GETCWD
 
