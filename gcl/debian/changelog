@@ -1,3 +1,10 @@
+gcl (2.6.1-41) unstable; urgency=low
+
+  * Close possibility of malloc failure due to intervening gbc arising
+    from the misordering of allocation calls
+
+ -- Camm Maguire <camm@enhanced.com>  Wed, 23 Jun 2004 19:23:54 +0000
+
 gcl (2.6.1-40) unstable; urgency=high
 
   * gcc-3.4 support
