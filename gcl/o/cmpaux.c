@@ -199,7 +199,7 @@ object_to_int(object x)
 	return(i);
 }
 
-static float 
+float 
 object_to_float(object x) 
 { 
 	float f=0.0; 
@@ -222,7 +222,7 @@ object_to_float(object x)
 	return(f); 
 } 
 
-static double 
+double 
 object_to_double(object x) 
 { 
 	double d=0.0; 
