@@ -1,3 +1,10 @@
+gcl (2.6.4-1) unstable; urgency=low
+
+  * New upstream release
+  * Make disassemble work when original system directory is gone
+
+ -- Camm Maguire <camm@enhanced.com>  Thu,  5 Aug 2004 21:54:13 +0000
+
 gcl (2.6.3-1) unstable; urgency=high
 
   * Correctly parse gcc version strings in gmp3 subconfigure on arm
