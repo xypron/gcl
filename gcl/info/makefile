@@ -16,7 +16,7 @@ MPFILES=$(MPDIR)/mpi-386_no_under.o $(MPDIR)/libmport.a
 # root for the installation, eg /usr/local
 # This would cause make install to create /usr/local/bin/gcl and
 # /usr/local/lib/gcl-2-??/* with some basic files.
-prefix=/usr/local
+prefix=/usr
 
 # where to place the info files
 INFO_DIR=/usr/info/
@@ -128,13 +128,13 @@ GCL_SI= number.texi sequence.texi character.texi list.texi io.texi \
 GCL_TK= general.texi widgets.texi control.texi
 
 gcl-si.dvi: ${GCL_SI} gcl-si.texi
-	tex --interaction nonstopmode gcl-si.texi || true
+	TEXINPUTS=.:$$TEXINPUTS tex --interaction nonstopmode gcl-si.texi || true
 
 gcl-si.info:
 	makeinfo gcl-si.texi	
 
 gcl-tk.dvi: ${GCL_TK} gcl-tk.texi
-	tex gcl-tk.texi
+	TEXINPUTS=.:$$TEXINPUTS tex --interaction nonstopmode gcl-tk.texi || true
 
 gcl-tk.info: ${GCL_TK} gcl-tk.texi
 	makeinfo gcl-tk.texi
@@ -149,15 +149,15 @@ install-html: gcl-tk_toc.html gcl-si_toc.html
 	cp *.html /d/www/gcl
 
 install:
-#	if [  -d "${INFO_DIR}" ] ; then true ; else exit 0; fi
-#	-if fgrep gcl-si ${INFO_DIR}/dir > /dev/null ; then true ; else \
-#	echo "* GCL Doc: (gcl-si.info).	GNU Common Lisp specific Documentation." >> ${INFO_DIR}/dir ; fi
-#	-if fgrep gcl-tk ${INFO_DIR}/dir > /dev/null ; then true ; else \
-#	echo "* GCL TK Doc: (gcl-tk.info).	TK window GCL interface." >> ${INFO_DIR}/dir ; fi
-#	-if fgrep gcl.info ${INFO_DIR}/dir > /dev/null ; then true ; else \
-#	echo "* GCL Ansi Doc: (gcl.info).  Ansi Common Lisp Specification." >> ${INFO_DIR}/dir ; fi
-#	-if [  -d "${INFO_DIR}" ] ; then 	cp *.info* ${INFO_DIR} ; fi
-
+	mkdir -p $(DESTDIR)${INFO_DIR}
+	[ -f $(DESTDIR)$(INFO_DIR)dir ] || touch $(DESTDIR)$(INFO_DIR)dir
+	! grep -q gcl-si $(DESTDIR)${INFO_DIR}dir || \
+	echo "* GCL Doc: (gcl-si.info).	GNU Common Lisp specific Documentation." >> $(DESTDIR)${INFO_DIR}dir
+	! grep -q gcl-tk $(DESTDIR)${INFO_DIR}dir || \
+	echo "* GCL TK Doc: (gcl-tk.info).	TK window GCL interface." >> $(DESTDIR)${INFO_DIR}dir
+	! grep -q gcl.info $(DESTDIR)${INFO_DIR}dir || \
+	echo "* GCL Ansi Doc: (gcl.info).  Ansi Common Lisp Specification." >> $(DESTDIR)${INFO_DIR}dir
+	cp *.info* $(DESTDIR)${INFO_DIR}
 
 
 FILE=gcl-si.texi
@@ -166,8 +166,8 @@ srcs:
 	awk '{ i++; printf("%s ",$$2); if ((i%5) == 0) printf("\\\n")}'
 
 tex:
-	tex gcl-si.texi
-	tex gcl-tk.texi
+	TEXINPUTS=.:$$TEXINPUTS tex gcl-si.texi
+	TEXINPUTS=.:$$TEXINPUTS tex gcl-tk.texi
 	@echo must do twice to get indices correct...
 	@echo so do 'make tex' again
 
