@@ -6,6 +6,7 @@ gcl (2.6.1-18) unstable; urgency=low
     accumulation of old data -- FIXME -- make sure there are no other
     copies required, and eventually replace this global parameter with
     local variables
+  * Turn on some optimization on hppa, -O only
 
  -- Camm Maguire <camm@enhanced.com>  Thu,  6 Nov 2003 15:40:25 +0000
 
