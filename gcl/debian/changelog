@@ -1,3 +1,24 @@
+gcl (2.6.6-1) unstable; urgency=high
+
+  * New upstream release
+  * Allow .data section to be first in executable, as on solaris.  Also
+    allow for new bfd section size semantics
+  * Don't try to write map file when not using GNU ld.  Also allow
+    compile-file to process pathnames with whitespace on Windows
+  * Fix corner case fixnum arithmetic on 64bit machines
+  * Rework gmp_wrappers semantics for older gcc
+  * Explicitly mprotect loaded code pages PROT_EXEC on x86 Linux, as FC3
+    now requires it.
+  * lisp-implementation-version is GCL
+  * Reader extension patch allowing for foo::(bar foobar) semantics
+  * a shell script variable fix in "unixport/makefile" for MSYS
+  * __MINGW32__ malloc initialisation fix in "o/alloc.c"
+  * Windows file/directory fixes in "o/unixfsys.c"
+  * MinGW32 -march in configure - removes deprecation warnings
+  * MinGW32 directory fix - "o/mingfile.c".
+
+ -- Camm Maguire <camm@enhanced.com>  Sat, 15 Jan 2005 16:48:36 +0000
+
 gcl (2.6.5-1) unstable; urgency=high
 
   * New gmp_wrappers.{c,h} files that prevent all GBC within gmp,
