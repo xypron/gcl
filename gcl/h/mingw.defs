@@ -24,7 +24,7 @@ CROSS_PREFIX =
 # It is needed for the Unexec stuff to work with 3.3.1 at least
 CFLAGS       = -fno-zero-initialized-in-bss -Wall -fwritable-strings -DVOL=volatile -fsigned-char $(PROCESSOR_FLAGS) -I$(GCLDIR)/o 
 FINAL_CFLAGS = -fno-zero-initialized-in-bss -Wall -fwritable-strings -DVOL=volatile -fsigned-char $(PROCESSOR_FLAGS)
-O3FLAGS      = -O2 -fomit-frame-pointer
+O3FLAGS      = -O -fomit-frame-pointer
 O2FLAGS      = -O
 
 # Unexec dependency
