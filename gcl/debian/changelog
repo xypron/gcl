@@ -10,8 +10,10 @@ gcl (2.6.1-34) unstable; urgency=low
   * Backport new eval-when keyword support from 2.7 to run random tester
   * Perhormance improvement to gcl_seqlib.lsp -- no inner loop over
     bignums
+  * Proper contblock/relblock determination when expanding string
+    streams
 
- -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 01:59:34 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 02:01:49 +0000
 
 gcl (2.6.1-33) unstable; urgency=low
 
