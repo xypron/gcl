@@ -14,8 +14,10 @@ gcl (2.6.4-1) unstable; urgency=low
     effect and the hole is overrun
   * Build a profiling set of images as well for Debian, toggle between
     all four by default via debconf
+  * reset-sys-paths lisp function for moving image installation
+    directories, show profiling support in banner if present
 
- -- Camm Maguire <camm@enhanced.com>  Thu,  5 Aug 2004 22:33:29 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu,  5 Aug 2004 22:36:19 +0000
 
 gcl (2.6.3-1) unstable; urgency=high
 
