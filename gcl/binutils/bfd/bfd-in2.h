@@ -1,7 +1,6 @@
 /* DO NOT EDIT!  -*- buffer-read-only: t -*-  This file is automatically 
-   generated from "bfd-in.h", "init.c", "opncls.c", "libbfd.c", 
-   "section.c", "archures.c", "reloc.c", "syms.c", "bfd.c", "archive.c", 
-   "corefile.c", "targets.c" and "format.c".
+   generated from "bfd-in.h", "init.c", "opncls.c", "libbfd.c" and 
+   "section.c".
    Run "make headers" in your build bfd/ to regenerate.  */
 
 /* Main header file for the bfd library -- portable access to object files.
@@ -3465,6 +3464,8 @@ struct _bfd
       struct cisco_core_struct *cisco_core_data;
       struct versados_data_struct *versados_data;
       struct netbsd_core_struct *netbsd_core_data;
+      struct mach_o_data_struct *mach_o_data;
+      struct mach_o_fat_data_struct *mach_o_fat_data;
       PTR any;
     }
   tdata;
@@ -3727,7 +3728,8 @@ enum bfd_flavour
   bfd_target_msdos_flavour,
   bfd_target_ovax_flavour,
   bfd_target_evax_flavour,
-  bfd_target_mmo_flavour
+  bfd_target_mmo_flavour,
+  bfd_target_mach_o_flavour
 };
 
 enum bfd_endian { BFD_ENDIAN_BIG, BFD_ENDIAN_LITTLE, BFD_ENDIAN_UNKNOWN };
