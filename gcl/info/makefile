@@ -19,28 +19,28 @@ MPFILES=$(MPDIR)/mpi-386_no_under.o $(MPDIR)/libmport.a
 prefix=/usr/local
 
 # where to place the info files
-INFO_DIR=/usr/local/info/
+INFO_DIR=/usr/info/
 
 # where to put emacs lisp files.
-EMACS_SITE_LISP=/usr/share/emacs/20.3/site-lisp
+EMACS_SITE_LISP=
 
 # the default.el file
-EMACS_DEFAULT_EL=/usr/share/emacs/20.3/site-lisp/default.el
+EMACS_DEFAULT_EL=/default.el
 
 # numerous TCL/TK variables culled from the tkConfig.sh and tclConfig.sh
 # if these are found.
-TK_CONFIG_PREFIX=/usr/lib
-TK_LIBRARY=/usr/lib/tk8.0
-TCL_LIBRARY=/usr/lib/tcl8.0
+TK_CONFIG_PREFIX=/usr/local/lib
+TK_LIBRARY=/usr/local/lib/tk8.2
+TCL_LIBRARY=/usr/local/lib/tcl8.2
 TK_XINCLUDES=-I/usr/X11R6/include
-TK_INCLUDE=-I/usr/lib/../include
-TK_LIB_SPEC=-L/usr/lib -ltk8.0
-TK_BUILD_LIB_SPEC=-L/work-in-progress/tk8.0/unix -ltk8.0
+TK_INCLUDE=-I/usr/local/lib/../include
+TK_LIB_SPEC=-L/usr/local/lib -ltk8.2
+TK_BUILD_LIB_SPEC=-L/home/wfs/src/tk8.2.1/unix -ltk8.2
 TK_XLIBSW=-L/usr/X11R6/lib -lX11
 TK_XINCLUDES=-I/usr/X11R6/include
-TCL_LIB_SPEC=-L/usr/lib -ltcl8.0
+TCL_LIB_SPEC=-L/usr/local/lib -ltcl8.2${TCL_DBGX}
 TCL_DL_LIBS=-ldl
-TCL_LIBS=-ldl  -lieee -lm
+TCL_LIBS=-ldl  -lm
 
 NOTIFY=yes
 GCC=gcc
@@ -119,9 +119,24 @@ GCL_SI= number.texi sequence.texi character.texi list.texi io.texi \
 	gcl-si-index.texi
 GCL_TK= general.texi widgets.texi control.texi
 
-gcl-si.dvi gcl-si.info: ${GCL_SI} gcl-si.texi
-gcl-tk.dvi gcl-tk.info: ${GCL_TK} gcl-tk.texi
+gcl-si.dvi: ${GCL_SI} gcl-si.texi
+	tex gcl-si.texi
 
+gcl-si.info:
+	makeinfo gcl-si.texi	
+
+gcl-tk.dvi gcl-tk.info: ${GCL_TK} gcl-tk.texi
+	tex gcl-tk.texi
+	makeinfo gcl-tk.texi
+
+gcl-si_toc.html:
+	texi2html -split_chapter gcl-si.texi
+
+gcl-tk_toc.html:
+	texi2html -split_chapter gcl-tk.texi
+
+install-html: gcl-tk_toc.html gcl-si_toc.html
+	cp *.html /d/www/gcl
 
 install:
 	if [  -d "${INFO_DIR}" ] ; then true ; else exit 0; fi
