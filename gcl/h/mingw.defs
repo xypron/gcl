@@ -20,21 +20,16 @@ CROSS_PREFIX =
 # MPIOBJS      = $(MPIDIR)/mpi_glue.o
 # LIBS        += -L$(MPICHDIR)/lib -lmpich
 
-CFLAGS       = -Wall -fwritable-strings -DVOL=volatile -fsigned-char $(PROCESSOR_FLAGS) -I$(GCLDIR)/o 
-FINAL_CFLAGS = -Wall -fwritable-strings -DVOL=volatile -fsigned-char $(PROCESSOR_FLAGS)
+# Remove -fno-zero-initialized-in-bss if using gcc less than 3.3.1
+# It is needed for the Unexec stuff to work with 3.3.1 at least
+CFLAGS       = -fno-zero-initialized-in-bss -Wall -fwritable-strings -DVOL=volatile -fsigned-char $(PROCESSOR_FLAGS) -I$(GCLDIR)/o 
+FINAL_CFLAGS = -fno-zero-initialized-in-bss -Wall -fwritable-strings -DVOL=volatile -fsigned-char $(PROCESSOR_FLAGS)
 O3FLAGS      = -O2 -fomit-frame-pointer
 O2FLAGS      = -O
 
 # Unexec dependency
 
 UNIX_SAVE_DEP  = unexnt.c
-
-# CFLAGS         = -g -Wall -DVOL=volatile -fsigned-char -fwritable-strings $(PROCESSOR_FLAGS) -I$(GCLDIR)/o 
-# FINAL_CFLAGS   = -g -Wall -DVOL=volatile -fsigned-char -fwritable-strings $(PROCESSOR_FLAGS)
-# O3FLAGS        = 
-# O2FLAGS        = 
-
-#CC             = ${CROSS_PREFIX}gcc
 
 AS             = ${CROSS_PREFIX}as
 AR             = ${CROSS_PREFIX}ar q
@@ -86,10 +81,10 @@ TCL_LIBS=
 TK_LISP_LIB=
 TCL_EXES=
 
-# Don't do dvi and html
+# Don't do dvi
 
 GCL_DVI=
-GCL_HTML=
+GCL_HTML=gcl-si_toc.html gcl-tk_toc.html gcl_toc.html
 
 #
 # End h/mingw.defs

@@ -2,7 +2,7 @@ Hi there!
 
 WHAT NOW:
 
-You are installing GNU Common Lisp for Windows, 2.5.0 RC1
+You are installing GNU Common Lisp for Windows, 2.6.1
 This compiler depends on Mingw32 GCC (see below).
 
 DO NOT INSTALL INTO A DIRECTORY WITH SPACES IN THE NAME.
