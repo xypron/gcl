@@ -16,8 +16,9 @@ gcl (2.6.4-1) unstable; urgency=low
     all four by default via debconf
   * reset-sys-paths lisp function for moving image installation
     directories, show profiling support in banner if present
+  * Fix typo in sys docs
 
- -- Camm Maguire <camm@enhanced.com>  Thu,  5 Aug 2004 22:36:19 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu,  5 Aug 2004 22:48:01 +0000
 
 gcl (2.6.3-1) unstable; urgency=high
 
