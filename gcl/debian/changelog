@@ -16,8 +16,9 @@ gcl (2.6.1-26) unstable; urgency=low
     optimization bugs
   * Add missing m4 and automake files in binutils directory to enable
     automake and autoconf here
+  * Add mach-o specific files from cvs head to local bfd tree
 
- -- Camm Maguire <camm@enhanced.com>  Wed, 25 Feb 2004 22:27:22 +0000
+ -- Camm Maguire <camm@enhanced.com>  Wed, 25 Feb 2004 22:31:12 +0000
 
 gcl (2.6.1-25) unstable; urgency=low
 
