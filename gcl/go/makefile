@@ -16,6 +16,14 @@ LIBFILES= bcmp.o bcopy.o bzero.o
 MAIN_DEBUG=
 DPP	= ../bin/dpp
 
+# If you have static GNU Readline 4.0 library, modify the following
+# Note that it is possible to configure Readline use ncurses instead termcap
+RL_PREFIX=/cdimage
+RL_LIB_SPEC=-L$(RL_PREFIX)/lib -lreadline -ltermcap
+RL_INCLUDE=-I$(RL_PREFIX)/include
+RL_OBJS=$(OD)readline.o
+
+
 AUX_INFO=-aux-info $*.X
 .c.o:
 	$(CC) -c $(OFLAG) $(CFLAGS) $*.c $(AUX_INFO)
@@ -54,24 +62,24 @@ prefix=/usr/local
 INFO_DIR=/usr/info/
 
 # where to put emacs lisp files.
-EMACS_SITE_LISP=/usr/share/emacs/20.7/site-lisp
+EMACS_SITE_LISP=/usr/local/share/emacs/20.7/site-lisp
 
 # the default.el file
-EMACS_DEFAULT_EL=/usr/share/emacs/20.7/site-lisp/default.el
+EMACS_DEFAULT_EL=/usr/local/share/emacs/20.7/site-lisp/default.el
 
 # numerous TCL/TK variables culled from the tkConfig.sh and tclConfig.sh
 # if these are found.
 TK_CONFIG_PREFIX=/usr/lib
-TK_LIBRARY=/usr/lib/tk8.3
-TCL_LIBRARY=/usr/lib/tcl8.3
+TK_LIBRARY=/usr/lib/tk8.2
+TCL_LIBRARY=/usr/lib/tcl8.2
 TK_XINCLUDES=-I/usr/X11R6/include
 TK_INCLUDE=-I/usr/lib/../include
 TCL_INCLUDE=-I/usr/lib/../include
-TK_LIB_SPEC=-L/usr/lib -ltk8.3
-TK_BUILD_LIB_SPEC=-L/tmp/tk8.3.2/unix -ltk8.3
+TK_LIB_SPEC=-L/usr/lib -ltk8.2
+TK_BUILD_LIB_SPEC=-L/usr/lib -ltk8.2
 TK_XLIBSW=-L/usr/X11R6/lib -lX11
 TK_XINCLUDES=-I/usr/X11R6/include
-TCL_LIB_SPEC=-L/usr/lib -ltcl8.3
+TCL_LIB_SPEC=-L/usr/lib -ltcl8.2${TCL_DBGX}
 TCL_DL_LIBS=-ldl
 TCL_LIBS=-ldl  -lm
 
@@ -82,7 +90,7 @@ GCC=gcc
 
 
 
-GCLDIR=/home/wfs/cvs/gcl
+GCLDIR=/fix/f/debian/mm/gcl/gcl-2.5.0
 SHELL=/bin/sh
 MACHINE=386-linux
 
@@ -182,7 +190,8 @@ OBJS	=  $(OD)main.o $(OD)alloc.o $(OD)gbc.o \
 	$(OD)fat_string.o ${ODIR}/run_process.o \
 	$(OD)nfunlink.o $(OD)usig.o $(OD)usig2.o $(OD)utils.o \
 	$(OD)makefun.o $(OD)sockets.o  \
-	$(OD)init_pari.o $(NEW_INIT) $(MPFILES) $(SFASL) $(EXTRAS)
+	$(OD)init_pari.o $(NEW_INIT) $(MPFILES) $(SFASL) $(EXTRAS) \
+	$(RL_OBJS)
 
 all:  $(OBJS) new-init $(LIBFILES) new_init.o  $(GCLIB)
 
