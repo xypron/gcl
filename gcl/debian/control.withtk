@@ -1,0 +1,18 @@
+Source: gcl
+Section: interpreters
+Priority: optional
+Maintainer: JP Sugarbroad <taral@taral.net>
+Build-Depends: debhelper (>> 3.0.0), tcl8.0-dev, tk8.0-dev, tcl8.0, xlibs-dev, perl-base, autoconf, libgmp3-dev
+Standards-Version: 3.5.2
+
+Package: gcl
+Architecture: i386 sparc
+Depends: ${shlibs:Depends}
+Description: GNU Common Lisp compiler.
+ The GNU Common Lisp compiler, based on Kyoto Common Lisp.
+
+Package: gcl-doc
+Section: doc
+Architecture: all
+Description: Documentation for GNU Common Lisp.
+ GCL documentation in info format.
