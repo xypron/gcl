@@ -3597,7 +3597,7 @@ echo $ac_n "checking for sbrk""... $ac_c" 1>&6
 echo "configure:3598: checking for sbrk" >&5
 HAVE_SBRK=""
 if test "$cross_compiling" = yes; then
-  WARNING you must beable to emulate sbrk
+  echo "$ac_t""no: WARNING you must beable to emulate sbrk: as on mingw or macosx" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
 #line 3604 "configure"
@@ -3620,7 +3620,7 @@ else
   echo "configure: failed program was:" >&5
   cat conftest.$ac_ext >&5
   rm -fr conftest*
-  echo "$ac_t""no
+  echo "$ac_t""no: WARNING you must beable to emulate sbrk: as on mingw or macosx" 1>&6
 fi
 rm -fr conftest*
 fi
