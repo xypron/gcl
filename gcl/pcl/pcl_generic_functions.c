@@ -3378,7 +3378,7 @@ TTL:;
 	(void) (*Lnk422)();
 	return;
 }
-static void LnkT422(){ call_or_link(VV[422],(void **)&Lnk422);} /* LOAD-DEFGENERIC */
+static void LnkT422(){ call_or_link(VV[422],(void **)(void *)&Lnk422);} /* LOAD-DEFGENERIC */
 
 #ifdef SYSTEM_SPECIAL_INIT
 SYSTEM_SPECIAL_INIT
