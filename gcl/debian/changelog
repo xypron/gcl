@@ -17,8 +17,9 @@ gcl (2.6.1-34) unstable; urgency=low
   * plttest.c cannot depend on include.h
   * Address longstanding FIXmE in gensym, so that two strings are not
     allocated for each gensym
+  * Fix rare infinite loop bug in array.c
 
- -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 02:13:10 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat, 20 Mar 2004 02:16:11 +0000
 
 gcl (2.6.1-33) unstable; urgency=low
 
