@@ -578,6 +578,17 @@ va_dcl
 	RETURN(1,int,exit_code, 0); 
 }
 
+DEFUNO("QUIT",int,fLquit,LISP
+   ,0,1,NONE,II,OO,OO,OO,Lquit,"")(va_alist)
+va_dcl
+{	return fLbye(va_alist); }
+ 
+DEFUNO("EXIT",int,fLexit,LISP
+   ,0,1,NONE,II,OO,OO,OO,Lexit,"")(va_alist)
+va_dcl
+{	return fLbye(va_alist); }
+ 
+
 c_trace()
 {
 #ifdef AOSVS
