@@ -14,49 +14,22 @@
 
 #define EXTER extern
 /* h/gclincl.h.  Generated automatically by configure.  */
+/* h/gclincl.h.in.  Generated automatically from configure.in by autoheader.  */
 
+/* Define if you have alloca, as a function or macro.  */
+#define HAVE_ALLOCA 1
 
-/* define where the heap could begin.   Normally should
-be the smallest value returned by sbrk().   Underestimating
-by 10-20 megabytes is not a problem. */
+/* Define if you have <alloca.h> and it should be used (not on Ultrix).  */
+/* #undef HAVE_ALLOCA_H */
 
 #define DBEGIN 0x8000000 /* where data begins */
 
-
-/* the size of the page tables for gcl.  Each page is PAGESIZE which
-is usually 4K or 8K bytes.  From 1 to 3 bytes per page are
-preallocated in a table at compile time.  this must be a power of 2 if
-SGC is enabled.  */
-
 #define MAXPAGE 32*1024
-
-
-/* check to see if getcwd exists
-*/
-#define HAVE_GETCWD 1
-
-
-/* if we dont have USEGETCWD, we will use GETWD unless following defined
-*/
-#define HAVE_GETWD 1
-
-
-/* no gettimeofday function */
 
 /* #undef NO_GETTOD */
 
-/* define if have <asm/signal.h> */
-#define HAVE_ASM_SIGNAL_H 1
-
-/* define if have <asm/sigcontext.h> */
-#define HAVE_ASM_SIGCONTEXT_H 1
-
 /* define if have struct sigcontext in one of above */
 /* #undef HAVE_SIGCONTEXT */
-
-
-/* define if have <sys/ioctl.h> */
-#define HAVE_SYS_IOCTL_H 1
 
 /* define if we can use the file nsocket.c   */
 #define HAVE_NSOCKET 1  
@@ -66,7 +39,6 @@ SGC is enabled.  */
 #define HAVE_ALLOCA 1 
 #endif
 
-
 /* define if need alloca.h */
 /* #undef NEED_ALLOCA_H */
 
@@ -74,22 +46,18 @@ SGC is enabled.  */
 #include <alloca.h>
 #endif
 
-
 /* define LISTEN_USE_FCNTL  if we can check for input using fcntl */
 #define LISTEN_USE_FCNTL 1
 
 /* if signal.h alone contains the stuff necessary for sgc */
 #define SIGNAL_H_HAS_SIGCONTEXT 1
 
-
 /* define if the profil system call is not defined in libc */
 /* #undef NO_PROFILE */ 
-
 
 /* define if the _cleanup() function exists and should be called
    before saving */
 /* #define USE_CLEANUP  */
-
 
 /* define if BIG_ENDIAN or LITTLE_ENDIAN is defined by including
    the standard includes */
@@ -98,33 +66,17 @@ SGC is enabled.  */
 /* define if SV_ONSTACK is defined in signal.h */
 #define HAVE_SV_ONSTACK 1 
 
-
-/*
-   define to be a typical stack address.   We use this to decide
-   whether we can use a cheap test for NULL_OR_ON_C_STACK, or whether
-   it has to be more complex..
-
-*/
-
-#define CSTACK_ADDRESS -1073743884 
-
-/* define if SIGSYS is defined in signal.h */
+#define CSTACK_ADDRESS -1073743432 
 
 #define HAVE_SIGSYS 1
 
-/* define if SIGEMT is defined in signal.h */
-
 /* #undef HAVE_SIGEMT */
-
 
 /* define if setenv  is define */
 #define HAVE_SETENV 1
 
 /* define if putenv  is define */
 /* #undef HAVE_PUTENV */
-
-
-/* define if long long int works to multiply to ints, */
 
 #define HAVE_LONG_LONG 1
 
@@ -133,6 +85,37 @@ SGC is enabled.  */
 
 /* have a broken version of C compiler which makes bad code for -O4 */
 /* #undef BROKEN_O4_OPT */ 
+
+/*  See if gettimeofday is declared in the <sys/time.h> header file. */
+/*  if not, set the GETTOD_NOT_DECLARED flag so that tclPort.h can */
+/*  declare it. */
+
+/* #undef GETTOD_NOT_DECLARED */
+
+/* #undef HAVE_BSDGETTIMEOFDAY */
+
+/* #undef NO_UNAME */
+
+/*  FIONBIO vs. O_NONBLOCK for nonblocking I/O */
+/* #undef USE_FIONBIO */
+
+/* readline support */
+/* #undef HAVE_READLINE */
+
+/* Define if you have the getcwd function.  */
+#define HAVE_GETCWD 1
+
+/* Define if you have the getwd function.  */
+#define HAVE_GETWD 1
+
+/* Define if you have the <asm/sigcontext.h> header file.  */
+#define HAVE_ASM_SIGCONTEXT_H 1
+
+/* Define if you have the <asm/signal.h> header file.  */
+#define HAVE_ASM_SIGNAL_H 1
+
+/* Define if you have the <sys/ioctl.h> header file.  */
+#define HAVE_SYS_IOCTL_H 1
 
 #include <varargs.h>
 #include <setjmp.h>
@@ -2713,6 +2696,7 @@ EXTER  int   fSgetpid ();
 EXTER  object   fSuse_fast_links (); 
 EXTER object  sScdefn ; 
 EXTER object  sLAlink_arrayA ; 
+EXTER  object   fSprofile  (); 
 EXTER  object   fSfunction_start  (); 
 EXTER  object   fSread_externals  (); 
 EXTER  object   fSset_up_combined  (); 
@@ -2786,7 +2770,7 @@ EXTER GEN1 icopy_x;
 #endif
 
 #endif /* NO GMP */
-#endif _MP_H
+#endif /*  _MP_H */
 
   /* copy x to y, increasing space by factor of 2  */
 object make_integer();

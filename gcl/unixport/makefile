@@ -9,7 +9,7 @@ GMP_DIR	= ../gmp/
 
 CFLAGS	= -c $(DEFS) -I$(HDIR)
 LDCC    = $(CC) -g
-LIBC	= -lc $(RL_LIB_SPEC)
+LIBC	= -lc
 LIBS	= -lm # -lpixrect -lc
 OLDDATE = "DATE"
 GCLIB	= $(ODIR)/gcllib.a
@@ -17,16 +17,6 @@ MPFILES= $(MPDIR)/mpi.o $(MPDIR)/mp2.o  $(MPDIR)/libmport.a
 MPFILES= $(MPDIR)/mpi.o $(MPDIR)/mp2.o  $(MPDIR)/libmport.a
 INIT_SYSTEM_LSP=init_$(SYSTEM).lsp
 SPECIAL_RSYM = rsym.c
-
-# If you have static GNU Readline 4.0 library, modify the following
-# Note that it is possible to configure Readline use ncurses instead termcap
-RL_PREFIX=/cdimage
-RL_LIB_SPEC=-L$(RL_PREFIX)/lib -lreadline -ltermcap
-RL_INCLUDE=-I$(RL_PREFIX)/include
-RL_OBJS=$(OD)readline.o
-
-
-
 
 # begin makedefs
 
@@ -42,7 +32,7 @@ MPFILES=$(MPDIR)/mpi-386_no_under.o $(MPDIR)/libmport.a
 # root for the installation, eg /usr/local
 # This would cause make install to create /usr/local/bin/gcl and
 # /usr/local/lib/gcl-2-??/* with some basic files.
-prefix=/usr/local
+prefix=/fix/f/debian/mm/gcl/gcl-2.5.0/../tmp
 
 # where to place the info files
 INFO_DIR=/usr/info/
@@ -72,9 +62,9 @@ TCL_LIBS=-ldl  -lm
 NOTIFY=yes
 GCC=gcc
 
+RL_OBJS=
 
-
-
+RL_LIB=
 
 GCLDIR=/fix/f/debian/mm/gcl/gcl-2.5.0
 SHELL=/bin/sh
@@ -91,10 +81,12 @@ MACHINE=386-linux
 
 LBINDIR=/usr/local/bin
 
-OFLAG	=  -O 
-LIBS	= -lm 
+OFLAG	=  -g 
+#OFLAG	=  -O 
+#LIBS	= -lm 
 
-ODIR_DEBUG= -O4 
+#ODIR_DEBUG= -O4 
+ODIR_DEBUG= -g
 
 # This CC string will be used for compilation of the system,
 # and also in the compiler::*cc* variable for later compilation of
@@ -166,7 +158,7 @@ OBJS	=  $(OD)main.o $(OD)alloc.o $(OD)gbc.o \
 	$(OD)nfunlink.o $(OD)usig.o $(OD)usig2.o $(OD)utils.o \
 	$(OD)makefun.o $(OD)sockets.o  $(OD)clxsocket.o  \
 	$(OD)init_pari.o $(OD)nsocket.o $(NEW_INIT) $(MPFILES) $(SFASL) $(EXTRAS) \
-	$(RL_OBJS)
+	$(addprefix $(OD),$(RL_OBJS))
 
 LSPOBJS	= $(LSPDIR)/defmacro.o $(LSPDIR)/evalmacros.o $(LSPDIR)/top.o \
 	$(LSPDIR)/module.o $(LSPDIR)/predlib.o $(LSPDIR)/setf.o \
@@ -175,7 +167,7 @@ LSPOBJS	= $(LSPDIR)/defmacro.o $(LSPDIR)/evalmacros.o $(LSPDIR)/top.o \
 	$(LSPDIR)/mislib.o $(LSPDIR)/numlib.o $(LSPDIR)/packlib.o \
 	$(LSPDIR)/seq.o $(LSPDIR)/seqlib.o $(LSPDIR)/trace.o \
 	$(LSPDIR)/sloop.o  $(LSPDIR)/debug.o $(LSPDIR)/info.o \
-	$(LSPDIR)/serror.o
+	$(LSPDIR)/serror.o $(addprefix $(LSPDIR)/,$(RL_OBJS))
 
 CMPOBJS	= $(CMPDIR)/cmpinline.o $(CMPDIR)/cmputil.o $(CMPDIR)/cmptype.o \
 	$(CMPDIR)/cmpbind.o $(CMPDIR)/cmpblock.o $(CMPDIR)/cmpcall.o \
@@ -188,10 +180,16 @@ CMPOBJS	= $(CMPDIR)/cmpinline.o $(CMPDIR)/cmputil.o $(CMPDIR)/cmptype.o \
 
 SYSTEM=gcl
 
+$(LSPDIR)/auto_new.lsp: $(LSPDIR)/auto.lsp
+	cp $< $@
+	[ "$(RL_OBJS)" = "" ] || \
+		echo "(AUTOLOAD 'init-readline '|readline|)" >>$@
+
 saved_$(SYSTEM):raw_$(SYSTEM) $(RSYM) $(INIT_SYSTEM_LSP) \
 		$(CMPDIR)/cmpmain.lsp \
 		$(CMPDIR)/lfun_list.lsp \
-		$(CMPDIR)/cmpopt.lsp ${HDIR}/cmpinclude.h
+		$(CMPDIR)/cmpopt.lsp ${HDIR}/cmpinclude.h \
+		$(LSPDIR)/auto_new.lsp
 # if you are wfs on rascal increment the minor version number.
 	../xbin/if-exists /usr/u9/wfs/schelter "../xbin/inc-version"
 	../xbin/if-exists saved_$(SYSTEM) "rm -f saved_$(SYSTEM)"
@@ -258,4 +256,4 @@ hpbsd-crt0-mod.o:
 
 
 clean:
-	rm -f saved_$(GCL) raw_$(GCL) *.o core a.out rsym
+	rm -f saved_$(GCL) raw_$(GCL) *.o core a.out rsym $(LSPDIR)/auto_new.lsp
