@@ -21,8 +21,9 @@ gcl (2.6.1-26) unstable; urgency=low
   * Macosx defaults in configure.in
   * bfd make and configure file changes to handle mach-o backend
   * *gcl-version* -> *gcl-minor-version*,*gcl-extra-version*
+  * Support for more informative banner reading features list
 
- -- Camm Maguire <camm@enhanced.com>  Wed, 25 Feb 2004 22:46:39 +0000
+ -- Camm Maguire <camm@enhanced.com>  Wed, 25 Feb 2004 22:57:25 +0000
 
 gcl (2.6.1-25) unstable; urgency=low
 
