@@ -17,8 +17,9 @@ gcl (2.6.5-1) unstable; urgency=high
   * Versioned depends on binutils-dev manually installed by Debian build
     process
   * New upstream release
+  * Proper binutils dependency for Debian
 
- -- Camm Maguire <camm@enhanced.com>  Thu, 12 Aug 2004 16:53:15 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu, 12 Aug 2004 19:56:51 +0000
 
 gcl (2.6.4-1) unstable; urgency=high
 
