@@ -284,6 +284,9 @@ main(int argc, char **argv, char **envp) {
 #endif	
 #endif	
 	
+#ifdef SGC
+	memprotect_test_reset();
+#endif
 
 	if (initflag) {
 		if (saving_system) {
