@@ -117,6 +117,9 @@
           (atom . atom)
           (cons . consp)
           (list . listp)
+          (fixnum . fixnump)
+          (integer . integerp)
+          (rational . rationalp)
           (number . numberp)
           (character . characterp)
           (package . packagep)
@@ -132,7 +135,8 @@
           )
         (cdr l)))
     ((endp l))
-  (si:putprop (caar l) (cdar l) 'type-predicate))
+  (si:putprop (caar l) (cdar l) 'type-predicate)
+  (si:putprop (cdar l) (caar l) 'predicate-type))
 
 (defun class-of (object)
   (declare (ignore object))
@@ -256,6 +260,10 @@
 ;;; The result is always a list.
 (defun normalize-type (type &aux tp i )
   ;; Loops until the car of type has no DEFTYPE definition.
+  (when (and (consp type) (eq (car type) 'satisfies))
+    (unless (setq tp (get (cadr type) 'predicate-type))
+      (error "Cannot process type ~S~%" type))
+    (setq type tp))
   (loop
     (if (atom type)
         (setq tp type i nil)
@@ -267,6 +275,7 @@
 
 ;;; KNOWN-TYPE-P answers if the given type is a known base type.
 ;;; The type may not be normalized.
+;; FIXME this needs to be more robust
 (defun known-type-p (type)
   (when (consp type) (setq type (car type)))
   (if (or (equal (string type) "ERROR")
@@ -311,12 +320,8 @@
 		       (values t t) (values nil t))))
     (when (or c1 c2)
       (return-from subtypep (values nil t))))
-  (setq t1 (normalize-type type1))
-  (setq type1 (if (eq (car t1) 'satisfies) (list type1) t1))
-  (setq t2 (normalize-type type2))
-  (setq type2 (if (eq (car t2) 'satisfies) (list type2) t2))
-;  (setq type1 (normalize-type type1))
-;  (setq type2 (normalize-type type2))  
+  (setq type1 (normalize-type type1))
+  (setq type2 (normalize-type type2))
   (when (equal type1 type2)
     (return-from subtypep (values t t)))
   (setq t1 (car type1) t2 (car type2))
