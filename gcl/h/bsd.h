@@ -2,7 +2,8 @@
 #define UNIX
 #define AV
 #define SFASL
-#define HAVE_AOUT <a.out.h>
+
+/* #define HAVE_AOUT <a.out.h> */
 
 
 #define MEM_SAVE_LOCALS	\
