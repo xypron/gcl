@@ -20,6 +20,9 @@ Boston, MA 02111-1307, USA.
 
    Geoff Voelker (voelker@cs.washington.edu)                         8-12-94
 */
+
+#include "gclincl.h"
+
 #ifndef UNIXSAVE
 #include <config.h>
 #endif
@@ -955,7 +958,7 @@ allocate_heap (void)
 
   unsigned long base = DBEGIN;   /*  27MB */
   /*   unsigned long base = 0x01B00000; */  /*  27MB */
-  unsigned long end  = 1 << VALBITS; /* 256MB */
+  unsigned long end  = 2*PAGESIZE*MAXPAGE; /* 256MB */
   void *ptr = NULL;
 
 #define NTHEAP_PROBE_BASE 0
