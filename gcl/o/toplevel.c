@@ -28,7 +28,7 @@ Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 #include "include.h"
 
-object sLcompile, sLload, sLeval;
+object sLcompile, sLload, sLeval, sKcompile_toplevel, sKload_toplevel, sKexecute;
 object sLprogn;
 
 
@@ -132,9 +132,10 @@ FFN(Feval_when)(object arg)
 	if(endp(arg))
 		FEtoo_few_argumentsF(arg);
 	for (ss = MMcar(arg);  !endp(ss);  ss = MMcdr(ss))
-		if(MMcar(ss) == sLeval)
+		if(MMcar(ss) == sLeval || (MMcar(ss) == sKexecute) )
 			flag = TRUE;
-		else if(MMcar(ss) != sLload && MMcar(ss) != sLcompile)
+		else if(MMcar(ss) != sLload && MMcar(ss) != sLcompile &&
+                          MMcar(ss) != sKload_toplevel && MMcar(ss) != sKcompile_toplevel )
 		 FEinvalid_form("~S is an undefined situation for EVAL-WHEN.",
 				MMcar(ss));
 	if(flag) {
@@ -194,11 +195,13 @@ FFN(Fthe)(object args)
 }
 
 DEF_ORDINARY("COMPILE",sLcompile,LISP,"");
+DEF_ORDINARY("COMPILE-TOPLEVEL",sKcompile_toplevel,KEYWORD,"");
 DEF_ORDINARY("DECLARE",sLdeclare,LISP,"");
 DEF_ORDINARY("EVAL",sLeval,LISP,"");
-DEF_ORDINARY("EVAL",sLeval,LISP,"");
+DEF_ORDINARY("EXECUTE",sKexecute,KEYWORD,"");
 DEF_ORDINARY("FUNCTION-DOCUMENTATION",sSfunction_documentation,SI,"");
 DEF_ORDINARY("LOAD",sLload,LISP,"");
+DEF_ORDINARY("LOAD-TOPLEVEL",sKload_toplevel,KEYWORD,"");
 DEF_ORDINARY("PROGN",sLprogn,LISP,"");
 DEF_ORDINARY("TYPEP",sLtypep,LISP,"");
 DEF_ORDINARY("VALUES",sLvalues,LISP,"");
