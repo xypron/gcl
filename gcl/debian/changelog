@@ -1,3 +1,9 @@
+gcl (2.6.1-8) unstable; urgency=low
+
+  * Add processor flag variable to flags in configure.in
+
+ -- Camm Maguire <camm@enhanced.com>  Tue,  9 Sep 2003 19:03:51 +0000
+
 gcl (2.6.1-7) unstable; urgency=low
 
   * Fix permissions bug in temporary gzipped file handling
