@@ -68,6 +68,7 @@ int n;
 	   SYMNMLEN),tem):
   sym->n_name );
  printf ("sym-index = %d table entry at %x",n,&symbol_table[n]);
+ /*
  printf("symbol is (%s):\nsymbol_table[n]._n._n_name %s\nsymbol_table[n]._n._n_n._n_zeroes %d\nsymbol_table[n]._n._n_n._n_offset %d\nsymbol_table[n]._n._n_nptr[0] %d\nsymbol_table[n]._n._n_nptr[n] %d\nsymbol_table[n].n_value %d\nsymbol_table[n].n_scnum %d
 \nsymbol_table[n].n_type %d\nsymbol_table[n].n_sclass %d\nsymbol_table[n].n_numaux %d", str,
 	symbol_table[n]._n._n_name,
@@ -79,7 +80,7 @@ int n;
 	symbol_table[n].n_scnum ,
 	symbol_table[n].n_type ,
 	symbol_table[n].n_sclass ,
-	symbol_table[n].n_numaux );
+	symbol_table[n].n_numaux ); */
 }
 
 #endif 

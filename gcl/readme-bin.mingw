@@ -3,26 +3,30 @@ Hi there!
 WHAT NOW:
 
 You are installing GNU Common Lisp for Windows, 2.6.1
-This compiler depends on Mingw32 GCC (see below).
+This compiler uses the Minimalist GNU Windows 32 
+compiler tools (MinGW32, see below).
 
-DO NOT INSTALL INTO A DIRECTORY WITH SPACES IN THE NAME.
+IF YOU INSTALL INTO A DIRECTORY WITH SPACES IN THE NAME,
+MAKE SURE you use the DOSified form eg:
+
+	c:/Progra~1/somewhere.
 
 
 MINGW32 GCC:
 
-The MinGW compiler is provided under the terms of the files:
+The MinGW compiler is provided subject to the terms
+of the files:
 
  "COPYING" and "COPYING.LIB"
 
-which are located in the mingw sub-directory.  The source 
-code and updated binary packages can be obtained via the 
-official MinGW web site:
+located in the mingw sub-directory.  The source 
+code and updated binary packages can be obtained via 
+the official MinGW web site:
 
 http://sourceforge.net/projects/mingw/
 
-It is recommended that you use the compiler provided
-when working with this GCL package to ensure C compiler
-compatibility.  
+We recommend that you use the compiler provided when
+working with this GCL package for compatibility.  
 
 Clean and rebuild pre-existing projects whenever you
 upgrade the GCL binary package for this reason.
