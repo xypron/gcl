@@ -133,3 +133,7 @@ SGC is enabled.  */
 
 /* readline support */
 #undef HAVE_READLINE
+
+/* bfd support */
+#undef HAVE_LIBBFD
+
