@@ -39,8 +39,9 @@ gcl (2.6.1-1) unstable; urgency=low
   * syntax fix to lsp/gprof.hc
   * Add support for SGC contblock pages
   * Fixes to debian/rules
+  * Remove unused definitions of Vcs
 
- -- Camm Maguire <camm@enhanced.com>  Tue,  2 Sep 2003 17:24:30 +0000
+ -- Camm Maguire <camm@enhanced.com>  Tue,  2 Sep 2003 20:19:09 +0000
 
 gcl (2.6.0cvs-1) experimental; urgency=low
 
