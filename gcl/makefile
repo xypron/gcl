@@ -226,7 +226,8 @@ clean:
 	(cd $(CMPDIR); make clean)
 	(cd $(PORTDIR); make clean)
 	(cd gcl-tk ; make clean)
-	(cd gmp ; make distclean)
+	-(cd gmp ; make distclean)
+	(cd info ; make clean)
 	rm -f foo.tcl config.log makedefs makedefsafter config.cache config.status makedefc
 	rm -f h/config.h h/gclincl.h h/cmpinclude.h
 	rm -rf gmp/.deps
