@@ -190,9 +190,16 @@ if test "$tcl_checkBoth" = 1; then
 fi
 AC_CHECK_FUNC(gethostbyname, , AC_CHECK_LIB(nsl, main, [LIBS="$LIBS -lnsl"]))
 
-AC_CHECK_LIB(readline,main,AC_DEFINE(HAVE_READLINE))
+#AC_CHECK_LIB(readline,main,
+#	AC_CHECK_LIB(termcap,main,
+#		AC_DEFINE(HAVE_READLINE) 
+#		LIBS="$LIBS -lreadline -ltermcap"
+#		RL_OBJS=readline.o
+#		RL_LIB=lsp/readline.o))
 
 AC_SUBST(LIBS)
+AC_SUBST(RL_OBJS)
+AC_SUBST(RL_LIB)
 
 AC_MSG_CHECKING(For network code for nsocket.c)
 AC_TRY_LINK([
