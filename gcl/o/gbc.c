@@ -107,7 +107,9 @@ static int gc_time = -1;
 static int gc_start = 0;
 static int gc_recursive = 0;
 int runtime(void);
+#ifdef SGC
 int sgc_enabled=0;
+#endif
 int  first_protectable_page =0;
 
 
@@ -1061,7 +1063,9 @@ GBC(enum type t) {
 
   int i, j;
   struct apage *pp, *qq;
+#ifdef SGC
   int in_sgc = sgc_enabled;
+#endif
 #ifdef DEBUG
   int tm=0;
 #endif
@@ -1078,8 +1082,9 @@ GBC(enum type t) {
   
   if (saving_system)
     {t = t_contiguous; gc_time = -1;
+#ifdef SGC
     if(sgc_enabled) sgc_quit();
-    
+#endif    
     }
 
 
@@ -1095,10 +1100,17 @@ GBC(enum type t) {
   if (debug || (sSAnotify_gbcA->s.s_dbind != Cnil)) {
     
     if (gc_time < 0) gc_time=0;
+#ifdef SGC
     printf("[%s for %d %s pages..",
 	   (sgc_enabled ? "SGC" : "GC"),
 	   (sgc_enabled ? sgc_count_type(t) : tm_of(t)->tm_npage),
 	   (tm_table[(int)t].tm_name)+1);
+#else
+    printf("[%s for %d %s pages..",
+	   ("GC"),
+	   (tm_of(t)->tm_npage),
+	   (tm_table[(int)t].tm_name)+1);
+#endif
 #ifdef SGC
     if(sgc_enabled)
       printf("(%d writable)..",sgc_count_writable(page(core_end)));
@@ -1123,11 +1135,18 @@ GBC(enum type t) {
       j = 0;
     /* if in sgc we don't need more pages below hole
        just more relocatable or cleaning it */
-    if (sgc_enabled ==0 && holepage < new_holepage)
-      holepage = new_holepage;
+#ifdef SGC
+    if (sgc_enabled==0) 
+#endif
+      if (holepage < new_holepage)
+	holepage = new_holepage;
     
+#ifdef SGC
     i = rb_pointer - (sgc_enabled ? old_rb_start : rb_start);
-    
+#else
+    i = rb_pointer - rb_start;
+#endif    
+
     if (nrbpage > (real_maxpage-page(heap_end)
 		   -holepage-real_maxpage/32)/2) {
       if (i > nrbpage*PAGESIZE)
@@ -1141,7 +1160,9 @@ GBC(enum type t) {
     if (saving_system)
       rb_start = heap_end;
     else
+#ifdef SGC
       if (sgc_enabled==0)
+#endif
 	{rb_start = heap_end + PAGESIZE*holepage;}
     
     rb_end = heap_end + (holepage + nrbpage) *PAGESIZE;
@@ -1292,8 +1313,10 @@ GBC(enum type t) {
   
   interrupt_enable = TRUE;
   
+#ifdef SGC
   if (in_sgc && sgc_enabled==0)
     sgc_start();
+#endif
   
   if (saving_system) {
     j = (rb_pointer-rb_start+PAGESIZE-1) / PAGESIZE;
@@ -1325,8 +1348,11 @@ GBC(enum type t) {
     ncb = 0;
     
     /* hmm.... why is this test necessary.*/
-    if (sgc_enabled==0) {holepage = new_holepage;
-    nrbpage = INIT_NRBPAGE;}
+#ifdef SGC
+    if (sgc_enabled==0) 
+#endif
+      {holepage = new_holepage;
+      nrbpage = INIT_NRBPAGE;}
     
     if (nrbpage < 0)
       error("no relocatable pages left");

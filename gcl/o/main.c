@@ -104,7 +104,9 @@ unsigned int _stacktop, _stackbottom;
 
 int cssize;
 
+#ifdef SGC
 int sgc_enabled;
+#endif
 void install_segmentation_catcher(void);
 
 #ifndef SIG_STACK_SIZE
@@ -371,9 +373,11 @@ error(char *s)
 {
         if (catch_fatal>0 && interrupt_enable )
             {catch_fatal = -1;
+#ifdef SGC
 	   if (sgc_enabled)
 	     { sgc_quit();}
 	   if (sgc_enabled==0)
+#endif
 	     { install_segmentation_catcher() ;}
 	   FEerror("Caught fatal error [memory may be damaged]",0); }
 	printf("\nUnrecoverable error: %s.\n", s);
