@@ -155,7 +155,11 @@ main(int argc, char **argv, char **envp) {
 	if (argv[0][0] != '/')
 		error("can't get the program name");
 */
+#ifdef GET_FULL_PATH_SELF
+	GET_FULL_PATH_SELF(kcl_self);
+#else
 	kcl_self = argv[0];
+#endif
 #ifdef FIX_FILENAME
 	{ int n = strlen(kcl_self);
 	 FIX_FILENAME(Cnil,kcl_self);
