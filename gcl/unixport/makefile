@@ -23,16 +23,16 @@ SPECIAL_RSYM = rsym.c
 # use=386-linux
 
 # for main link of raw_gcl
-LIBS= -lm -lreadline -ltermcap
+LIBS= -lm -lreadline -ltermcap -lbfd -liberty
 
 #The multi precision library stuff
-MPFILES=$(MPDIR)/mpi-386_no_under.o $(MPDIR)/libmport.a
+MPFILES=$(MPDIR)/@MPI_FILE@ $(MPDIR)/libmport.a
 
 
 # root for the installation, eg /usr/local
 # This would cause make install to create /usr/local/bin/gcl and
 # /usr/local/lib/gcl-2-??/* with some basic files.
-prefix=/usr
+prefix=/usr/local
 
 # where to place the info files
 INFO_DIR=/usr/info/
@@ -81,12 +81,12 @@ MACHINE=386-linux
 
 LBINDIR=/usr/local/bin
 
-#OFLAG	=  -g 
-OFLAG	=  -O 
+OFLAG	=  -g 
+#OFLAG	=  -O 
 #LIBS	= -lm 
 
-ODIR_DEBUG= -O4 
-#ODIR_DEBUG= -g
+#ODIR_DEBUG= -O4 
+ODIR_DEBUG= -g
 
 # This CC string will be used for compilation of the system,
 # and also in the compiler::*cc* variable for later compilation of
@@ -166,8 +166,9 @@ LSPOBJS	= $(LSPDIR)/defmacro.o $(LSPDIR)/evalmacros.o $(LSPDIR)/top.o \
 	$(LSPDIR)/describe.o $(LSPDIR)/iolib.o $(LSPDIR)/listlib.o \
 	$(LSPDIR)/mislib.o $(LSPDIR)/numlib.o $(LSPDIR)/packlib.o \
 	$(LSPDIR)/seq.o $(LSPDIR)/seqlib.o $(LSPDIR)/trace.o \
-	$(LSPDIR)/sloop.o  $(LSPDIR)/debug.o $(LSPDIR)/info.o \
-	$(LSPDIR)/serror.o $(addprefix $(LSPDIR)/,$(RL_OBJS))
+	$(LSPDIR)/sloop.o  $(LSPDIR)/debug.o \
+	$(LSPDIR)/serror.o $(LSPDIR)/info.o $(LSPDIR)/destructuring_bind.o \
+	$(addprefix $(LSPDIR)/,$(RL_OBJS))
 
 CMPOBJS	= $(CMPDIR)/cmpinline.o $(CMPDIR)/cmputil.o $(CMPDIR)/cmptype.o \
 	$(CMPDIR)/cmpbind.o $(CMPDIR)/cmpblock.o $(CMPDIR)/cmpcall.o \
