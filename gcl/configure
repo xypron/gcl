@@ -5815,8 +5815,8 @@ else
 fi
 done
 
-	echo $ac_n "checking for sigcontext_struct...""... $ac_c" 1>&6
-echo "configure:5820: checking for sigcontext_struct..." >&5
+	echo $ac_n "checking for sigcontext...""... $ac_c" 1>&6
+echo "configure:5820: checking for sigcontext..." >&5
         cat > conftest.$ac_ext <<EOF
 #line 5822 "configure"
 #include "confdefs.h"
@@ -5824,30 +5824,30 @@ echo "configure:5820: checking for sigcontext_struct..." >&5
        
 int main() {
 
-        struct sigcontext_struct foo;
+        struct sigcontext foo;
        
 ; return 0; }
 EOF
 if { (eval echo configure:5832: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
   
-        sigcontext_struct_works=1;
+        sigcontext_works=1;
         cat >> confdefs.h <<\EOF
 #define SIGNAL_H_HAS_SIGCONTEXT 1
 EOF
 
-	echo "$ac_t""sigcontext_struct in signal.h" 1>&6
+	echo "$ac_t""sigcontext in signal.h" 1>&6
        
 else
   echo "configure: failed program was:" >&5
   cat conftest.$ac_ext >&5
   rm -rf conftest*
-  sigcontext_struct_works=0;
-         echo "$ac_t""sigcontext_struct NOT in signal.h" 1>&6
+  sigcontext_works=0;
+         echo "$ac_t""sigcontext NOT in signal.h" 1>&6
        
 fi
 rm -f conftest*
-       if test "$sigcontext_struct_works" = 0 ; then
+       if test "$sigcontext_works" = 0 ; then
        echo $ac_n "checking for sigcontext...""... $ac_c" 1>&6
 echo "configure:5853: checking for sigcontext..." >&5
        cat > conftest.$ac_ext <<EOF
@@ -5870,20 +5870,18 @@ EOF
 if { (eval echo configure:5871: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
   
-        sigcontext_works=1 ;
         cat >> confdefs.h <<\EOF
 #define HAVE_SIGCONTEXT 1
 EOF
 
-	echo "$ac_t""use struct sigcontext" 1>&6
+	echo "$ac_t""sigcontext in asm files" 1>&6
         
 else
   echo "configure: failed program was:" >&5
   cat conftest.$ac_ext >&5
   rm -rf conftest*
   
-        echo "$ac_t""use struct sigcontext_struct" 1>&6
-        sigcontext_works=0 ; 
+        echo "$ac_t""no sigcontext found" 1>&6
      
 fi
 rm -f conftest*
@@ -5911,7 +5909,7 @@ rm -f conftest*
 # Extract the first word of "emacs", so it can be a program name with args.
 set dummy emacs; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:5915: checking for $ac_word" >&5
+echo "configure:5913: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_EMACS'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -5959,7 +5957,7 @@ cat >> conftest.el <<EOF
 EOF
 
 echo $ac_n "checking emacs site lisp directory""... $ac_c" 1>&6
-echo "configure:5963: checking emacs site lisp directory" >&5
+echo "configure:5961: checking emacs site lisp directory" >&5
 if [ "$EMACS_SITE_LISP" = "unknown" ] ; then
 	if [ "$EMACS" != "" ] ; then
 		EMACS_SITE_LISP=`$EMACS -q -batch --no-site-file -l conftest.el 2>&1 | sed -e /Loading/d | sed -e /load/d `
@@ -5983,7 +5981,7 @@ cat >> conftest.el <<EOF
 EOF
 
 echo $ac_n "checking emacs default.el""... $ac_c" 1>&6
-echo "configure:5987: checking emacs default.el" >&5
+echo "configure:5985: checking emacs default.el" >&5
 if [ "$EMACS" != "" ] ; then
 	EMACS_DEFAULT_EL=`$EMACS -q -batch --no-site-file -l conftest.el 2>&1 | sed -e /Loading/d | sed -e /load/d `
 else
@@ -6012,7 +6010,7 @@ cat >> conftest.el <<EOF
 EOF
 
 echo $ac_n "checking emacs info/dir""... $ac_c" 1>&6
-echo "configure:6016: checking emacs info/dir" >&5
+echo "configure:6014: checking emacs info/dir" >&5
 if test "$use" = "mingw" ; then
     INFO_DIR=\$\(prefix\)/lib/gcl-$VERSION/info/
 else
@@ -6030,7 +6028,7 @@ echo "$ac_t""$INFO_DIR" 1>&6
 
 
 echo $ac_n "checking for tcl/tk""... $ac_c" 1>&6
-echo "configure:6034: checking for tcl/tk" >&5
+echo "configure:6032: checking for tcl/tk" >&5
 
 
 if test -d "${TCL_CONFIG_PREFIX}"  ; then true ; else
@@ -6053,7 +6051,7 @@ EOF
 # Extract the first word of "tclsh", so it can be a program name with args.
 set dummy tclsh; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:6057: checking for $ac_word" >&5
+echo "configure:6055: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_prog_TCLSH'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -6153,7 +6151,7 @@ if test -f ${TCL_CONFIG_PREFIX}/../include/tcl.h ; then
   fi
 fi
 echo $ac_n "checking for main in -llieee""... $ac_c" 1>&6
-echo "configure:6157: checking for main in -llieee" >&5
+echo "configure:6155: checking for main in -llieee" >&5
 ac_lib_var=`echo lieee'_'main | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -6161,14 +6159,14 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-llieee  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 6165 "configure"
+#line 6163 "configure"
 #include "confdefs.h"
 
 int main() {
 main()
 ; return 0; }
 EOF
-if { (eval echo configure:6172: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:6170: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -6233,16 +6231,16 @@ NOTIFY=$enable_notify
 # the time handling for unixtime, add timezone
 
 echo $ac_n "checking alloca""... $ac_c" 1>&6
-echo "configure:6237: checking alloca" >&5
+echo "configure:6235: checking alloca" >&5
 if test "$cross_compiling" = yes; then
   gcl_ok=no
 else
   cat > conftest.$ac_ext <<EOF
-#line 6242 "configure"
+#line 6240 "configure"
 #include "confdefs.h"
 int main() { exit(alloca(500) != NULL ? 0 : 1);}
 EOF
-if { (eval echo configure:6246: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:6244: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   :
 else
@@ -6265,12 +6263,12 @@ else
   gcl_ok=no
 else
   cat > conftest.$ac_ext <<EOF
-#line 6269 "configure"
+#line 6267 "configure"
 #include "confdefs.h"
 #include <alloca.h>
   int main() { exit(alloca(500) != NULL ? 0 : 1)}
 EOF
-if { (eval echo configure:6274: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:6272: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   :
 else
@@ -6331,7 +6329,7 @@ if test $gcl_ok = no ; then     echo "$ac_t""no" 1>&6 ; fi
 # redhat/cygnus released for some reason a buggy version of gcc,
 # which no one else released.   Catch that here.
 echo $ac_n "checking Checking for buggy gcc version from redhat""... $ac_c" 1>&6
-echo "configure:6335: checking Checking for buggy gcc version from redhat" >&5
+echo "configure:6333: checking Checking for buggy gcc version from redhat" >&5
 if  2>&1 $CC -v | fgrep "gcc version 2.96" > /dev/null 
    then 
         BROKEN_O4_OPT=1
