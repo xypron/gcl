@@ -1,3 +1,9 @@
+gcl (2.6.2-4) unstable; urgency=low
+
+  * Correctly parse gcc version strings in gmp3 subconfigure on arm
+
+ -- Camm Maguire <camm@enhanced.com>  Tue, 13 Jul 2004 10:25:09 -0400
+
 gcl (2.6.2-3) unstable; urgency=low
 
   * Fix value stack leak in rare compiled call sequence
