@@ -1,3 +1,10 @@
+gcl (2.6.1-15) unstable; urgency=low
+
+  * Remove imod/ifloor functions in cmpaux.c and directly inline their
+    fixed equivalents in gcl_cmpopt.lsp
+
+ -- Camm Maguire <camm@enhanced.com>  Mon, 13 Oct 2003 15:04:24 +0000
+
 gcl (2.6.1-14) unstable; urgency=low
 
   * generate less garbage in add-info (gcl_cmpinline.lsp), enabling

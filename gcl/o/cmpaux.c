@@ -98,32 +98,33 @@ gcl_init_cmpaux(void)
 }
 
   
-int
-ifloor(int x, int y)
-{
-  if (y == 0) {
-    FEerror("Zero divizor", 0);
-    return 0;
-  }
-  if (y > 0) {
-    if (x >= 0)
-      return(x/y);
-    else
+/* Now inlined directly by optimizer  */
+/* int */
+/* ifloor(int x, int y) */
+/* { */
+/*   if (y == 0) { */
+/*     FEerror("Zero divizor", 0); */
+/*     return 0; */
+/*   } */
+/*   if (y > 0) { */
+/*     if (x >= 0) */
+/*       return(x/y); */
+/*     else */
       /* FIXME, deal with possible overflow here*/
-      return(-((-x-1))/y-1);
-  }
-  if (x >= 0)
+/*       return(-((-x-1))/y-1); */
+/*   } */
+/*   if (x >= 0) */
       /* FIXME, deal with possible overflow here*/
-    return(-((x-1)/(-y))-1);
-  else
-    return((-x)/(-y));
-}
+/*     return(-((x-1)/(-y))-1); */
+/*   else */
+/*     return((-x)/(-y)); */
+/* } */
 
-int
-imod(int x, int y)
-{
-  return(x - ifloor(x, y)*y);
-}
+/* int */
+/* imod(int x, int y) */
+/* { */
+/*   return(x - ifloor(x, y)*y); */
+/* } */
 
 /* static void */
 /* set_VV(object *, int, object); */
