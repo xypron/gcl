@@ -131,7 +131,6 @@ CFLAGS1=$(CFLAGS) -I../o -I../h ${TK_INCLUDE} ${TCL_INCLUDE} ${TK_XINCLUDES}
 all: gcltksrv   tkl.o tinfo.o  demos/gc-monitor.o gcltkaux
 	(cd demos ; \
 	echo '(load "../tkl.o")(TK::GET-AUTOLOADS (directory "*.lisp"))' | ../../unixport/saved_gcl) 
-	
 
 .lisp.o:
 	echo "(compile-file \"$*.lisp\" :c-file nil :c-debug nil)" | ../unixport/saved_gcl
@@ -144,7 +143,7 @@ all: gcltksrv   tkl.o tinfo.o  demos/gc-monitor.o gcltkaux
 GUIOS = guis.o tkAppInit.o tkMain.o
 
 clean::
-	rm -f ${GUIOS} $(OFILES) gcltkaux gcltksrv *.o */*.o
+	rm -f ${GUIOS} $(OFILES) gcltkaux gcltksrv *.o */*.o demos/index.lsp
 
 .c.o:
 	$(GCLTKCC) -c $(CFLAGS1) ${ODIR_DEBUG}  $*.c
