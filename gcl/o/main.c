@@ -49,8 +49,6 @@ void initialize_process();
 #include "include.h"
 #ifdef UNIX
 #include <signal.h>
-
-
 #endif
 #include "page.h"
 
@@ -118,12 +116,27 @@ void install_segmentation_catcher(void);
 #endif
 #endif
 
+#ifdef NEED_NONRANDOM_SBRK
+#include <syscall.h>
+#include <linux/personality.h>
+#include <unistd.h>
+#endif
+
 int
 main(int argc, char **argv, char **envp) {
 #ifdef BSD
 #ifdef RLIMIT_STACK
 	struct rlimit rl;
 #endif
+#endif
+
+#ifdef NEED_NONRANDOM_SBRK
+#if SIZEOF_LONG == 4
+	if (!syscall(SYS_personality,PER_LINUX32))
+#else
+        if (!syscall(SYS_personality,PER_LINUX))
+#endif
+	  execvp(argv[0],argv);
 #endif
 
 #if defined(DARWIN)
