@@ -164,9 +164,9 @@ DEFUN_NEW("ROW-MAJOR-AREF", object, fLrow_major_aref, LISP, 2, 2,
     case aet_uchar:
       return small_fixnum(x->ust.ust_self[i]);
     case aet_short:
-      return make_fixnum(SHORT(x, i));
+      return make_fixnum(SHORT_GCL(x, i));
     case aet_ushort:
-      return small_fixnum(USHORT(x, i));
+      return make_fixnum(USHORT_GCL(x, i));
 
     default:
       FEerror("unknown array type",0);
@@ -234,11 +234,11 @@ DEFUN_NEW("ASET1", object, fSaset1, SI, 3, 3, NONE, OO, IO, OO,OO,(object x, fix
       break;
     case aet_short:
       ASSURE_TYPE(val,t_fixnum);
-      SHORT(x, i) = Mfix(val);
+      SHORT_GCL(x, i) = Mfix(val);
       break;
     case aet_ushort:
       ASSURE_TYPE(val,t_fixnum);
-      USHORT(x, i) = Mfix(val);
+      USHORT_GCL(x, i) = Mfix(val);
       break;
     default:
       FEerror("unknown array type",0);
@@ -739,21 +739,59 @@ adjust_displaced(object x, int diff)
 static char *
 raw_aet_ptr(object x, short int typ)
 {  /* doubles are the largest raw type */
-  static double u;
-  if (x==Cnil) return aet_types[typ].dflt;
+
+  static union{
+    object o;char c;fixnum i;shortfloat f;longfloat d;
+    unsigned char uc;short s;unsigned short us;} u;
+
+  if (x==Cnil) 
+    return aet_types[typ].dflt;
+
   switch (typ){
-#define STORE_TYPED(pl,type,val) *((type *) pl) = (type) val; break;
-  case aet_object: STORE_TYPED(&u,object,x);
-  case aet_ch:     STORE_TYPED(&u,char, char_code(x));
-  case aet_bit:    STORE_TYPED(&u,fixnum, -Mfix(x));
-  case aet_fix:    STORE_TYPED(&u,fixnum, Mfix(x));
-  case aet_sf:     STORE_TYPED(&u,shortfloat, Msf(x));
-  case aet_lf:     STORE_TYPED(&u,longfloat, Mlf(x));
-  case aet_char:   STORE_TYPED(&u, char, Mfix(x));
-  case aet_uchar:  STORE_TYPED(&u, unsigned char, Mfix(x));
-  case aet_short:  STORE_TYPED(&u, short, Mfix(x));
-  case aet_ushort: STORE_TYPED(&u,unsigned short,Mfix(x));
-  default: FEerror("bad elttype",0);
+/* #define STORE_TYPED(pl,type,val) *((type *) pl) = (type) val; break; */
+  case aet_object: 
+    /* STORE_TYPED(&u,object,x); */
+    u.o=x;
+    break;
+  case aet_ch:     
+    /* STORE_TYPED(&u,char, char_code(x)); */
+    u.c=char_code(x);
+    break;
+  case aet_bit:    
+    /* STORE_TYPED(&u,fixnum, -Mfix(x)); */
+    u.i=-Mfix(x);
+    break;
+  case aet_fix:    
+    /* STORE_TYPED(&u,fixnum, Mfix(x)); */
+    u.i=Mfix(x);
+    break;
+  case aet_sf:     
+    /* STORE_TYPED(&u,shortfloat, Msf(x)); */
+    u.f=Msf(x);
+    break;
+  case aet_lf:     
+    /* STORE_TYPED(&u,longfloat, Mlf(x)); */
+    u.d=Mlf(x);
+    break;
+  case aet_char:   
+    /* STORE_TYPED(&u, char, Mfix(x)); */
+    u.c=(char)Mfix(x);
+    break;
+  case aet_uchar:  
+    /* STORE_TYPED(&u, unsigned char, Mfix(x)); */
+    u.uc=(unsigned char)Mfix(x);
+    break;
+  case aet_short:  
+    /* STORE_TYPED(&u, short, Mfix(x)); */
+    u.s=(short)Mfix(x);
+    break;
+  case aet_ushort: 
+    /* STORE_TYPED(&u,unsigned short,Mfix(x)); */
+    u.us=(unsigned short)Mfix(x);
+    break;
+  default: 
+    FEerror("bad elttype",0);
+    break;
   }
   return (char *)&u;
 }
