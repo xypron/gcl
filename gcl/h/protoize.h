@@ -547,6 +547,7 @@ typedef void (*funcvoid)(void);
 
 
 /*  readline.d */
+extern int readline_on;
 void
 gcl_init_readline_function(void);
 

@@ -1,3 +1,9 @@
+gcl (2.6.6-2) unstable; urgency=low
+
+  * Fix (listen) with readline on
+
+ -- Camm Maguire <camm@enhanced.com>  Sat, 30 Apr 2005 22:23:44 +0000
+
 gcl (2.6.6-1) unstable; urgency=high
 
   * New upstream release
