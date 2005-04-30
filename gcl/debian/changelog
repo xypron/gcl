@@ -4,8 +4,9 @@ gcl (2.6.6-2) unstable; urgency=low
   * fix control-d with readline
   * libreadline5 support for Debian
   * Support for pre-compiled regexps and new texinfo format
+  * Reenable run-process
 
- -- Camm Maguire <camm@enhanced.com>  Sat, 30 Apr 2005 22:38:05 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat, 30 Apr 2005 22:46:21 +0000
 
 gcl (2.6.6-1) unstable; urgency=high
 

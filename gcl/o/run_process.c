@@ -16,11 +16,14 @@ License for more details.
 
 */
 
-
+#include <string.h>
 
 #define IN_RUN_PROCESS
 #include "include.h"
 #ifdef RUN_PROCESS
+
+void setup_stream_buffer(object);
+object make_two_way_stream(object, object);
 
 #ifdef __MINGW32__
 
@@ -29,7 +32,6 @@ License for more details.
 #define PIPE_BUFFER_SIZE 2048
 
 void DisplayError ( char *pszAPI );
-void setup_stream_buffer ( object x );
 void PrepAndLaunchRedirectedChild ( HANDLE hChildStdOut,
     HANDLE hChildStdIn,
     HANDLE hChildStdErr,
@@ -425,7 +427,8 @@ enum smmode smm;
 	return(stream);
 }
 
-object make_socket_stream(host_l,port)
+object
+make_socket_stream(host_l,port)
 object	host_l;
 object	port;
 {
@@ -445,7 +448,7 @@ object	port;
 }
 
 void
-siLmake_socket_stream()
+FFN(siLmake_socket_stream)()
 {
   check_arg(2);
   vs_base[0] = make_socket_stream(vs_base[0], vs_base[1]);
@@ -462,7 +465,6 @@ make_socket_pair()
   int sockets_in[2];
   int sockets_out[2];
   FILE *fp1, *fp2;
-  int pid;
   object stream_in, stream_out, stream;
 
   if (socketpair(AF_UNIX, SOCK_STREAM, 0, sockets_in) < 0)
@@ -473,11 +475,12 @@ make_socket_pair()
   fp2 = fdopen(sockets_out[0], "w");
 
 #ifdef OVM_IO
+  {int pid;
   pid = getpid();
   ioctl(sockets_in[0], SIOCSPGRP, (char *)&pid);
   if( fcntl(sockets_in[0], F_SETFL, FASYNC | FNDELAY) == -1)
     perror("Couldn't control socket");
-
+  }
 #endif
 
 
@@ -502,7 +505,7 @@ make_socket_pair()
  * with "C" type streams.
  */
 
-
+void
 spawn_process_with_streams(istream, ostream, pname, argv)
 object istream;
 object ostream;
@@ -531,12 +534,10 @@ char **argv;
 	}
     }
 
-
-
-  
 }
     
       
+void
 run_process(filename, argv)
 char *filename;
 char **argv;
@@ -550,7 +551,8 @@ char **argv;
   vs_top = vs_base + 2;
 }
     
-siLrun_process()
+void
+FFN(siLrun_process)()
 {
   int i;
   object arglist;
@@ -567,7 +569,7 @@ siLrun_process()
 }
 
 void
-siLmake_socket_pair()
+FFN(siLmake_socket_pair)()
 {
   make_socket_pair();
 }
