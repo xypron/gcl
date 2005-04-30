@@ -2,8 +2,9 @@ gcl (2.6.6-2) unstable; urgency=low
 
   * Fix (listen) with readline on
   * fix control-d with readline
+  * libreadline5 support for Debian
 
- -- Camm Maguire <camm@enhanced.com>  Sat, 30 Apr 2005 22:33:01 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat, 30 Apr 2005 22:35:28 +0000
 
 gcl (2.6.6-1) unstable; urgency=high
 
