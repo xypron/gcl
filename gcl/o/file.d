@@ -99,6 +99,11 @@ static bool
 feof1(fp)
 FILE *fp;
 {
+
+#ifdef HAVE_READLINE
+  if (readline_on && fp==rl_instream && rl_line_buffer && *rl_line_buffer==EOF)
+    return TRUE;
+#endif
 	if (!feof(fp))
 		return(FALSE);
 	if (fp == terminal_io->sm.sm_object0->sm.sm_fp) {
@@ -1211,9 +1216,10 @@ BEGIN:
 	case smm_input:
 	case smm_io:
 
+#ifdef HAVE_READLINE
 	  if (readline_on && strm->sm.sm_fp==rl_instream)
 	    return *rl_line_buffer ? TRUE : FALSE;
-
+#endif
 		if (strm->sm.sm_fp == NULL)
 			closed_stream(strm);
 		if (feof(strm->sm.sm_fp))
