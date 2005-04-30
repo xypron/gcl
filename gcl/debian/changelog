@@ -8,8 +8,9 @@ gcl (2.6.6-2) unstable; urgency=low
   * Push function 'accept  into lisp, use select for 'listen on socket
     streams
   * New Upstream release version
+  * Native-reloc feature
 
- -- Camm Maguire <camm@enhanced.com>  Sat, 30 Apr 2005 22:57:13 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sat, 30 Apr 2005 23:04:53 +0000
 
 gcl (2.6.6-1) unstable; urgency=high
 
