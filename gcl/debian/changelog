@@ -11,8 +11,9 @@ gcl (2.6.6-2) unstable; urgency=low
   * Native-reloc feature
   * Add daemon capabilities to server sockets, document socket and
     accept
+  * Some gcl-tk fixes
 
- -- Camm Maguire <camm@enhanced.com>  Sun,  1 May 2005 04:12:16 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sun,  1 May 2005 05:07:33 +0000
 
 gcl (2.6.6-1) unstable; urgency=high
 
