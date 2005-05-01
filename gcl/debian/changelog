@@ -16,8 +16,9 @@ gcl (2.6.7-1) unstable; urgency=low
     wrap evreything but symbols and integers, don't wrap when keeping
     the gazonk files for linking in different images, this is really a
     compile-file operation
+  * gcltk demo cleanups
 
- -- Camm Maguire <camm@enhanced.com>  Sun,  1 May 2005 18:05:40 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sun,  1 May 2005 20:17:50 +0000
 
 gcl (2.6.6-1) unstable; urgency=high
 
