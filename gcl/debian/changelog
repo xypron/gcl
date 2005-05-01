@@ -12,8 +12,12 @@ gcl (2.6.6-2) unstable; urgency=low
   * Add daemon capabilities to server sockets, document socket and
     accept
   * Some gcl-tk fixes
+  * Update wrapt-literals strategy to be consistent with CVS head --
+    wrap evreything but symbols and integers, don't wrap when keeping
+    the gazonk files for linking in different images, this is really a
+    compile-file operation
 
- -- Camm Maguire <camm@enhanced.com>  Sun,  1 May 2005 05:07:33 +0000
+ -- Camm Maguire <camm@enhanced.com>  Sun,  1 May 2005 18:05:40 +0000
 
 gcl (2.6.6-1) unstable; urgency=high
 
