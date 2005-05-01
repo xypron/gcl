@@ -1,4 +1,4 @@
-gcl (2.6.6-2) unstable; urgency=low
+gcl (2.6.7-1) unstable; urgency=low
 
   * Fix (listen) with readline on
   * fix control-d with readline
