@@ -419,6 +419,6 @@ Good luck!				 The GCL Development Team")
 
 (in-package 'si)
 
-(defvar *lib-directory* (namestring (probe-file "../")))
+(defvar *lib-directory* (namestring (truename "../")))
 
 (import '(*lib-directory* *load-path* *system-directory*) 'si::user) 

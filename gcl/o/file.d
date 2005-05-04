@@ -383,17 +383,20 @@ object if_exists, if_does_not_exist;
                 if(fname[0]=='|')
 		  fp = popen(fname+1,"r");
 		else 
-		  fp = fopen(fname, "r");
+		  fp = fopen_not_dir(fname, "r");
 		
 	      AGAIN:
 		if (fp == NULL) {
 		        if (sSAallow_gzipped_fileA->s.s_dbind != sLnil)
 			  { 
-			    struct stat ss;
+			    struct string st;
 			    char buf[256];
 			    if (snprintf(buf,sizeof(buf),"%s.gz",fname)<=0)
 			      FEerror("Cannot write .gz filename",0);
-			    if (!stat(buf,&ss)) {
+			    st.st_self=buf;
+			    st.st_dim=st.st_fillp=strlen(buf);
+			    st.t=t_string;
+			    if (file_exists((object)&st)) {
 			      FILE *pp;
 			      int n;
 			      if (!(fp=tmpfile()))
@@ -413,7 +416,7 @@ object if_exists, if_does_not_exist;
 			    }
 			  }
 			      
-/* 			    fp = fopen(buf,"r"); */
+/* 			    fp = fopen_not_dir(buf,"r"); */
 /* 			    if (fp) */
 /* 			      {  */
 /* #ifdef NO_MKSTEMP */
@@ -434,7 +437,7 @@ object if_exists, if_does_not_exist;
 /* 				fp = 0; */
 /* 				if (0 == system(command)) */
 /* 				  { */
-/* 				    fp = fopen(tmp,"r"); */
+/* 				    fp = fopen_not_dir(tmp,"r"); */
 /* 				    if (fp)  */
 /* 				      goto AGAIN; */
 /* 				    /\* should not get here *\/ */
@@ -443,11 +446,11 @@ object if_exists, if_does_not_exist;
 			if (if_does_not_exist == sKerror)
 				cannot_open(fn);
 			else if (if_does_not_exist == sKcreate) {
-				fp = fopen(fname, "w");
+				fp = fopen_not_dir(fname, "w");
 				if (fp == NULL)
 					cannot_create(fn);
 				fclose(fp);
-				fp = fopen(fname, "r");
+				fp = fopen_not_dir(fname, "r");
 				if (fp == NULL)
 					cannot_open(fn);
 			} else if (if_does_not_exist == Cnil)
@@ -459,7 +462,7 @@ object if_exists, if_does_not_exist;
 	} else if (smm == smm_output || smm == smm_io) {
 		if (if_exists == sKnew_version && if_does_not_exist == sKcreate)
 			goto CREATE;
-		fp = fopen(fname, "r");
+		fp = fopen_not_dir(fname, "r");
 		if (fp != NULL) {
 			fclose(fp);
 			if (if_exists == sKerror)
@@ -475,20 +478,20 @@ object if_exists, if_does_not_exist;
 				   if_exists == sKnew_version ||
 				   if_exists == sKsupersede) {
 				if (smm == smm_output)
-					fp = fopen(fname, "w");
+					fp = fopen_not_dir(fname, "w");
 				else
-					fp = fopen(fname, "w+");
+					fp = fopen_not_dir(fname, "w+");
 				if (fp == NULL)
 					cannot_create(fn);
 			} else if (if_exists == sKoverwrite) {
-				fp = fopen(fname, "r+");
+				fp = fopen_not_dir(fname, "r+");
 				if (fp == NULL)
 					cannot_open(fn);
 			} else if (if_exists == sKappend) {
 				if (smm == smm_output)
-					fp = fopen(fname, "a");
+					fp = fopen_not_dir(fname, "a");
 				else
-					fp = fopen(fname, "a+");
+					fp = fopen_not_dir(fname, "a+");
 				if (fp == NULL)
 				FEerror("Cannot append to the file ~A.",1,fn);
 			} else if (if_exists == Cnil)
@@ -506,10 +509,10 @@ object if_exists, if_does_not_exist;
 				    if(fname[0]=='|')
 				      fp = popen(fname+1,"w");
 				    else 
-		                       fp = fopen(fname, "w");
+		                       fp = fopen_not_dir(fname, "w");
 				  }
 				else
-					fp = fopen(fname, "w+");
+					fp = fopen_not_dir(fname, "w+");
 				if (fp == NULL)
 					cannot_create(fn);
 			} else if (if_does_not_exist == Cnil)
