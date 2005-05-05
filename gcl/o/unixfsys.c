@@ -282,6 +282,40 @@ truename(object pathname)
     
 	coerce_to_filename(pathname, filename);
 	
+#ifdef S_IFLNK
+ {
+
+   struct stat filestatus;
+   int islinkcount=8;
+
+   if (lstat(filename, &filestatus) >= 0)
+
+	while (((filestatus.st_mode&S_IFMT) == S_IFLNK) && (--islinkcount>0)) {
+
+	  char newname[MAXPATHLEN];
+	  int newlen;
+
+	  newlen=readlink(filename,newname,MAXPATHLEN-1);
+	  if (newlen < 0)
+	    return((FEerror("Symlink broken at ~S.",1,pathname),Cnil));
+
+	  for (p = filename, q = 0;  *p != '\0';  p++)
+	    if (*p == '/') q = p;
+	  if (q == 0 || *newname == '/')
+	    q = filename;
+	  else
+	    q++;
+
+	  memcpy(q,newname,newlen);
+	  q[newlen]=0;
+	  if (lstat(filename, &filestatus) < 0) 
+	    islinkcount=0; /* It would be ANSI to do the following :
+			      return(file_error("Symlink broken at ~S.",pathname));
+			      but this would break DIRECTORY if a file points to nowhere */
+	}
+ }
+#endif
+
 	for (p = filename, q = 0;  *p != '\0';  p++)
 		if (*p == '/')
 			q = p;
