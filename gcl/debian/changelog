@@ -19,8 +19,9 @@ gcl (2.6.7-1) unstable; urgency=low
   * gcltk demo cleanups
   * Probe-file, open_stream, and the like fail on directories
   * Resolve symlinks in truename
+  * Place prototypes for defcfun in header files
 
- -- Camm Maguire <camm@enhanced.com>  Thu,  5 May 2005 13:37:38 +0000
+ -- Camm Maguire <camm@enhanced.com>  Fri,  6 May 2005 17:12:10 +0000
 
 gcl (2.6.6-1) unstable; urgency=high
 
