@@ -20,8 +20,9 @@ gcl (2.6.7-1) unstable; urgency=low
   * Probe-file, open_stream, and the like fail on directories
   * Resolve symlinks in truename
   * Place prototypes for defcfun in header files
+  * Support for unique init names for compiler::link and the like
 
- -- Camm Maguire <camm@enhanced.com>  Fri,  6 May 2005 17:12:10 +0000
+ -- Camm Maguire <camm@enhanced.com>  Fri,  6 May 2005 21:56:29 +0000
 
 gcl (2.6.6-1) unstable; urgency=high
 

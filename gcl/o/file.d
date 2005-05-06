@@ -2316,12 +2316,16 @@ maccept(object x) {
 #include <sys/resource.h>
 #include <signal.h>
 
+#if defined(DARWIN)
+#define on_exit(a,b)
+#else
 static void
 rmc(int e,void *pid) {
 
   kill((int)pid,SIGTERM);
 
 }
+#endif
 #endif
 
 @(static defun socket (port &key host server async myaddr myport daemon)

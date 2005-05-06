@@ -2,10 +2,10 @@
 
 -include ../makedefs
 
-FILES:=$(shell ls -1 pcl_*.lisp | sed 's,\.lisp,,1') pcl_gcl_low
+FILES:=$(shell ls -1 gcl_*.lisp | sed 's,\.lisp,,1') gcl_pcl_impl_low
 
 GFILES1:= 0 1 2 3 4 5 6 7
-GFILES:=$(addprefix pcl_gazonk,$(GFILES1))
+GFILES:=$(addprefix gcl_pcl_gazonk,$(GFILES1))
 
 AFILES:=$(FILES) $(GFILES)
 
@@ -30,7 +30,7 @@ saved_gcl_pcl: ../unixport/saved_gcl
 
 $(addsuffix .c,$(AFILES)) $(addsuffix .data,$(AFILES))\
 	$(addsuffix .h,$(AFILES)) $(addsuffix .lsp,$(GFILES)): \
-	$(addsuffix .lisp,$(subst pcl_gcl_low,impl/gcl/pcl_gcl_low,$(FILES)))
+	$(addsuffix .lisp,$(subst gcl_pcl_impl_low,impl/gcl/gcl_pcl_impl_low,$(FILES)))
 	rm -f *.o *gazonk*
 	cp ../h/cmpinclude.h .
 	echo ${SETUP} '(pcl::compile-pcl)' | ../unixport/saved_gcl ../unixport/
@@ -39,7 +39,8 @@ $(addsuffix .c,$(AFILES)) $(addsuffix .data,$(AFILES))\
 #	patch -p0 <pcl_methods.patch
 #	rm -f pcl_methods.o
 	for i in gazonk* ; do j=$$(echo $$i | sed 's,\..*$$,,1');\
-		cat $$i | sed "s,$$j,pcl_$$j,g" >pcl_$$i && rm $$i; done
+		cat $$i | sed   -e "s,$$j\.h,gcl_pcl_$$j.h,1" \
+				-e  "s,init_.*$$j[^_]*,init_gcl_pcl_$$j,g" >gcl_pcl_$$i && rm $$i; done
 
 %.o: %.c %.h %.data
 	$(CC) $(CFLAGS) -c $< -o $@
