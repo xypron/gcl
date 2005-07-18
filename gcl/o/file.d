@@ -2154,12 +2154,12 @@ FFN(siLfp_input_stream)()
 @)
 
 @(static defun fread (vector start count stream)
-  unsigned char *p;
+  char *p;
   int n,beg;
 @  
   stream=coerce_stream(stream,0);
   if (stream==Cnil) @(return Cnil);
-  p = vector->ust.ust_self;
+  p = vector->st.st_self;
   beg = ((type_of(start)==t_fixnum) ? fix(start) : 0);
   n = ((type_of(count)==t_fixnum) ? fix(count) : (vector->st.st_fillp - beg));
   if ((n=SAFE_FREAD(p+beg,1,n,stream->sm.sm_fp)))
@@ -2222,7 +2222,7 @@ gclFlushSocket(strm)
 #define AMT_TO_WRITE 500
     while(i< bufp->ust.ust_fillp) {
       wrote =TcpOutputProc ( fd, 
-	                     &(bufp->ust.ust_self[i]),
+	                     &(bufp->st.st_self[i]),
 		             bufp->ust.ust_fillp-i > AMT_TO_WRITE ? AMT_TO_WRITE : bufp->ust.ust_fillp-i,
 			     &err
 #ifdef __MINGW32__
@@ -2287,7 +2287,8 @@ object async;
 static object
 maccept(object x) {
 
-  int fd,n;
+  int fd;
+  unsigned n;
   struct sockaddr_in addr;
   object server,host,port;
   
@@ -2346,7 +2347,7 @@ int inPort;
 char buf1[500];
 char buf2[500];
 char *myaddrPtr=buf1,*hostPtr=buf2;
-object x;
+object x=Cnil;
 @
   if (type_of(host) == t_string) {
     hostPtr=lisp_copy_to_null_terminated(host,hostPtr,sizeof(buf1));

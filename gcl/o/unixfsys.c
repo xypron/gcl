@@ -256,8 +256,6 @@ coerce_to_filename(object pathname, char *p)
     
 }
 
-
-
 object
 truename(object pathname)
 {
@@ -266,7 +264,6 @@ truename(object pathname)
 	char truefilename[MAXPATHLEN];
 	char current_directory[MAXPATHLEN];
 	char directory[MAXPATHLEN];
-	static char *getwd(char *buffer);
 #ifdef __MINGW32__ 
         DWORD current_directory_length =
             GetCurrentDirectory ( MAXPATHLEN, current_directory ); 

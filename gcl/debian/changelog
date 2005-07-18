@@ -23,8 +23,9 @@ gcl (2.6.7-1) unstable; urgency=low
   * Support for unique init names for compiler::link and the like
   * libreadline5 for Debian
   * remove _o from init-names
+  * gcc-4.0 fixups
 
- -- Camm Maguire <camm@enhanced.com>  Sat,  7 May 2005 14:40:00 +0000
+ -- Camm Maguire <camm@enhanced.com>  Fri, 15 Jul 2005 15:20:44 +0000
 
 gcl (2.6.6-1) unstable; urgency=high
 

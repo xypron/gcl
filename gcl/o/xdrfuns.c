@@ -75,12 +75,17 @@ FFN(siGxdr_write)(object str,object elt) {
       goto error;
       break;
     }
-    if(!xdr_array(xdrp,(char **)&elt->v.v_self,
-		  &elt->v.v_fillp,
-		  elt->v.v_dim,
-		  aet_sizes[elt->v.v_elttype],
-		  e))
-      goto error;
+    {
+      u_int tmp=elt->v.v_fillp;
+      if (tmp!=elt->v.v_fillp)
+	goto error;
+      if(!xdr_array(xdrp,(char **)&elt->v.v_self,
+		    &tmp,
+		    elt->v.v_dim,
+		    aet_sizes[elt->v.v_elttype],
+		    e))
+	goto error;
+    }
     break;
   default:
     FEerror("unsupported xdr ~a",1,elt);
@@ -132,12 +137,17 @@ FFN(siGxdr_read)(object str,object elt) {
       break;
     }
 
-    if(!xdr_array(xdrp,(char **)&elt->v.v_self,
-		  &elt->v.v_fillp,
-		  elt->v.v_dim,
-		  aet_sizes[elt->v.v_elttype],
-		  e))
-      goto error;
+    {
+      u_int tmp=elt->v.v_fillp;
+      if (tmp!=elt->v.v_fillp)
+	goto error;
+      if(!xdr_array(xdrp,(char **)&elt->v.v_self,
+		    &tmp,
+		    elt->v.v_dim,
+		    aet_sizes[elt->v.v_elttype],
+		    e))
+	goto error;
+    }
     return elt;
     break;
   default:

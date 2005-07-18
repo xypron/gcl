@@ -395,7 +395,7 @@ object	host_l;
 int socket;
 enum smmode smm;
 {
-	char	*mode;
+	char	*mode=NULL;
 	object	stream;
 	FILE	*fp;
 	vs_mark;

@@ -596,7 +596,7 @@ fmt_set_param(int i, int *p, int t, int v)
 static void
 fmt_ascii(bool colon, bool atsign)
 {
-	int mincol, colinc, minpad, padchar;
+	int mincol=0, colinc=0, minpad=0, padchar=0;
 	object x;
 	int l, i;
 
@@ -634,7 +634,7 @@ fmt_ascii(bool colon, bool atsign)
 static void
 fmt_S_expression(bool colon, bool atsign)
 {
-	int mincol, colinc, minpad, padchar;
+	int mincol=0, colinc=0, minpad=0, padchar=0;
 	object x;
 	int l, i;
 
@@ -672,7 +672,7 @@ fmt_S_expression(bool colon, bool atsign)
 static void
 fmt_decimal(bool colon, bool atsign)
 {
-	int mincol, padchar, commachar;
+	int mincol=0, padchar=0, commachar=0;
 
 	fmt_max_param(3);
 	fmt_set_param(0, &mincol, fmt_int, 0);
@@ -685,7 +685,7 @@ fmt_decimal(bool colon, bool atsign)
 static void
 fmt_binary(bool colon, bool atsign)
 {
-	int mincol, padchar, commachar;
+	int mincol=0, padchar=0, commachar=0;
 
 	fmt_max_param(3);
 	fmt_set_param(0, &mincol, fmt_int, 0);
@@ -698,7 +698,7 @@ fmt_binary(bool colon, bool atsign)
 static void
 fmt_octal(bool colon, bool atsign)
 {
-	int mincol, padchar, commachar;
+	int mincol=0, padchar=0, commachar=0;
 
 	fmt_max_param(3);
 	fmt_set_param(0, &mincol, fmt_int, 0);
@@ -711,7 +711,7 @@ fmt_octal(bool colon, bool atsign)
 static void
 fmt_hexadecimal(bool colon, bool atsign)
 {
-	int mincol, padchar, commachar;
+	int mincol=0, padchar=0, commachar=0;
 
 	fmt_max_param(3);
 	fmt_set_param(0, &mincol, fmt_int, 0);
@@ -724,7 +724,7 @@ fmt_hexadecimal(bool colon, bool atsign)
 static void
 fmt_radix(bool colon, bool atsign)
 {
-	int radix, mincol, padchar, commachar;
+	int radix=0, mincol=0, padchar=0, commachar=0;
 	object x;
 	int i, j, k;
 	int s, t;
@@ -1017,7 +1017,7 @@ fmt_character(bool colon, bool atsign)
 static void
 fmt_fix_float(bool colon, bool atsign)
 {
-	int w, d, k, overflowchar, padchar;
+	int w=0, d=0, k=0, overflowchar=0, padchar=0;
 	double f;
 	int sign;
 	char buff[256], *b, buff1[256];
@@ -1209,7 +1209,7 @@ fmt_exponent1(int e)
 static void
 fmt_exponential_float(bool colon, bool atsign)
 {
-	int w, d, e, k, overflowchar, padchar, exponentchar;
+	int w=0, d=0, e=0, k=0, overflowchar=0, padchar=0, exponentchar=0;
 	double f;
 	int sign;
 	char buff[256], *b, buff1[256];
@@ -1413,7 +1413,7 @@ OVER:
 static void
 fmt_general_float(bool colon, bool atsign)
 {
-	int w, d, e, k, overflowchar, padchar, exponentchar;
+	int w=0, d=0, e=0, k, overflowchar, padchar=0, exponentchar;
 	int sign, exp;
 	char buff[256];
 	object x;
@@ -1505,7 +1505,7 @@ fmt_general_float(bool colon, bool atsign)
 static void
 fmt_dollars_float(bool colon, bool atsign)
 {
-	int d, n, w, padchar;
+	int d=0, n=0, w=0, padchar=0;
 	double f;
 	int sign;
 	char buff[256];
@@ -1592,7 +1592,7 @@ fmt_dollars_float(bool colon, bool atsign)
 static void
 fmt_percent(bool colon, bool atsign)
 {
-	int n, i;
+	int n=0, i;
 
 	fmt_max_param(1);
 	fmt_set_param(0, &n, fmt_int, 1);
@@ -1609,7 +1609,7 @@ fmt_percent(bool colon, bool atsign)
 static void
 fmt_ampersand(bool colon, bool atsign)
 {
-	int n;
+	int n=0;
 
 	fmt_max_param(1);
 	fmt_set_param(0, &n, fmt_int, 1);
@@ -1627,7 +1627,7 @@ fmt_ampersand(bool colon, bool atsign)
 static void
 fmt_bar(bool colon, bool atsign)
 {
-	int n;
+	int n=0;
 
 	fmt_max_param(1);
 	fmt_set_param(0, &n, fmt_int, 1);
@@ -1640,7 +1640,7 @@ fmt_bar(bool colon, bool atsign)
 static void
 fmt_tilde(bool colon, bool atsign)
 {
-	int n;
+	int n=0;
 
 	fmt_max_param(1);
 	fmt_set_param(0, &n, fmt_int, 1);
@@ -1668,7 +1668,7 @@ fmt_newline(bool colon, bool atsign)
 static void
 fmt_tabulate(bool colon, bool atsign)
 {
-	int colnum, colinc;
+	int colnum=0, colinc=0;
 	int c, i;
 	
 	fmt_max_param(2);
@@ -1704,7 +1704,7 @@ fmt_tabulate(bool colon, bool atsign)
 static void
 fmt_asterisk(bool colon, bool atsign)
 {
-	int n;
+	int n=0;
 
 	fmt_max_param(1);
 	fmt_not_colon_atsign(colon, atsign);
@@ -1794,42 +1794,46 @@ fmt_case(bool colon, bool atsign)
 	x = x->sm.sm_object0;
 	if (!colon && !atsign)
 		for (i = 0;  i < x->st.st_fillp;  i++) {
-			if (isUpper(j = x->st.st_self[i]))
-				j += 'a' - 'A';
-			writec_stream(j, fmt_stream);
+		  j = x->st.st_self[i];
+		  if (isUpper(j))
+		    j += 'a' - 'A';
+		  writec_stream(j, fmt_stream);
 		}
 	else if (colon && !atsign)
 		for (b = TRUE, i = 0;  i < x->st.st_fillp;  i++) {
-			if (isLower(j = x->st.st_self[i])) {
-				if (b)
-					j -= 'a' - 'A';
-				b = FALSE;
-			} else if (isUpper(j)) {
-				if (!b)
-					j += 'a' - 'A';
-				b = FALSE;
-			} else if (!isDigit(j))
-				b = TRUE;
-			writec_stream(j, fmt_stream);
+		  j = x->st.st_self[i];
+		  if (isLower(j)) {
+		    if (b)
+		      j -= 'a' - 'A';
+		    b = FALSE;
+		  } else if (isUpper(j)) {
+		    if (!b)
+		      j += 'a' - 'A';
+		    b = FALSE;
+		  } else if (!isDigit(j))
+		    b = TRUE;
+		  writec_stream(j, fmt_stream);
 		}
 	else if (!colon && atsign)
 		for (b = TRUE, i = 0;  i < x->st.st_fillp;  i++) {
-			if (isLower(j = x->st.st_self[i])) {
-				if (b)
-					j -= 'a' - 'A';
-				b = FALSE;
-			} else if (isUpper(j)) {
-				if (!b)
-					j += 'a' - 'A';
-				b = FALSE;
-			}
-			writec_stream(j, fmt_stream);
+		  j = x->st.st_self[i];
+		  if (isLower(j)) {
+		    if (b)
+		      j -= 'a' - 'A';
+		    b = FALSE;
+		  } else if (isUpper(j)) {
+		    if (!b)
+		      j += 'a' - 'A';
+		    b = FALSE;
+		  }
+		  writec_stream(j, fmt_stream);
 		}
 	else
 		for (i = 0;  i < x->st.st_fillp;  i++) {
-			if (isLower(j = x->st.st_self[i]))
-				j -= 'a' - 'A';
-			writec_stream(j, fmt_stream);
+		  j = x->st.st_self[i];
+		  if (isLower(j))
+		    j -= 'a' - 'A';
+		  writec_stream(j, fmt_stream);
 		}
 	vs_popp;
 	if (up_colon)
@@ -1841,7 +1845,7 @@ fmt_conditional(bool colon, bool atsign)
 {
 	int i, j, k;
 	object x;
-	int n;
+	int n=0;
 	bool done;
 	fmt_old;
 
@@ -1927,7 +1931,7 @@ fmt_conditional(bool colon, bool atsign)
 
 static void
 fmt_iteration(bool colon, bool atsign) {
-	int i,n;
+	int i,n=0;
 	VOL int j;
 	int o;
 	bool colon_close = FALSE;
@@ -2053,7 +2057,7 @@ fmt_iteration(bool colon, bool atsign) {
 static void
 fmt_justification(volatile bool colon, bool atsign)
 {
-	int mincol, colinc, minpad, padchar;
+	int mincol=0, colinc=0, minpad=0, padchar=0;
 	object fields[FORMAT_DIRECTIVE_LIMIT];
 	fmt_old;
 	jmp_buf fmt_jmp_buf0;
@@ -2153,7 +2157,7 @@ fmt_justification(volatile bool colon, bool atsign)
 static void
 fmt_up_and_out(bool colon, bool atsign)
 {
-	int i, j, k;
+	int i=0, j=0, k=0;
 
 	fmt_max_param(3);
 	fmt_not_atsign(atsign);

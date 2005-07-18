@@ -2020,7 +2020,7 @@ object sym;
 }
 
 
-static void
+void
 pp(x)
 object x;
 {
