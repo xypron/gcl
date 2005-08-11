@@ -29,8 +29,9 @@ gcl (2.6.7-1) unstable; urgency=high
     #318681).  Rebuild with new release to autocompute this dep
   * Bug fix: "gcl: Please switch to po-debconf", thanks to Lucas Wall
     (Closes: #295930). Apply po-debconf patch
+  * Newer standards
 
- -- Camm Maguire <camm@enhanced.com>  Thu, 11 Aug 2005 14:27:42 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu, 11 Aug 2005 15:00:26 +0000
 
 gcl (2.6.6-1) unstable; urgency=high
 
