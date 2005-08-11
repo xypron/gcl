@@ -1,4 +1,4 @@
-gcl (2.6.7-1) unstable; urgency=low
+gcl (2.6.7-1) unstable; urgency=high
 
   * Fix (listen) with readline on
   * fix control-d with readline
@@ -24,8 +24,13 @@ gcl (2.6.7-1) unstable; urgency=low
   * libreadline5 for Debian
   * remove _o from init-names
   * gcc-4.0 fixups
+  * Bug fix: "gcl: depends on binutils-dev &lt;&lt;= 2.1.5-999), so
+    uninstallable in unstable", thanks to Steve Langasek (Closes:
+    #318681).  Rebuild with new release to autocompute this dep
+  * Bug fix: "gcl: Please switch to po-debconf", thanks to Lucas Wall
+    (Closes: #295930). Apply po-debconf patch
 
- -- Camm Maguire <camm@enhanced.com>  Fri, 15 Jul 2005 15:20:44 +0000
+ -- Camm Maguire <camm@enhanced.com>  Thu, 11 Aug 2005 14:27:42 +0000
 
 gcl (2.6.6-1) unstable; urgency=high
 
