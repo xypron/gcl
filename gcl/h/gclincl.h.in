@@ -267,6 +267,9 @@ SGC is enabled.  */
 /* Define to 1 if you have the <asm/signal.h> header file. */
 #undef HAVE_ASM_SIGNAL_H
 
+/* Define to 1 if you have the <bfd.h> header file. */
+#undef HAVE_BFD_H
+
 /* Define to 1 if you have the <elf_abi.h> header file. */
 #undef HAVE_ELF_ABI_H
 
@@ -285,6 +288,9 @@ SGC is enabled.  */
 /* Define to 1 if you have the `getwd' function. */
 #undef HAVE_GETWD
 
+/* Define to 1 if you have the <gmp.h> header file. */
+#undef HAVE_GMP_H
+
 /* Have ieeefp fpclass function */
 #undef HAVE_IEEEFP
 
@@ -300,6 +306,9 @@ SGC is enabled.  */
 /* Define to 1 if you have the <japi.h> header file. */
 #undef HAVE_JAPI_H
 
+/* Define to 1 if you have the <malloc/malloc.h> header file. */
+#undef HAVE_MALLOC_MALLOC_H
+
 /* memalign element present */
 #undef HAVE_MALLOC_ZONE_MEMALIGN
 
@@ -311,9 +320,6 @@ SGC is enabled.  */
 
 /* Define to 1 if you have the <readline/readline.h> header file. */
 #undef HAVE_READLINE_READLINE_H
-
-/* Define to 1 if you have the <rpc/rpc.h> header file. */
-#undef HAVE_RPC_RPC_H
 
 /* Define to 1 if you have the <stdint.h> header file. */
 #undef HAVE_STDINT_H
