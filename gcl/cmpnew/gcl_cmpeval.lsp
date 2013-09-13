@@ -2816,31 +2816,48 @@
 ;; argument list to force all previous arguments to be stored in
 ;; variables, when computing inline-args.
 
-
-(push '(() t #.(flags ans set) "Ct")  (get 'side-effects  'inline-always))
-
 (defun c2structure-set (x name-vv ind y sd 
-                          &aux locs (*vs* *vs*) (*inline-blocks* 0))
+                          &aux (*vs* *vs*) (*inline-blocks* 0))
   (declare (ignore name-vv))
   (let* ((raw (si::s-data-raw sd))
-  (type (nth (aref raw ind) +cmp-array-types+))
-  (spos (si::s-data-slot-position sd))
-  (tftype (cmp-norm-tp type))
-  ix iy)
+	 (type (nth (aref raw ind) +cmp-array-types+))
+	 (spos (si::s-data-slot-position sd))
+	 (tftype (cmp-norm-tp type))
+	 (x (setf (info-flags (cadr x)) (logior (info-flags (cadr x)) (iflags side-effects)) x x));force wt-push-loc
+	 (locs (inline-args (list x y) (if (eq type t) '(t t t) `(t ,tftype t))))
+	 (ix (car locs))
+	 (iy (cadr locs)))
+    
+    (if *safe-compile* (wfs-error))
+    (wt-nl "STSET(" (aet-c-type type )","
+	   ix "," (aref spos ind) ", " iy ");")
+    (unwind-exit (list (inline-type tftype) (flags) 'wt-loc (list iy)))
+    (close-inline-blocks)))
 
-   (setq locs (inline-args
-        (list x y (list 'call-global (make-info) 'side-effects nil))
-        (if (eq type t) '(t t t)
-   `(t ,tftype t))))
+;; (push '(() t #.(flags ans set) "Ct")  (get 'side-effects  'inline-always))
 
-  (setq ix (car locs))
-  (setq iy (cadr locs))
-  (if *safe-compile* (wfs-error))
-  (wt-nl "STSET(" (aet-c-type type )","
-    ix "," (aref spos ind) ", " iy ");")
-  (unwind-exit (list (inline-type tftype) (flags) 'wt-loc (list iy)))
-  (close-inline-blocks)
-  ))
+;; (defun c2structure-set (x name-vv ind y sd 
+;;                           &aux locs (*vs* *vs*) (*inline-blocks* 0))
+;;   (declare (ignore name-vv))
+;;   (let* ((raw (si::s-data-raw sd))
+;;   (type (nth (aref raw ind) +cmp-array-types+))
+;;   (spos (si::s-data-slot-position sd))
+;;   (tftype (cmp-norm-tp type))
+;;   ix iy)
+
+;;    (setq locs (inline-args
+;;         (list x y (list 'call-global (make-info) 'side-effects nil))
+;;         (if (eq type t) '(t t t)
+;;    `(t ,tftype t))))
+
+;;   (setq ix (car locs))
+;;   (setq iy (cadr locs))
+;;   (if *safe-compile* (wfs-error))
+;;   (wt-nl "STSET(" (aet-c-type type )","
+;;     ix "," (aref spos ind) ", " iy ");")
+;;   (unwind-exit (list (inline-type tftype) (flags) 'wt-loc (list iy)))
+;;   (close-inline-blocks)
+;;   ))
 
 (defun sv-wrap (x) `(symbol-value ',x))
 
