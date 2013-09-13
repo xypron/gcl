@@ -71,7 +71,7 @@
 				 (tf (when test (coerce test 'function)))
 				 (tnf (when test-not (coerce test-not 'function)))))  
       (declare (optimize (safety 1)))
-      ,@(mapcar (lambda (x) `(check-type ,x proper-list)) ll)
+      ,@(mapcar (lambda (x) `(check-type ,x proper-list)) (if (eq n 'adjoin) (cdr ll) ll));FIXME
       (check-type key (or null function-designator))
       (check-type test (or null function-designator))
       (check-type test-not (or null function-designator))
@@ -257,7 +257,7 @@
 		  (when (cond (test (funcall test item k)) (test-not (not (funcall test-not item k))) ((eql-with-tx item k tx)))
 		    (return-from member x))) list)))
 
-(defktn adjoin (item list)
+(defnfn adjoin (item list)
   (if (member (if key (funcall key item) item) list :key key :test test :test-not test-not)
       list
     (cons item list)))
