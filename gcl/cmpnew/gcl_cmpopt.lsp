@@ -328,7 +328,9 @@
 
 ;;=
  (push '((t t) boolean #.(flags rfa)"immnum_eq(#0,#1)") (get '= 'inline-always))
-(push '((cnum cnum) boolean #.(flags rfa)"(#0)==(#1)") (get '= 'inline-always))
+(push '((cnum cnum) boolean #.(flags rfa)"#0==#1") (get '= 'inline-always))
+;(push '((cnum (integer 0 0)) boolean #.(flags rfa)"!#0") (get '= 'inline-always))
+;(push '(((integer 0 0) cnum) boolean #.(flags rfa)"!#1") (get '= 'inline-always))
 
 ;;>
  (push '((t t) boolean #.(flags rfa)"immnum_gt(#0,#1)") (get '> 'inline-always))
