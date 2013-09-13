@@ -1050,6 +1050,12 @@
 ;; 	       (if mv "FUN_VALP=(fixnum)#v," "")
 ;; 	       (if va "VFUN_NARGS= #n   ," "") x ")")))
 
+(defun push-all-args-flag (flags clp at rt)
+  (logior
+   (if (or clp (member '* at) (not (single-type-p rt)))
+       (flags paa) 0)
+   flags))
+
 (defun make-local-inline (fd)
   (let* ((fun (pop fd))
 	 (clp (pop fd))
@@ -1062,7 +1068,7 @@
 	 (nm (if clp (ms clp "->fun.fun_self") nm))
 	 (inl (g1 clp nm sig ap clp (if clp -1 (fun-level fun)))))
     `(,(car sig) ,(cadr sig) 
-      ,(if mv (flags rfa svt) (flags rfa))
+      ,(apply 'push-all-args-flag (if mv (flags rfa svt) (flags rfa)) clp sig)
       ,inl)))
 
 ;; (defun make-local-inline (fd)

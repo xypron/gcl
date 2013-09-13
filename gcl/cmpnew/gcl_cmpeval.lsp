@@ -184,7 +184,8 @@
 	 (inline-types-function itf)            ;; car of ii is a function returning match info
 	 (sets-vs-top svt)
 	 (normalized-types nt)
-	 (apply-arg aa)))                
+	 (apply-arg aa)
+	 (push-all-args paa)))                
     (cond ((member flag v :test 'eq)
 	   (return-from flags-pos i)))
     (setq i (+ i 1)))
