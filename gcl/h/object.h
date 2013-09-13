@@ -1447,3 +1447,6 @@ EXTER object null_string;
 #define INIT_NARGS(_n) ({fixnum _v=VFUN_NARGS;_v=_v<0 ? _v+_n : _v-_n;_v;})
 
 #define object_to_object(x) x
+
+#define boolean(a_) ((a_)!=Cnil)
+#define make_boolean(a_) ((a_) ? Ct : Cnil)

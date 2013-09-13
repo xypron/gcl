@@ -1113,7 +1113,7 @@
   (let ((s (intern (symbol-name (car l)) 'keyword)))
     (setf (get s 'lisp-type) (cmp-norm-tp (cadr l)))))
 
-(defvar *box-alist* (mapcar (lambda (x) (cons x (cmp-norm-tp (get x 'lisp-type)))) '(:char :fixnum :float :double :fcomplex :dcomplex)))
+(defvar *box-alist* (mapcar (lambda (x) (cons x (cmp-norm-tp (get x 'lisp-type)))) '(:boolean :char :fixnum :float :double :fcomplex :dcomplex)))
 
 (deftype stdesig nil '(or string symbol character))
 (deftype longfloat nil 'long-float)

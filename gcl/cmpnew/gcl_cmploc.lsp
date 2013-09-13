@@ -257,10 +257,20 @@
   (if type (wt "/* " (symbol-name type) " */"))
   (wt "V" cvar))
 
-(defun vv-str (vv) (let ((vv (add-object2 vv))) (string-concatenate "((object)VV[" (write-to-string vv) "])")))
-;; (defun vv-str (vv) (si::string-concatenate "((object)VV[" (write-to-string vv) "])"))
+(defun vv-str (vv) (string-concatenate "((object)VV[" (write-to-string (add-object2 vv)) "])"))
 
 (defun wt-vv (vv) (wt (vv-str vv)))
+
+(defun wt-boolean-loc (loc)
+  (cond ((and (consp loc)
+              (eq (car loc) 'var)
+              (eq (var-kind (cadr loc)) #tboolean))
+         (wt "V" (var-loc (cadr loc))))
+        ((and (consp loc) (or (eq (car loc) 'INLINE-BOOLEAN) (eq (car loc) 'INLINE-COND)))
+         (wt-inline-loc (caddr loc) (cadddr loc)))
+        ((and (consp loc) (eq (car loc) 'boolean-value))
+         (wt (caddr loc)))
+        (t (wt "boolean(" loc ")"))))
 
 (defun wt-fixnum-loc (loc &aux x)
   (cond ((and (consp loc)
@@ -429,12 +439,12 @@
 	 (fvt  (car (rassoc cl +value-types+)))
 	 (ft   (loc-kind loc))
 	 (tt   (cmp-norm-tp (get key 'lisp-type)))
-	 (cast (if (member key '(:cnum :creal)) "" (strcat "(" key ")")))
+	 (cast (if (member key '(:cnum :creal :boolean)) "" (strcat "(" key ")")))
 	 (pp   (search "*" cast)))
 
     (cond ((eq ft tt))
 	  ((eq ft #tt) 
-	   (if *compiler-new-safety*
+	   (if (unless (eq tt #tboolean) *compiler-new-safety*)
 	       (let ((v (member key '(:char :int :fixnum))))
 		 (if v (wt (setq p "object_to_") (strcat key))
 		   (wt cast (setq p "object_to_") (if pp "pointer" "dcomplex"))))
@@ -467,7 +477,7 @@
 
     (when p (wt ")"))
 
-    (when (and (eq tt #tt) (eq ft #tboolean)) (wt "?Ct:Cnil"))))
+    ))
 
 ;; (defun wt-gen-loc (key loc)
 ;;   (let* ((cl   (when (consp loc) (car loc)))

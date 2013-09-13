@@ -298,7 +298,6 @@
 (defun link-rt (tp global)
   (cond ((cmpt tp) (cmp-norm-tp `(,(car tp) ,@(mapcar (lambda (x) (link-rt x global)) (cdr tp)))))
 	((not tp) #tnull)
-	((type>= #tboolean tp) #tt);FIXME
 	((car (member tp `(,@(if global +c-global-arg-types+ +c-local-var-types+) t *) :test 'type<=)))))
 
 (defun ldiffn (list tail)

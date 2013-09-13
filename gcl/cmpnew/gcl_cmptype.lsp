@@ -993,11 +993,11 @@
 ;; as function arguments or returned therefrom.  20050707 CM.
 
 (defconstant +c-global-arg-types-syms+   `(fixnum)) ;FIXME (long-float short-float) later
-(defconstant +c-local-arg-types-syms+    (union +c-global-arg-types-syms+ '(char fixnum long-float short-float fcomplex dcomplex)))
+(defconstant +c-local-arg-types-syms+    (union +c-global-arg-types-syms+ '(boolean char fixnum long-float short-float fcomplex dcomplex)))
 ;(defconstant +c-local-arg-types-syms+    (union +c-global-arg-types-syms+ '(fixnum character long-float short-float fcomplex dcomplex)))
 ;(defconstant +c-local-var-types-syms+    (union +c-local-arg-types-syms+ '(fixnum character long-float short-float integer)))
 ;(defconstant +c-local-var-types-syms+    (union +c-local-arg-types-syms+ '(fixnum character long-float short-float fcomplex dcomplex)))
-(defconstant +c-local-var-types-syms+    (union +c-local-arg-types-syms+ '(char fixnum long-float short-float fcomplex dcomplex)))
+(defconstant +c-local-var-types-syms+    (union +c-local-arg-types-syms+ '(boolean char fixnum long-float short-float fcomplex dcomplex)))
 
 (defun get-sym (args)
   (intern (apply 'concatenate 'string (mapcar 'string args))))
@@ -1019,7 +1019,8 @@
 (defconstant +c-local-arg-types+    (mapcar 'cmp-norm-tp +c-local-arg-types-syms+))
 (defconstant +c-local-var-types+    (mapcar 'cmp-norm-tp +c-local-var-types-syms+))
 
-(defconstant +wt-c-var-alist+ `((,#tchar ."make_fixnum")
+(defconstant +wt-c-var-alist+ `((,#tboolean ."make_boolean")
+				(,#tchar ."make_fixnum")
 				(,#tfixnum ."make_fixnum")
 ;				(,#tinteger ."make_integer") 
 				(,#tcharacter  ."code_char")
@@ -1029,7 +1030,8 @@
 				(,#tdcomplex ."make_dcomplex")
 				(object . "")))
 
-(defconstant +to-c-var-alist+ `((,#tchar  ."fix")
+(defconstant +to-c-var-alist+ `((,#tboolean  ."boolean")
+				(,#tchar  ."fix")
 				(,#tfixnum ."fix")
 				(,#tcharacter  ."char_code")
 				(,#tlong-float  ."lf")

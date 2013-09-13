@@ -2168,6 +2168,7 @@
 	
 
 (defconstant +wt-c-rep-alist+ `((,#tnil ."object ")
+				(,#tboolean ."bool ")
 				(,#tchar ."int8_t ")
 				(,#tfixnum ."fixnum ")
 ;				(,#tinteger ."GEN ") 
