@@ -520,7 +520,7 @@
 				     (var-loc x) (cs-push (if f (var-type x) t) t))
 			(setf (var-ref x) (vs-push) x (cs-push (if f (var-type x) t) t)))))
 		  vars))
-;    (wt-nl "{")
+    (wt-nl "{")
 ;    (wt-nl "int vals_set=0;")
     (when vars
 	(wt-nl "register " (rep-type (var-type (car vars))) " V" (car lbs) ";")
@@ -529,7 +529,7 @@
     (wt-nl);FIXME
     (dotimes (i (1+ (length vars))) (push (next-label) labels))
     
-    (wt-nl "{")
+;    (wt-nl "{")
     ;; (wt-nl "int vals_set=0;")
     (let ((*mv-var* mv)
 	  (*value-to-go* (or (mapcar (lambda (x) (list 'cvar x)) lbs) 'trash))
