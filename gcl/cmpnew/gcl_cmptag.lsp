@@ -1245,11 +1245,16 @@
 						     ((type-and st e) (setq skip nil dfp (or df dfp) rt (type-or1 rt e)))
 						     ((keyed-cmpnote 'branch-elimination "Eliminating unreachable switch ~s" b)))))
 					    ((not skip) (when cs (setq st (type-and st (cmp-norm-tp `(not ,rt))) cs nil)) t))) body))
-	       (body (mapcar (lambda (x) (if (tgs-p x) (make-tag :name x :ref t :switch (if (typep x #tfixnum) x "default")) x)) body))
+	       last-tag
+	       (body (mapcar (lambda (x) 
+			       (if (tgs-p x)
+				   (setq last-tag (make-tag :name x :ref t :switch (if (typep x #tfixnum) x "default")))
+				 x)) body))
 	       trv
 	       (body (mapcar (lambda (x) (if (tag-p x) x (let ((x (c1branch t nil (list nil x) info))) 
 							   (prog1 (pop x) (setq trv (append trv (car x))))))) body))
 	       (ls (member-if 'consp body)))
+	  (when last-tag (setf (tag-switch last-tag) "default"));FIXME one tag to if
 	  (or-branches trv)
 	  (when st (baboon))
 	  (mapc (lambda (x) (assert (or (tag-p x) (not (info-type (cadr x)))))) body)
@@ -1465,14 +1470,30 @@
 ;; 	     ))
 ;; 	  (t (c1expr (cmp-macroexpand-1 (cons 'switch form)))))))
 
+(defun c2switchbody-body (body &aux (*value-to-go* 'trash) ts)
+  (mapc (lambda (y)
+	  (typecase y
+		    (tag (wt-switch-case (setq ts (tag-switch y))))
+		    (otherwise (c2expr y) (unless (info-type (cadr y)) (wt-nl "break;")))))
+	body))
+
 (defun c2switch (op body &aux (*inline-blocks* 0)(*vs* *vs*))
   (let ((args (inline-args (list op) `(,#tfixnum))))
     (wt-nl "")
-    (wt-inline-loc "switch(#0){" args)
-    (c2tagbody-local body)
+    (wt-inline-loc "switch(#0) {" args)
+    (c2switchbody-body body)
     (wt "}")
-    (unwind-exit nil)
+;    (unwind-exit nil)
     (close-inline-blocks)))
+
+;; (defun c2switch (op body &aux (*inline-blocks* 0)(*vs* *vs*))
+;;   (let ((args (inline-args (list op) `(,#tfixnum))))
+;;     (wt-nl "")
+;;     (wt-inline-loc "switch(#0){" args)
+;;     (c2tagbody-local body)
+;;     (wt "}")
+;;     (unwind-exit nil)
+;;     (close-inline-blocks)))
 
 ;; (defun c2switch (op ref-clb ref-ccb body &aux (*inline-blocks* 0)(*vs* *vs*))
 ;;   (let ((args (inline-args (list op) `(,#tfixnum))))
