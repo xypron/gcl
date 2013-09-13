@@ -323,7 +323,7 @@
 	(car (fourth (fun-c1 fun)))
       (current-env))))
 
-(defun mc nil (let ((env (cons nil nil))) (lambda nil env)))
+(defun mc (&aux (env (cons nil nil))) (lambda nil env))
 
 (defun afe (a f)
   (push a (car (funcall f)))
