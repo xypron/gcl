@@ -1033,14 +1033,14 @@
   (let* ((mv (not (single-type-p (cadr sig))))
 	 (va (member '* (car sig)))
 	 (nreg (length (ldiffn (car sig) va))))
-    (ms "(" 
-	(when clp  (concatenate 'string "fcall.fun=" clp  ","))
-	(when mv "FUN_VALP=(fixnum)#v,")
+    (ms "({" 
+	(when clp  (concatenate 'string "fcall.fun=" clp  ";"))
+	(when mv "FUN_VALP=(fixnum)#v;")
 	(when va "VFUN_NARGS=")
 	(when (and va ap) "-")
 	(when va "#n")
 	(when (and va ap (< ap nreg)) (- ap nreg))
-	(when va ",") x ")")))
+	(when va ";") x ";})")))
 
 ;; (defun vfun-wrap (x sig clp)
 ;;   (let ((mv (not (single-type-p (cadr sig))))
