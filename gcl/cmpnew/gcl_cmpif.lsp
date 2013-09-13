@@ -1180,25 +1180,79 @@
 (setf (get 'null 'si::compiler-macro-prop) 'not-compiler-macro)
 
 
+(defun boolean-if-loc (fmla form1 form2)
+  (let* ((i1 (cadr form1))(i2 (cadr form2))
+	 (g1 (if1 i1))
+	 (g2 (if1 i2))
+	 (t1 (when g1 (type>= #t(not null) (info-type i1))))
+	 (n1 (when g1 (type>= #tnull (info-type i1))))
+	 (t2 (when g2 (type>= #t(not null) (info-type i2))))
+	 (n2 (when g2 (type>= #tnull (info-type i2)))))
+    (cond ((and t1 n2) (get-inline-loc `((,#tboolean) ,#tboolean #.(flags rfa) "#0") (list fmla)))
+	  ((and n1 t2) (get-inline-loc `((,#tboolean) ,#tboolean #.(flags rfa) "!(#0)") (list fmla)))
+	  (t1 (get-inline-loc `((,#tboolean ,#tboolean) ,#tboolean #.(flags rfa) "(#0)||(#1)") (list fmla form2)))
+	  (n1 (get-inline-loc `((,#tboolean ,#tboolean) ,#tboolean #.(flags rfa) "!(#0)&&(#1)") (list fmla form2)))
+	  (t2 (get-inline-loc `((,#tboolean ,#tboolean) ,#tboolean #.(flags rfa) "!(#0)||(#1)") (list fmla form1)))
+	  (n2 (get-inline-loc `((,#tboolean ,#tboolean) ,#tboolean #.(flags rfa) "(#0)&&(#1)") (list fmla form1))))))
+
+(defun coerce-loc-if (type fmla form1 form2 &aux (*would-push* :push))
+  (catch *would-push*
+    (or (when (eq type #tboolean) 
+	  (boolean-if-loc fmla form1 form2))
+	(get-inline-loc `((,#tboolean ,type ,type) ,type #.(flags rfa) "(#0)?(#1):(#2)") (list fmla form1 form2)))))
+
+;; FIXME returning boolean expressions to variables and from functions
+;; appears to produce larger and slower code than reserving
+;; expressions for the argument to top-level int and returning boolean
+;; constants elsewhere.
+
+;; (defun bool-return (&aux (v *value-to-go*)(lr (listp v)) (ar (if lr (car v) v))(dr (when lr (cdr v))))
+;;   (case ar
+;; 	(return-boolean t)
+;; 	(cvar (eq #tboolean (car (rassoc (cadr *value-to-go*) *c-vars*))))
+;; 	(var (eq #tboolean (var-kind (car dr))))
+;; 	))
+
+;; (cond ((and (bool-return) 
+;; 	      (when (if1 (cadr form1)) (type>= #t(not null) (info-type (cadr form1))))
+;; 	      (when (if1 (cadr form2)) (type>= #tnull (info-type (cadr form2)))))
+;; 	 (set-loc (get-inline-loc `((,#tboolean) ,#tboolean #.(flags rfa) "#0") (list fmla))))
+;; 	((and (bool-return) 
+;; 	      (when (if1 (cadr form2)) (type>= #t(not null) (info-type (cadr form2))))
+;; 	      (when (if1 (cadr form1)) (type>= #tnull (info-type (cadr form1))))) 
+;; 	 (set-loc (get-inline-loc `((,#tboolean) ,#tboolean #.(flags rfa) "!(#0)") (list fmla))))
+;; 	(
+
+
 (defun c2if (fmla form1 form2)
-  (let* ((v *value-to-go*)
-	 (rev (and (type>= #tnull (info-type (cadr form1)))
-		   (type>= #t(not null) (info-type (cadr form2)))))
-	 (reg (and (type>= #tnull (info-type (cadr form2)))
-		   (type>= #t(not null) (info-type (cadr form1)))))
-	 (vj (when (or rev reg) (and (consp v) (car (member (car v) '(jump-true jump-false))))))
-	 (fj (eq vj (if rev 'jump-true 'jump-false)))
-	 (Flabel (next-label))
-;	 (Flabel (if vj (if fj (cadr v) (caddr v)) (next-label))) FIXME: This needs working side-effects propagation
-	 (Tlabel (if vj (if fj (caddr v) (cadr v)) (next-label))))
-    (let* ((*unwind-exit* (cons Flabel (cons Tlabel *unwind-exit*)))
-	   (*exit* Tlabel))
-      (CJF fmla Tlabel Flabel))
-    (unless vj (wt-label Tlabel))
-    (let ((*unwind-exit* (cons 'JUMP *unwind-exit*))) (c2expr form1))
-    (wt-label Flabel)
-;    (unless vj (wt-label Flabel))
-    (c2expr form2)))
+  (let* ((*value-to-go* 'jump)
+	 (loc (inline-args (list fmla) (list #tboolean))))
+    (wt-nl "")
+    (wt-inline-loc "if (#0) {" loc))
+  (c2expr form1)
+  (wt-nl "} else {")
+  (c2expr form2)
+  (wt "}"))
+
+;; (defun c2if (fmla form1 form2)
+;;   (let* ((v *value-to-go*)
+;; 	 (rev (and (type>= #tnull (info-type (cadr form1)))
+;; 		   (type>= #t(not null) (info-type (cadr form2)))))
+;; 	 (reg (and (type>= #tnull (info-type (cadr form2)))
+;; 		   (type>= #t(not null) (info-type (cadr form1)))))
+;; 	 (vj (when (or rev reg) (and (consp v) (car (member (car v) '(jump-true jump-false))))))
+;; 	 (fj (eq vj (if rev 'jump-true 'jump-false)))
+;; 	 (Flabel (next-label))
+;; ;	 (Flabel (if vj (if fj (cadr v) (caddr v)) (next-label))) FIXME: This needs working side-effects propagation
+;; 	 (Tlabel (if vj (if fj (caddr v) (cadr v)) (next-label))))
+;;     (let* ((*unwind-exit* (cons Flabel (cons Tlabel *unwind-exit*)))
+;; 	   (*exit* Tlabel))
+;;       (CJF fmla Tlabel Flabel))
+;;     (unless vj (wt-label Tlabel))
+;;     (let ((*unwind-exit* (cons 'JUMP *unwind-exit*))) (c2expr form1))
+;;     (wt-label Flabel)
+;; ;    (unless vj (wt-label Flabel))
+;;     (c2expr form2)))
 
 ;; (defun c2if (fmla form1 form2
 ;;                   &aux (Tlabel (next-label)) Flabel)
