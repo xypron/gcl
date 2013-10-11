@@ -100,18 +100,55 @@ gcl_init_big1()
 {
 }
 #endif  
+void *big_stack1[1024*1024],**big_stack=big_stack1,**big_stacke=big_stack1+sizeof(big_stack1)/sizeof(*big_stack1);
 
-object
-new_bignum(void)
-{ object ans;
- {BEGIN_NO_INTERRUPT;
- ans = alloc_object(t_bignum);
- MP_SELF(ans) = 0;
- mpz_init(MP(ans));
- END_NO_INTERRUPT;
- }
- return ans;
+
+DEFUN_NEW("ENABLE-BIGSTACK",object,fSenable_bigstack,SI,1,1,NONE,OO,OO,OO,OO,(object x),"") {
+  if (x==Cnil) {
+    big_stacke=big_stack=big_stack1;
+    RETURN1(x);
+  }
+  big_stacke=big_stack1+sizeof(big_stack1)/sizeof(*big_stack1);
+  RETURN1(Ct);
 }
+
+
+static inline object
+get_bignum(__mpz_struct *u) {
+
+  object x;
+
+  if (big_stack>big_stack1) {
+    x=*--big_stack;
+    if (u) mpz_set(MP(x),u);
+  } else {
+    x=alloc_object(t_bignum);
+    if (u) 
+      mpz_init_set(MP(x),u);
+    else
+      mpz_init(MP(x));
+  }
+  return x;
+
+}
+  
+
+inline object
+new_bignum(void) {
+  return get_bignum(NULL);
+}
+
+/* object */
+/* new_bignum(void) */
+/* { object ans; */
+/*  {BEGIN_NO_INTERRUPT; */
+/*  ans = alloc_object(t_bignum); */
+/*  MP_SELF(ans) = 0; */
+/*  mpz_init(MP(ans)); */
+/*  END_NO_INTERRUPT; */
+/*  } */
+/*  return ans; */
+/* } */
 
 /* we have to store the body of a u in a bignum object
    so that the garbage collecter will move it and save
@@ -124,12 +161,16 @@ new_bignum(void)
 #define GC_PROTECTED_SELF (__u)->_mp_d
 #define END_GCPROTECT (__u)->_mp_d = 0
  
-static object
+
+static inline object
 make_bignum(__mpz_struct *u) {
-  object ans=alloc_object(t_bignum);
-  mpz_init_set(MP(ans),u);
-  return ans;
+  return get_bignum(u);
 }
+
+  /* object ans=alloc_object(t_bignum); */
+  /* mpz_init_set(MP(ans),u); */
+  /* return ans; */
+
 
 /* static object */
 /* make_bignum(__mpz_struct *u) */

@@ -211,7 +211,9 @@ minimize_image(void) {
   
   if (in_sgc) sgc_quit();
   holepage=new_holepage=1;
+  big_stacke=big_stack1;/*FIXME*/
   GBC(t_relocatable);
+  big_stacke=big_stack1+sizeof(big_stack1)/sizeof(*big_stack1);
   if (in_sgc) sgc_start();
   new = (void *)(((((ufixnum)rb_pointer)+ PAGESIZE-1)/PAGESIZE)*PAGESIZE);
   core_end = new;

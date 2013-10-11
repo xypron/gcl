@@ -659,7 +659,7 @@ sgc_sweep_phase(void) {
   STATIC long j, k;
   STATIC object x;
   STATIC char *p;
-  STATIC struct typemanager *tm;
+  STATIC struct typemanager *tm,*btm=tm_of(t_bignum);
   STATIC object f;
   int size;
   STATIC struct pageinfo *v;
@@ -692,6 +692,12 @@ sgc_sweep_phase(void) {
 	if (TYPEWORD_TYPE_P(pageinfo(x)->type) && x->d.s == SGC_NORMAL)
 	  continue;
 	
+	if (tm==btm && big_stack<big_stacke/* && type_of(x)==t_bignum*/) {
+	  mark_gmp_big(x);
+	  *big_stack++=x;
+	  continue;
+	}
+
 	/* it is ok to free x */
 	
 	SET_LINK(x,f);

@@ -179,3 +179,5 @@ GEN addss();
      gcopy_to_big(_xgen,where);  }while(0)
 
 #endif
+
+EXTER void *big_stack1[1024*1024],**big_stack,**big_stacke;

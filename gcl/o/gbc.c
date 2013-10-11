@@ -412,6 +412,23 @@ sweep_link_array(void) {
 
 }
 
+static inline void
+mark_gmp_big(object x) {
+
+  void *cp;
+  fixnum j;
+
+  if (what_to_collect >= t_contiguous) {
+    if (!(cp = (char *)MP_SELF(x)))
+      return;
+    j = MP_ALLOCATED(x)*MP_LIMB_SIZE;
+    if (inheap(cp)) {
+      if (what_to_collect == t_contiguous)
+	mark_contblock(cp, j);
+    } else if (SGC_RELBLOCK_P(cp) && COLLECT_RELBLOCK_P) {
+      MP_SELF(x) = (void *) copy_relblock(cp, j);}}
+}
+
 static void
 mark_object(object x) {
   
@@ -596,28 +613,7 @@ mark_object(object x) {
       goto CASE_SPECIAL;
     
   case t_bignum:
-#ifndef GMP_USE_MALLOC
-    if ((int)what_to_collect >= (int)t_contiguous) {
-      j = MP_ALLOCATED(x);
-      cp = (char *)MP_SELF(x);
-      if (cp == 0)
-	break;
-#ifdef PARI
-      if (j != lg(MP(x))  &&
-	  /* we don't bother to zero this register,
-	     and its contents may get over written */
-	  ! (x == big_register_1 &&
-	     (int)(cp) <= top &&
-	     (int) cp >= bot))
-	printf("bad length 0x%x ",x);
-#endif
-      j = j * MP_LIMB_SIZE;
-      if (inheap(cp)) {
-	if (what_to_collect == t_contiguous)
-	  mark_contblock(cp, j);
-      } else if (COLLECT_RELBLOCK_P) {
-	MP_SELF(x) = (void *) copy_relblock(cp, j);}}
-#endif /* not GMP_USE_MALLOC */
+    mark_gmp_big(x);
     break;
     
   CASE_STRING:
@@ -1107,10 +1103,11 @@ sweep_phase(void) {
   STATIC long j, k;
   STATIC object x;
   STATIC char *p;
-  STATIC struct typemanager *tm;
+  STATIC struct typemanager *tm,*btm=tm_of(t_bignum);
   STATIC object f;
   STATIC struct pageinfo *v;
-  
+
+  big_stack=big_stack1;
   for (v=cell_list_head;v;v=v->next) {
 
     tm = tm_of((enum type)v->type);
@@ -1124,6 +1121,12 @@ sweep_phase(void) {
 	continue;
       else if (is_marked(x)) {
 	unmark(x);
+	continue;
+      }
+
+      if (tm==btm && big_stack<big_stacke/* && type_of(x)==t_bignum*/) {
+	mark_gmp_big(x);
+	*big_stack++=x;
 	continue;
       }
 

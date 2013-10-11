@@ -1083,7 +1083,7 @@ gcl_init_alloc(void) {
   init_tm(t_string, "\"STRING", sizeof(struct string), 5461,1,0  );
   init_tm(t_array, "aARRAY", sizeof(struct array), 4681,1,0 );
   init_tm(t_symbol, "|SYMBOL", sizeof(struct symbol), 3640,1,0 );
-  init_tm(t_bignum, "BBIGNUM", sizeof(struct bignum), 2730,1,0 );
+  init_tm(t_bignum, "BBIGNUM", sizeof(struct bignum), 2730,1,1 );
   init_tm(t_ratio, "RRATIONAL", sizeof(struct ratio), 170,1,0 );
   init_tm(t_shortfloat, "FSHORT-FLOAT",
 	  sizeof(struct shortfloat_struct), 256 ,1,0);
