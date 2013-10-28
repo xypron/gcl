@@ -466,7 +466,7 @@
 		(f (if (single-type-p rt) f (flag-or f svt)))
 		(f (if apnarg (flag-or f aa) f)))
 	   (push (list* fname (format nil "LI~d" n) n tail) *function-links*)
-	   (car (push (list fname at rt f
+	   (car (push (list fname at rt (push-all-args-flag f clp at rt)
 		       (g fname n (list at rt) apnarg clp)
 		       'link-call n)
 		      *inline-functions*))))))
