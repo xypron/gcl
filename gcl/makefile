@@ -256,7 +256,7 @@ $(HDIR)new_decl.h:
 	(cd o && $(MAKE) ../$@)
 
 $(HDIR)mcompdefs.h: $(HDIR)compdefs.h $(HDIR)new_decl.h
-	$(AWK) 'BEGIN {print "#include \"include.h\"";print "#include \"cmponly.h\"";print "---"} {print "\"#define " $$1 "\" " $$1}' $< |\
+	$(AWK) 'BEGIN {print "#include \"include.h\"";print "#include \"cmponly.h\"";print "#include \"page.h\"";print "---"} {print "\"#define " $$1 "\" " $$1}' $< |\
 	cpp -I./$(HDIR) |\
 	$(AWK) '/^\-\-\-$$/ {i=1;next} {if (!i) next} {gsub("\"","");print}' >$@
 

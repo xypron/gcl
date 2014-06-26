@@ -701,7 +701,7 @@
 (defun list*-inline (&rest x)
   (case (length x)
         (1 (wt (car x)))
-        (2 (wt "make_cons(" (car x) "," (cadr x) ")"))
+        (2 (wt "CMPmake_cons(" (car x) "," (cadr x) ")"))
         (otherwise
          (wt "listA(" (length x)) (dolist (loc x) (wt #\, loc)) (wt #\)))))
 

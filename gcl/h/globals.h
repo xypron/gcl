@@ -21,4 +21,12 @@ EXTER object sLcons;
 EXTER object sLhash_table;
 
 EXTER object MVloc[10];
-
+EXTER void **cfreep;
+EXTER ufixnum *cnfreep;
+struct mpageinfo {
+  unsigned long type:6;
+  unsigned long magic:7;
+  unsigned long sgc_flags:2;
+  unsigned long in_use:49;
+  struct mpageinfo *next;
+};

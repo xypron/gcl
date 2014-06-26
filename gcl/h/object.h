@@ -518,3 +518,12 @@ EXTER unsigned plong signals_allowed, signals_pending;
 #define eql(a_,b_)    ({register object _a=(a_);register object _b=(b_);_a==_b || (!IMMNIL(_a)&&!IMMNIL(_b)&&eql1(_a,_b));})
 #define equal(a_,b_)  ({register object _a=(a_);register object _b=(b_);_a==_b || (!IMMNIL(_a)&&!IMMNIL(_b)&&equal1(_a,_b));})
 #define equalp(a_,b_) ({register object _a=(a_);register object _b=(b_);_a==_b || (_a!=Cnil&&_b!=Cnil&&equalp1(_a,_b));})
+
+
+#ifdef IN_MAIN
+void **cfreep=(void **)&tm_table[t_cons].tm_free;
+ufixnum *cnfreep=(ufixnum *)&tm_table[t_cons].tm_nfree;
+#endif
+
+#define mpageinfo(x) ((struct mpageinfo *)(((ufixnum)x)&(-(1L << 12))))
+#define CMPmake_cons(a_,b_) ({object o;void *p;if ((p=cfreep[0])!=OBJNULL) {cfreep[0]=((void **)cfreep[0])[1];(*cnfreep)--;o=p;o->c.c_car=a_;o->c.c_cdr=b_;mpageinfo(o)->in_use++;} else o=make_cons(a_,b_);o;})
