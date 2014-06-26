@@ -888,6 +888,48 @@ mark_stack_carefully(void *topv, void *bottomv, int offset) {
   }
 }
 
+/* static void */
+/* mark_big(void) { */
+
+/*   struct pageinfo *v; */
+/*   struct typemanager *btm=tm_of(t_bignum); */
+/*   void *x; */
+/*   object o; */
+/*   ufixnum j,i; */
+/*   extern ufixnum big_cache_size; */
+
+/*   if (type_of(sSAbig_listA->s.s_dbind)!=t_vector) return; */
+
+/*   sSAbig_listA->s.s_dbind->v.v_fillp=0; */
+/*   for (i=0,v=cell_list_head;v;v=v->next) */
+/*     if (tm_of(v->type)==btm */
+/* #ifdef SGC */
+/* 	&& (!sgc_enabled || WRITABLE_PAGE_P(page(v))) */
+/* #endif	 */
+/* 	)  */
+/*       for (x=pagetochar(page(v)),j=btm->tm_nppage;j--;x+=btm->tm_size) */
+/* 	if ((o=x) && !is_marked_or_free(o) && type_of(o)==t_bignum) { */
+/* 	  i++; */
+/* 	  if (sSAbig_listA->s.s_dbind->v.v_fillp<sSAbig_listA->s.s_dbind->v.v_dim) { */
+/* #ifdef SGC */
+/* 	    if (sgc_enabled) */
+/* 	      sgc_mark_object1(o); */
+/* 	    else */
+/* #endif	 */
+/* 	      mark_object(o); */
+
+/* 	    sSAbig_listA->s.s_dbind->v.v_self[sSAbig_listA->s.s_dbind->v.v_fillp++ + */
+/* 					      (COLLECT_RELBLOCK_P  */
+/* #ifdef SGC */
+/* 					       && (!sgc_enabled || SGC_RELBLOCK_P(sSAbig_listA->s.s_dbind->v.v_self)) */
+/* #endif	 */
+/* 					       ? (rb_pointer1-rb_pointer)/sizeof(object) : 0)]=o; */
+/* 	  } */
+/* 	} */
+
+/*   big_cache_size=i*0.75; */
+
+/* } */
 
 static void
 mark_phase(void) {
@@ -959,7 +1001,8 @@ mark_phase(void) {
       for (i = 0;  i < size;  i++)
 	mark_object(pp->p_external[i]);
   }}
-  
+
+
   /* mark the c stack */
 #ifndef N_RECURSION_REQD
 #define N_RECURSION_REQD 2
@@ -1102,7 +1145,20 @@ sweep_phase(void) {
   STATIC struct typemanager *tm;
   STATIC object f;
   STATIC struct pageinfo *v;
+  ufixnum *bp1=NULL,*bp=NULL,*bpe=NULL;
+  struct typemanager *btm=tm_of(t_bignum);
+  extern ufixnum last_big_alloc,current_big_alloc;
   
+  if (sSAbig_listA && type_of(sSAbig_listA->s.s_dbind)==t_vector) {
+    object bv=sSAbig_listA->s.s_dbind;
+    ufixnum dim;
+    last_big_alloc=(current_big_alloc>bv->v.v_dim ? current_big_alloc : bv->v.v_dim)*0.75;
+    current_big_alloc=0;
+    dim=last_big_alloc<bv->v.v_dim ? last_big_alloc : bv->v.v_dim;
+    bp=bp1=((void *)bv->v.v_self)+(COLLECT_RELBLOCK_P ? rb_pointer1-rb_pointer : 0);
+    bpe=bp+dim;
+  }
+
   for (v=cell_list_head;v;v=v->next) {
 
     tm = tm_of((enum type)v->type);
@@ -1119,6 +1175,13 @@ sweep_phase(void) {
 	continue;
       }
 
+      if (tm==btm && bp<bpe && type_of(x)==t_bignum) {
+	mark_object(x);
+	unmark(x);
+	*bp++=(ufixnum)x;
+	continue;
+      }
+
       SET_LINK(x,f);
       make_free(x);
       f = x;
@@ -1129,6 +1192,9 @@ sweep_phase(void) {
     pagetoinfo(page(v))->in_use-=k;
     
   }
+
+  if (bp)
+    sSAbig_listA->s.s_dbind->v.v_fillp=bp-bp1;
 
 }
 
@@ -1343,7 +1409,9 @@ GBC(enum type t) {
     fflush(stdout);
   }
 #endif
-  
+
+  /* mark_big(); */
+
 #ifdef DEBUG
   if (debug) {
     printf("sweep phase\n");

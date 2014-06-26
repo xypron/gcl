@@ -641,9 +641,9 @@ sgc_mark_phase(void) {
 	  sgc_mark_pack_list(pp->p_external[i]);
     }
   }
-  
+
   mark_c_stack(0,N_RECURSION_REQD,mark_stack_carefully);
-  
+ 
 }
 
 static void
@@ -655,7 +655,20 @@ sgc_sweep_phase(void) {
   STATIC object f;
   int size;
   STATIC struct pageinfo *v;
+  ufixnum *bp1=NULL,*bp=NULL,*bpe=NULL;
+  struct typemanager *btm=tm_of(t_bignum);
+  extern ufixnum last_big_alloc,current_big_alloc;
   
+  if (sSAbig_listA && type_of(sSAbig_listA->s.s_dbind)==t_vector) {
+    object bv=sSAbig_listA->s.s_dbind;
+    ufixnum dim;
+    last_big_alloc=(current_big_alloc>bv->v.v_dim ? current_big_alloc : bv->v.v_dim)*0.75;
+    current_big_alloc=0;
+    dim=last_big_alloc<bv->v.v_dim ? last_big_alloc : bv->v.v_dim;
+    bp=bp1=((void *)bv->v.v_self)+(COLLECT_RELBLOCK_P && SGC_RELBLOCK_P(bv->v.v_self) ? rb_pointer1-rb_pointer : 0);
+    bpe=bp+dim;
+  }
+
   for (v=cell_list_head;v;v=v->next) {
 
     tm = tm_of((enum type)v->type);
@@ -684,6 +697,13 @@ sgc_sweep_phase(void) {
 	if (TYPEWORD_TYPE_P(pageinfo(x)->type) && x->d.s == SGC_NORMAL)
 	  continue;
 	
+	if (tm==btm && bp<bpe && type_of(x)==t_bignum) {
+	  sgc_mark_object1(x);
+	  unmark(x);
+	  *bp++=(ufixnum)x;
+	  continue;
+	}
+
 	/* it is ok to free x */
 	
 	SET_LINK(x,f);
@@ -706,6 +726,11 @@ sgc_sweep_phase(void) {
       }
     
   }
+
+  if (bp)
+    sSAbig_listA->s.s_dbind->v.v_fillp=bp-bp1;
+
+
 }
 
 

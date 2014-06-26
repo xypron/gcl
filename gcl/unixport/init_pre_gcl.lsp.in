@@ -23,6 +23,11 @@
  (or lisp::*link-array*
      (setq lisp::*link-array*
 	   (make-array (ash 1 11)  :element-type 'string-char :fill-pointer 0)))
+
+ ;; (unless si::*big-list*
+ ;;   (setq si::*big-list* (make-array 1000 :element-type 'fixnum :fill-pointer 0 :adjustable t)
+ ;; 	 si::*big-index* (make-array 10 :element-type 'fixnum :fill-pointer 0 :adjustable t)))
+
  (si::use-fast-links t)
 
  (let* ((x (append (pathname-directory si::*system-directory*) (list :parent)))

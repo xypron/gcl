@@ -101,16 +101,90 @@ gcl_init_big1()
 }
 #endif  
 
+ufixnum last_big_alloc=0,current_big_alloc=0;
+
+static int
+acomp(const void *v1,const void *v2) {
+  const object *o1=v1,*o2=v2;
+  ufixnum u1=(*o1)->big.big_mpz_t._mp_alloc,u2=(*o2)->big.big_mpz_t._mp_alloc;
+  return (u1>u2 ? 1 : (u1 == u2 ? 0 : -1));
+}
+
+static object
+cache_bignum(__mpz_struct *u) {
+
+  object ans=OBJNULL;
+  ufixnum i,j,k,s;
+
+  if (sSAbig_listA && type_of(sSAbig_listA->s.s_dbind)==t_vector) {
+
+    object bv=sSAbig_listA->s.s_dbind,bi=sSAbig_indexA->s.s_dbind;;
+
+    if (!current_big_alloc) {
+      if (2*labs(last_big_alloc-bv->v.v_dim)>bv->v.v_dim) {
+	ufixnum i=last_big_alloc<1000 ? 1000 : last_big_alloc;
+	void *v=alloc_relblock(i*sizeof(object));
+	memcpy(v,bv->v.v_self,bv->v.v_fillp*sizeof(object));
+	bv->v.v_self=v;
+	bv->v.v_dim=i;
+      }
+
+      qsort(bv->v.v_self,bv->v.v_fillp,sizeof(object),acomp);
+
+      for (i=j=s=0;i<bv->v.v_fillp;i++)
+	if (bv->v.v_self[i]->big.big_mpz_t._mp_alloc!=s) {
+	  s=bv->v.v_self[i]->big.big_mpz_t._mp_alloc;
+	  j++;
+	}
+
+#define FIXA(x) ((ufixnum *)x->v.v_self)
+
+      j*=3;
+      bi->v.v_self=alloc_relblock(j*sizeof(object));
+      bi->v.v_fillp=bi->v.v_dim=j;
+      for (i=k=s=0;i<bv->v.v_fillp && k<j;i++)
+	if (bv->v.v_self[i]->big.big_mpz_t._mp_alloc!=s) {
+	  s=bv->v.v_self[i]->big.big_mpz_t._mp_alloc;
+	  if (k) FIXA(bi)[k-1]=i;
+	  FIXA(bi)[k++]=s;
+	  FIXA(bi)[k++]=i;
+	  FIXA(bi)[k++]=bv->v.v_fillp;
+	}
+
+    }
+
+    s=u ? labs(u->_mp_size) : 0;
+    for (i=0;i<bi->v.v_fillp && (FIXA(bi)[i]<s || FIXA(bi)[i+1]>=FIXA(bi)[i+2]);i+=3);
+    if (i<bi->v.v_fillp) {
+      ans=bv->v.v_self[FIXA(bi)[i+1]];
+      FIXA(bi)[i+1]++;
+      if (u) mpz_set(MP(ans),u);
+    }
+    
+  }
+  
+  current_big_alloc++;
+
+  return ans;
+
+}
+
 object
-new_bignum(void)
-{ object ans;
- {BEGIN_NO_INTERRUPT;
- ans = alloc_object(t_bignum);
- MP_SELF(ans) = 0;
- mpz_init(MP(ans));
- END_NO_INTERRUPT;
- }
- return ans;
+new_bignum(void) {
+
+  object ans;
+
+  if ((ans=cache_bignum(0))!=OBJNULL)
+    return ans;
+  
+  {
+    BEGIN_NO_INTERRUPT;
+    ans = alloc_object(t_bignum);
+    MP_SELF(ans) = 0;
+    mpz_init(MP(ans));
+    END_NO_INTERRUPT;
+  }
+  return ans;
 }
 
 /* we have to store the body of a u in a bignum object
@@ -123,10 +197,18 @@ new_bignum(void)
  (__u)->_mp_alloc = (u)->_mp_alloc 
 #define GC_PROTECTED_SELF (__u)->_mp_d
 #define END_GCPROTECT (__u)->_mp_d = 0
- 
+
+DEFVAR("*BIG-LIST*",sSAbig_listA,SI,Cnil,"");
+DEFVAR("*BIG-INDEX*",sSAbig_indexA,SI,Cnil,"");
+
 static object
 make_bignum(__mpz_struct *u) {
-  object ans=alloc_object(t_bignum);
+  object ans;
+  
+  if ((ans=cache_bignum(u))!=OBJNULL)
+    return ans;
+
+  ans=alloc_object(t_bignum);
   memset(MP(ans),0,sizeof(*MP(ans)));
   mpz_init_set(MP(ans),u);
   return ans;
@@ -582,6 +664,5 @@ gcl_init_big(void)
   enter_mark_origin(&big_fixnum2);
   enter_mark_origin(&big_fixnum3);
   enter_mark_origin(&big_fixnum4);
-
 
 }
