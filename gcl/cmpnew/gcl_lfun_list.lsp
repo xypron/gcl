@@ -248,7 +248,7 @@
 (DEFSYSFUN 'FLOAT "Lfloat" '(T *) 'T NIL NIL) 
 ;(DEFSYSFUN 'FIRST "Lcar" '(T) 'T NIL NIL) 
 (DEFSYSFUN 'ROUND "Lround" '(T *) '(VALUES T T) NIL NIL) 
-(DEFSYSFUN 'SUBST "Lsubst" '(T T T *) 'T NIL NIL) 
+;(DEFSYSFUN 'SUBST "Lsubst" '(T T T *) 'T NIL NIL) 
 (DEFSYSFUN 'UPPER-CASE-P "Lupper_case_p" '(T) 'T NIL T) 
 (DEFSYSFUN 'ARRAY-ELEMENT-TYPE "Larray_element_type" '(T) 'T NIL NIL) 
 (DEFSYSFUN 'ADJOIN "Ladjoin" '(T T *) 'T NIL NIL) 

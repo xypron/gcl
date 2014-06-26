@@ -256,3 +256,35 @@
 (defmacro nth-value (n expr)
   (declare (optimize (safety 1)))
   `(nth ,n (multiple-value-list ,expr)))
+
+(defvar *stat* (list 0 0 0))
+(defvar *new* nil)
+(defvar *old* nil)
+
+(defvar *osubst* #'subst)
+(proclaim '(ftype (function (t) t) fsubst fsubsteq))
+
+(defun fsubst (tree)
+  (cond ((eql *old* tree) *new*)
+	((atom tree) tree)
+	((let* ((a (car tree))(sa (fsubst a))
+		(d (cdr tree))(sd (fsubst d)))
+	   (if (and (eq a sa) (eq d sd)) tree (cons sa sd))))))
+
+(defun fsubsteq (tree)
+  (cond ((eq *old* tree) *new*)
+	((atom tree) tree)
+	((let* ((a (car tree))(sa (fsubsteq a))
+		(d (cdr tree))(sd (fsubsteq d)))
+	   (if (and (eq a sa) (eq d sd)) tree (cons sa sd))))))
+
+(defun subst (new old tree &key key test test-not &aux (*new* new)(*old* old))
+  (cond ((or key test test-not)
+	 ;(incf (car *stat*))
+	 (funcall *osubst* new old tree :key key :test test :test-not test-not))
+	((numberp old) 
+	 ;(incf (cadr *stat*))
+	 (fsubst tree))
+	(t
+	 ;(incf (caddr *stat*))
+	 (fsubsteq tree))))
