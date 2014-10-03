@@ -1389,18 +1389,16 @@ gprof_cleanup(void) {
 
   if (gprof_on) {
 
-    char b[PATH_MAX],b1[PATH_MAX];
-
-    if (!getcwd(b,sizeof(b)))
+    if (!getcwd(FN1,sizeof(FN1)))
       FEerror("Cannot get working directory", 0);
     if (chdir(P_tmpdir))
       FEerror("Cannot change directory to tmpdir", 0);
     _mcleanup();
-    if (snprintf(b1,sizeof(b1),"gmon.out.%u",getpid())<=0)
+    if (snprintf(FN2,sizeof(FN2),"gmon.out.%u",getpid())<=0)
       FEerror("Cannot write temporary gmon filename", 0);
-    if (rename("gmon.out",b1))
+    if (rename("gmon.out",FN2))
       FEerror("Cannot rename gmon.out",0);
-    if (chdir(b))
+    if (chdir(FN1))
       FEerror("Cannot restore working directory", 0);
     gprof_on=0;
 
@@ -1454,28 +1452,27 @@ DEFUN_NEW("GPROF-QUIT",object,fSgprof_quit,SI
        ,0,0,NONE,OO,OO,OO,OO,(void),"")
 {
   extern void _mcleanup(void);
-  char b[PATH_MAX],b1[PATH_MAX];
   FILE *pp;
   unsigned n;
 
   if (!gprof_on)
     return Cnil;
 
-  if (!getcwd(b,sizeof(b)))
+  if (!getcwd(FN1,sizeof(FN1)))
     FEerror("Cannot get working directory", 0);
   if (chdir(P_tmpdir))
     FEerror("Cannot change directory to tmpdir", 0);
   _mcleanup();
-  if (snprintf(b1,sizeof(b1),"gprof %s",kcl_self)<=0)
+  if (snprintf(FN2,sizeof(FN2),"gprof %s",kcl_self)<=0)
     FEerror("Cannot write gprof command line", 0);
-  if (!(pp=popen(b1,"r")))
+  if (!(pp=popen(FN2,"r")))
     FEerror("Cannot open gprof pipe", 0);
-  while ((n=fread(b1,1,sizeof(b1),pp)))
-    if (!fwrite(b1,1,n,stdout))
+  while ((n=fread(FN2,1,sizeof(FN2),pp)))
+    if (!fwrite(FN2,1,n,stdout))
       FEerror("Cannot write gprof output",0);
   if (pclose(pp)<0)
     FEerror("Cannot close gprof pipe", 0);
-  if (chdir(b))
+  if (chdir(FN1))
     FEerror("Cannot restore working directory", 0);
   gprof_on=0;
 

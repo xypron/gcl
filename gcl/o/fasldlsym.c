@@ -55,47 +55,46 @@ fasload(object faslfile) {
 
   void *dlp ;
   int (*fptr)();
-  char buf[MAXPATHLEN],b[MAXPATHLEN],filename[MAXPATHLEN];
   static int count;
   object memory,data,faslstream;
   struct name_list *nl;
   object x;
 
-  bzero(buf,sizeof(buf)); /*GC partial stack hole closing*/
-  bzero(b,sizeof(b));
-  bzero(filename,sizeof(filename));
+  bzero(FN1,sizeof(FN1)); /*GC partial stack hole closing*/
+  bzero(FN2,sizeof(FN2));
+  bzero(FN3,sizeof(FN3));
 
   /* this is just to allow reloading in the same file twice.
    */
-  coerce_to_filename(truename(faslfile), filename);
+  coerce_to_filename(truename(faslfile), FN3);
   if (!count)
     count=time(0);
-  massert(snprintf(buf,sizeof(buf),"/tmp/ufas%dxXXXXXX",count++)>0);
-  massert(mkstemp(buf)>=0);
+  massert(snprintf(FN1,sizeof(FN1),"/tmp/ufas%dxXXXXXX",count++)>0);
+  massert(mkstemp(FN1)>=0);
 
-  massert((nl=(void *) malloc(strlen(buf)+1+sizeof(nl))));
+  massert((nl=(void *) malloc(strlen(FN1)+1+sizeof(nl))));
   massert(loaded_files || !atexit(unlink_loaded_files));
   nl->next = loaded_files;
   loaded_files = nl;
-  strcpy(nl->name,buf);
+  strcpy(nl->name,FN1);
 
   faslstream = open_stream(faslfile, smm_input, Cnil, sKerror);
-  massert(snprintf(b,sizeof(b),"cc -shared %s -o %s",filename,buf)>0);
-  massert(!psystem(b));
+  massert(snprintf(FN2,sizeof(FN2),"cc -shared %s -o %s",FN3,FN1)>0);
+  massert(!psystem(FN2));
 
-  if (!(dlp = dlopen(buf,RTLD_NOW))) {
+  if (!(dlp = dlopen(FN1,RTLD_NOW))) {
     fputs(dlerror(),stderr);
-    FEerror("Cannot open for dynamic link ~a",1,make_simple_string(filename));
+    FEerror("Cannot open for dynamic link ~a",1,make_simple_string(FN3));
   }
   
 
-  x=find_init_name1(buf,0);
-  massert(x->st.st_fillp+1<sizeof(b));
-  memcpy(b,x->st.st_self,x->st.st_fillp);
-  b[x->st.st_fillp]=0;
-  if (!(fptr=dlsym(dlp,b))) {
+  x=find_init_name1(FN1,0);
+  massert(x->st.st_fillp+1<sizeof(FN2));
+  memcpy(FN2,x->st.st_self,x->st.st_fillp);
+  FN2[x->st.st_fillp]=0;
+  if (!(fptr=dlsym(dlp,FN2))) {
     fputs(dlerror(),stderr);
-    FEerror("Cannot lookup ~a in ~a",2,make_simple_string(b),make_simple_string(filename));
+    FEerror("Cannot lookup ~a in ~a",2,make_simple_string(FN2),make_simple_string(FN3));
   }
 
   SEEK_TO_END_OFILE(faslstream->sm.sm_fp);
@@ -111,7 +110,7 @@ fasload(object faslfile) {
 
   call_init(0,memory,data,fptr);
 
-  unlink(buf);
+  unlink(FN1);
   close_stream(faslstream);
 
   return memory->cfd.cfd_size;

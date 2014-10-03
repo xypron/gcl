@@ -367,3 +367,8 @@ extern bool writable_malloc;
 #define psystem(x) prof_block(system(x))
 #define pfork() prof_block(fork())
 
+/* #include <sys/param.h> */
+#define MAXPATHLEN 4096
+typedef char Filename[MAXPATHLEN];
+
+Filename FN1,FN2,FN3,FN4;

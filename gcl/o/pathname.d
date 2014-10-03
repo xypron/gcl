@@ -399,13 +399,11 @@ M:
 N:
 	token->st.st_fillp = i;
 #ifdef FIX_FILENAME
-        {char buf[MAXPATHLEN];
-         if (i > MAXPATHLEN-1) i =MAXPATHLEN-1;
-         memcpy(buf,token->st.st_self,i);
-         buf[i]=0;
-         FIX_FILENAME(x,buf);
-         return (make_simple_string(buf));
-         }
+         if (i > sizeof(FN1)-1) i =sizeof(FN1)-1;
+         memcpy(FN1,token->st.st_self,i);
+         FN1[i]=0;
+         FIX_FILENAME(x,FN1);
+         return (make_simple_string(FN1));
 #endif
 	return(copy_simple_string(token));
 }

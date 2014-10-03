@@ -67,7 +67,6 @@ get_init_sym(NSModule module,object ff) {
   static object inf;
   static struct string st;
   object x;
-  char ib[MAXPATHLEN+1];
   NSSymbol v;
 
   if (!inf) {
@@ -94,14 +93,14 @@ get_init_sym(NSModule module,object ff) {
   x=ifuncall1(inf,(object)&st);
   if (x->d.t!=t_string)
     sfasl_error("INIT-NAME error\n");
-  assert(snprintf(ib,sizeof(ib),"_init_%-.*s",x->st.st_dim,x->st.st_self)>0);
+  assert(snprintf(FN1,sizeof(FN1),"_init_%-.*s",x->st.st_dim,x->st.st_self)>0);
 
-  if (!(v=NSLookupSymbolInModule(module, ib))) {
+  if (!(v=NSLookupSymbolInModule(module, FN1))) {
     x=ifuncall2(inf,(object)&st,Ct);
     if (x->d.t!=t_string)
       sfasl_error("INIT-NAME error\n");
-    assert(snprintf(ib,sizeof(ib),"_init_%-.*s",x->st.st_dim,x->st.st_self)>0);
-    if (!(v=NSLookupSymbolInModule(module, ib)))
+    assert(snprintf(FN1,sizeof(FN1),"_init_%-.*s",x->st.st_dim,x->st.st_self)>0);
+    if (!(v=NSLookupSymbolInModule(module, FN1)))
       sfasl_error("Cannot lookup init-name\n");
   }
 
@@ -191,17 +190,12 @@ int fasload (object faslfile)
     
     int (*fptr) ();
     
-    char filename [MAXPATHLEN];
-    char tmpfile [MAXPATHLEN];
-    
     char cmd [256];
     
     static int count = 0;
     
     static char ldfmt [] = "gcc -bind_at_load -bundle -bundle_loader %s -o %s %s";
 
-    char fmt [MAXPATHLEN];
-    
     extern int seek_to_end_ofile (FILE *);
     
     if (count == 0) {
@@ -210,12 +204,12 @@ int fasload (object faslfile)
         count = time (0);
     }
     
-    coerce_to_filename (truename (faslfile), filename);
+    coerce_to_filename (truename (faslfile), FN1);
     
-    snprintf (tmpfile, sizeof (tmpfile), "/tmp/ufas%dx.so", count++);
+    snprintf (FN2, sizeof (FN2), "/tmp/ufas%dx.so", count++);
 
-    mkstemp (tmpfile);
-    symlink (filename, tmpfile);
+    mkstemp (FN2);
+    symlink (FN1, FN2);
     
     faslstream = open_stream (faslfile, smm_input, Cnil, sKerror);
     
@@ -224,15 +218,15 @@ int fasload (object faslfile)
        loaded (if the bundle makes reference to this shared library).  To avoid this, we
        would need all external bundle calls to be indirected through the loader image stubs. */
 
-    coerce_to_filename (symbol_value (sSAmacosx_ldcmdA), fmt);
+    coerce_to_filename (symbol_value (sSAmacosx_ldcmdA), FN3);
     
-    snprintf (cmd, sizeof(cmd), fmt, kcl_self, tmpfile, filename);
+    snprintf (cmd, sizeof(cmd), FN3, kcl_self, FN2, FN1);
     
     if (system (cmd) != 0) {
         sfasl_error ("cannot execute command `%s'\n", cmd);
     }
     
-    fptr = prepare_bundle (faslfile, tmpfile);
+    fptr = prepare_bundle (faslfile, FN2);
     
     if (seek_to_end_ofile (faslstream->sm.sm_fp) != 1) {
         sfasl_error ("error seeking to end of object file");
@@ -252,7 +246,7 @@ int fasload (object faslfile)
     
     call_init (0, memory, data, fptr);
     
-    unlink (tmpfile);
+    unlink (FN2);
     
     return memory->cfd.cfd_size;
 }

@@ -6,7 +6,6 @@ extern object truename(object);
 extern object make_pathname();
 void Ldirectory ( void )
 {
-	char filename[MAXPATHLEN];
 	object *top=vs_top;
 	object path;
 	check_arg(1);
@@ -14,19 +13,19 @@ void Ldirectory ( void )
 	path = vs_base[0] = coerce_to_pathname(vs_base[0]);
 	
 	if (vs_base[0]->pn.pn_name==Cnil && vs_base[0]->pn.pn_type==Cnil) {
-		coerce_to_filename(vs_base[0], filename);
-		strcat(filename, "*.*");
+		coerce_to_filename(vs_base[0], FN1);
+		strcat(FN1, "*.*");
 	} else if (vs_base[0]->pn.pn_name==Cnil) {
 		vs_base[0]->pn.pn_name = sKwild;
-		coerce_to_filename(vs_base[0], filename);
+		coerce_to_filename(vs_base[0], FN1);
 		vs_base[0]->pn.pn_name = Cnil;
 	} else if (vs_base[0]->pn.pn_type==Cnil) {
-		coerce_to_filename(vs_base[0], filename);
-		strcat(filename, ".*");
+		coerce_to_filename(vs_base[0], FN1);
+		strcat(FN1, ".*");
 	} else
-		coerce_to_filename(vs_base[0], filename);
+		coerce_to_filename(vs_base[0], FN1);
 	{ WIN32_FIND_DATA data;
-	  HANDLE dirHandle = FindFirstFile(filename,&data);
+	  HANDLE dirHandle = FindFirstFile(FN1,&data);
 
 	if (dirHandle== INVALID_HANDLE_VALUE) {
 	  vs_base[0]=Cnil; return;
