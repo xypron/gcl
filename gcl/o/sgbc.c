@@ -642,7 +642,12 @@ sgc_mark_phase(void) {
   }
   
   mark_c_stack(0,N_RECURSION_REQD,mark_stack_carefully);
-  
+ 
+  {
+    extern object weak_hash_tables;
+    weak_hash_tables=mark_weak_hashtables(weak_hash_tables);
+  }
+ 
 }
 
 static void

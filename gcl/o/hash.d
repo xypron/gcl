@@ -30,6 +30,7 @@ object sLequal;
 object sKsize;
 object sKrehash_size;
 object sKrehash_threshold;
+object sKweak;
 
 #define MHSH(a_) ((a_) & ~(1UL<<(sizeof(a_)*CHAR_SIZE-1)))
 
@@ -316,12 +317,15 @@ DEFVAR("*DEFAULT-HASH-TABLE-SIZE*",sSAdefault_hash_table_sizeA,SI,make_fixnum(10
 DEFVAR("*DEFAULT-HASH-TABLE-REHASH-SIZE*",sSAdefault_hash_table_rehash_sizeA,SI,make_shortfloat((shortfloat)1.5),"");
 DEFVAR("*DEFAULT-HASH-TABLE-REHASH-THRESHOLD*",sSAdefault_hash_table_rehash_thresholdA,SI,make_shortfloat((shortfloat)0.7),"");
 
+object weak_hash_tables=Cnil;
+
 @(defun make_hash_table (&key (test sLeql)
 			      (size `sSAdefault_hash_table_sizeA->s.s_dbind`)
 			      (rehash_size
 			       `sSAdefault_hash_table_rehash_sizeA->s.s_dbind`)
 			      (rehash_threshold
 			       `sSAdefault_hash_table_rehash_thresholdA->s.s_dbind`)
+   			      (weak `Cnil`)
 			 &aux h)
 	enum httest htt=0;
 	int i;
@@ -335,6 +339,7 @@ DEFVAR("*DEFAULT-HASH-TABLE-REHASH-THRESHOLD*",sSAdefault_hash_table_rehash_thre
 	else
 		FEerror("~S is an illegal hash-table test function.",
 			1, test);
+  
   	if (type_of(size) != t_fixnum || 0 < fix(size))
 		;
 	else
@@ -359,6 +364,7 @@ DEFVAR("*DEFAULT-HASH-TABLE-REHASH-THRESHOLD*",sSAdefault_hash_table_rehash_thre
 	{BEGIN_NO_INTERRUPT;
 	h = alloc_object(t_hashtable);
 	h->ht.ht_test = (short)htt;
+        h->ht.ht_weak = weak!=Cnil && (htt==htt_eq || htt==htt_eql);
 	h->ht.ht_size = fix(size);
 	h->ht.ht_rhsize = rehash_size;
 	h->ht.ht_rhthresh = rehash_threshold;
@@ -370,6 +376,8 @@ DEFVAR("*DEFAULT-HASH-TABLE-REHASH-THRESHOLD*",sSAdefault_hash_table_rehash_thre
 		h->ht.ht_self[i].hte_key = OBJNULL;
 		h->ht.ht_self[i].hte_value = OBJNULL;
 	}
+	if (h->ht.ht_weak)
+	  weak_hash_tables=MMcons(h,weak_hash_tables);
 	END_NO_INTERRUPT;}
 	@(return h)
 @)
@@ -547,6 +555,7 @@ gcl_init_hash()
 	sKtest = make_keyword("TEST");
 	sKrehash_size = make_keyword("REHASH-SIZE");
 	sKrehash_threshold = make_keyword("REHASH-THRESHOLD");
+	sKweak = make_keyword("WEAK");
 	
 	make_function("MAKE-HASH-TABLE", Lmake_hash_table);
 	make_function("HASH-TABLE-P", Lhash_table_p);

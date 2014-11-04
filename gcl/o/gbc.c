@@ -58,6 +58,9 @@ mark_contblock(void *, int);
 static void
 mark_object(object);
 
+static object
+mark_weak_hashtables(object);
+
 
 /* the following in line definitions seem to be twice as fast (at
    least on mc68020) as going to the assembly function calls in bitop.c so
@@ -967,6 +970,11 @@ mark_phase(void) {
 #define N_RECURSION_REQD 2
 #endif
   mark_c_stack(0,N_RECURSION_REQD,mark_stack_carefully);
+
+  {
+    extern object weak_hash_tables;
+    weak_hash_tables=mark_weak_hashtables(weak_hash_tables);
+  }
   
 }
 
@@ -1636,6 +1644,66 @@ FFN(siLgbc_time)(void) {
 #ifdef SGC
 #include "sgbc.c"
 #endif
+
+static object
+mark_weak_hashtables(object x) {
+
+  struct htent *e,*ee;
+  ufixnum p,pe;
+  object h,d=x->c.c_cdr,dp=(void *)&d,y;
+  bool wx=
+#ifdef SGC
+    sgc_enabled ? ON_WRITABLE_PAGE(x) : 
+#endif 
+    1;
+
+  if (x==Cnil)
+    return x;
+
+  unmark(dp);
+  y=mark_weak_hashtables(d);
+
+  if (is_marked((h=x->c.c_car))) {
+
+    e=h->ht.ht_self;
+    if (COLLECT_RELBLOCK_P
+#ifdef SGC
+	&& (sgc_enabled ? SGC_RELBLOCK_P(h->ht.ht_self) : 1)
+#endif
+	)
+      e=(void *)e+(rb_pointer1-rb_pointer);
+    ee=e+h->ht.ht_size;
+
+    for (p=page(e),pe=page(ee);p<=pe;p++) {
+
+      struct htent *en=(void *)pagetoinfo(p+1);
+      bool w=
+#ifdef SGC
+	sgc_enabled ? WRITABLE_PAGE_P(p) :
+#endif
+	1;
+
+      for (;e<ee && e<en;e++)
+	if (w && e->hte_key!=OBJNULL) {
+	  if (is_marked(e->hte_key)) {
+#ifdef SGC
+	    if (sgc_enabled) sgc_mark_object(e->hte_value); else
+#endif
+	      mark_object(e->hte_value);
+	  } else {
+	    e->hte_key=OBJNULL;
+	    e->hte_value=Cnil;
+	    h->ht.ht_nent--;
+	  }   
+	} 
+    }
+    if (wx) {x->c.c_cdr=y;mark(x);}
+  } else
+    x=wx ? y : x;
+
+  return x;
+
+}
 
 DEFVAR("*NOTIFY-GBC*",sSAnotify_gbcA,SI,Cnil,"");
 #ifdef DEBUG
