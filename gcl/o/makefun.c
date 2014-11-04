@@ -23,7 +23,7 @@ object MakeAfun(object (*addr)(object,object), unsigned int argd, object data)
 static object
 fSmakefun(object sym, object (*addr) (/* ??? */), unsigned int argd)
 {object ans = MakeAfun(addr,argd,
-		      (sSPmemory && sSPmemory->s.s_dbind &&
+		      (sSPmemory && sSPmemory->s.s_dbind!=OBJNULL &&
 		       type_of(sSPmemory->s.s_dbind)==t_cfdata) ?
 		      sSPmemory->s.s_dbind : 0);
  ans->sfn.sfn_name = sym;

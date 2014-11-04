@@ -216,7 +216,7 @@ is supplied and FLAG is nil, then this function is deleted from the fast links")
        }
    if(Rset)
      {
-      if(!fun) RETURN1(Cnil);
+      if(fun==OBJNULL) RETURN1(Cnil);
       switch(type_of(fun)){
       case t_cfun:
       case t_sfun:

@@ -2264,7 +2264,7 @@ L:
 		nlj_active = FALSE;
 		unwind(nlj_fr, nlj_tag);
 	}
-	RETURN1 (x ==0 ? Cnil : x);  
+	RETURN1 (x ==OBJNULL ? Cnil : x);  
 }
 object 
 fLformat_1(object strm, object control,object x) {
