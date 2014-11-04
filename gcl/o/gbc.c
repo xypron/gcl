@@ -496,10 +496,12 @@ mark_object(object x) {
     mark_object(x->ht.ht_rhthresh);
     if (x->ht.ht_self == NULL)
       break;
-    for (i = 0, j = x->ht.ht_size;  i < j;  i++) {
-      mark_object(x->ht.ht_self[i].hte_key);
-      mark_object(x->ht.ht_self[i].hte_value);
-    }
+    j = x->ht.ht_size;
+    if (!x->ht.ht_weak)
+      for (i = 0;  i < j;  i++) {
+	mark_object(x->ht.ht_self[i].hte_key);
+	mark_object(x->ht.ht_self[i].hte_value);
+      }
     if (inheap(x->ht.ht_self)) {
       if (what_to_collect == t_contiguous)
 	mark_contblock((char *)x->ht.ht_self,j*sizeof(struct htent));
