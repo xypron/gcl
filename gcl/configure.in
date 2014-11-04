@@ -1773,7 +1773,7 @@ if test "$use" != "386-gnu" ; then #hurd can push .data below C stack, but sbrk(
             AC_DEFINE_UNQUOTED(LOW_SHFT,$low_shft,[upper immediate fixnum bound])      	 
             AC_DEFINE_UNQUOTED(OBJNULL,(object)0x$j,[lowest address non-object])      	 
       else				   
-            AC_DEFINE_UNQUOTED(OBJNULL,NULL,[lowest address non-object])      	 
+            AC_DEFINE_UNQUOTED(OBJNULL,(object)(2*CHCODELIM),[lowest address non-object])      	 
       fi					     
 
 #      echo $j;

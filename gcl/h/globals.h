@@ -1,5 +1,5 @@
-EXTER union lispunion Cnil_body OBJ_ALIGN;
-EXTER union lispunion Ct_body OBJ_ALIGN;
+EXTER union lispunion Cnil_body __attribute__ ((aligned (8192)));
+EXTER union lispunion Ct_body __attribute__ ((aligned (8192)));
 
 struct call_data { 
   object fun;
@@ -9,8 +9,6 @@ struct call_data {
   double double_return;
 };
 EXTER struct call_data fcall;
-
-EXTER union lispunion character_table1[256+128] OBJ_ALIGN;
 
 EXTER object Cstd_key_defaults[15];   
 EXTER char *alloca_val;

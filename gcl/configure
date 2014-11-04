@@ -7273,7 +7273,7 @@ _ACEOF
       else
 
 cat >>confdefs.h <<_ACEOF
-#define OBJNULL NULL
+#define OBJNULL (object)(2*CHCODELIM)
 _ACEOF
 
       fi

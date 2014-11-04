@@ -36,17 +36,21 @@ enum type {
 };
 
 
+#include "character.h"
+
+#define immp(a_)                 ((((ufixnum)(a_))-2*CHCODELIM)>=(IM_FIX_BASE-2*CHCODELIM))
+
 #define Zcdr(a_)                 (*(object *)(a_))/* ((a_)->c.c_cdr) */ /*FIXME*/
 
 #ifndef WIDE_CONS
 
 #ifndef USE_SAFE_CDR
 #define SAFE_CDR(a_)             a_
-#define imcdr(a_)                is_imm_fixnum(Zcdr(a_))
+#define imcdr(a_)                immp(Zcdr(a_))/* (is_imm_fixnum(Zcdr(a_))||is_imm_character(Zcdr(a_)))FIXME */
 #else
-#define SAFE_CDR(a_)             ({object _a=(a_);is_imm_fixnum(_a) ? make_fixnum1(fix(_a)) : _a;})
+#define SAFE_CDR(a_)             ({object _a=(a_);is_imm_fixnum(_a) ? make_fixnum1(fix(_a)) : (is_imm_character(Zcdr(a_)) ? make_character1(char_code(a_)) : _a);})
 #ifdef DEBUG_SAFE_CDR
-#define imcdr(a_)                (is_imm_fixnum(Zcdr(a_)) && (error("imfix cdr"),1))
+#define imcdr(a_)                ((is_imm_fixnum(Zcdr(a_))||is_imm_character(Zcdr(a_))) && (error("imfix cdr"),1))
 #else
 #define imcdr(a_)                0
 #endif
@@ -59,23 +63,32 @@ enum type {
 
 #endif
 
-#define is_marked(a_)            (imcdr(a_) ? is_marked_imm_fixnum(Zcdr(a_)) : (a_)->d.m)
-#define is_marked_or_free(a_)    (imcdr(a_) ? is_marked_imm_fixnum(Zcdr(a_)) : (a_)->md.mf)
-#define mark(a_)                 if (imcdr(a_)) mark_imm_fixnum(Zcdr(a_)); else (a_)->d.m=1
-#define unmark(a_)               if (imcdr(a_)) unmark_imm_fixnum(Zcdr(a_)); else (a_)->d.m=0
-#define is_free(a_)              (!is_imm_fixnum(a_) && !imcdr(a_) && (a_)->d.f)
-#define make_free(a_)            ({(a_)->fw=0;(a_)->d.f=1;(a_)->fw|=(fixnum)OBJNULL;})/*set_type_of(a_,t_other)*/
+#define imm_mark_bit(a_)         ((((fixnum)(a_))<0) ? IM_FIX_LIM : CHCODELIM)
+#define imm_bit_op(a_,b_)        ({ufixnum _a=(ufixnum)(a_);_a b_ imm_mark_bit(_a);})
+#define is_marked_imm(a_)        imm_bit_op(a_,&)
+#define mark_imm(a_)             ((a_)=((object)imm_bit_op(a_,|)))
+#define unmark_imm(a_)           ((a_)=((object)imm_bit_op(a_,&~)))
+
+#define is_marked(a_)            (imcdr(a_) ? is_marked_imm(Zcdr(a_)) : (a_)->d.m)/*(is_marked_imm_fixnum(Zcdr(a_))||is_marked_imm_character(Zcdr(a_)))*/
+#define is_marked_or_free(a_)    (imcdr(a_) ? is_marked_imm(Zcdr(a_)) : (a_)->md.mf)
+#define mark(a_)                 if (imcdr(a_)) mark_imm(Zcdr(a_)); else (a_)->d.m=1
+#define unmark(a_)               if (imcdr(a_)) unmark_imm(Zcdr(a_)); else (a_)->d.m=0
+#define is_free(a_)              (!immp(a_) && !imcdr(a_) && (a_)->d.f)
+#define make_free(a_)            ({(a_)->fw=0;(a_)->d.f=1;(a_)->d.st=1;})/*(a_)->fw|=(fixnum)OBJNULL;*//*set_type_of(a_,t_other)*/
 #define make_unfree(a_)          {(a_)->d.f=0;}
 
 #ifdef WIDE_CONS
 #define valid_cdr(a_)            0
 #else
-#define valid_cdr(a_)            (!(a_)->d.e || imcdr(a_))
+#define valid_cdr(a_)            !typeword_p(Zcdr(a_))/* (!(a_)->d.e || imcdr(a_)) */
 #endif
 
-#define type_of(x)       ({register object _z=(object)(x);\
-                           (is_imm_fixnum(_z) ? t_fixnum : \
-			    (valid_cdr(_z) ?  (_z==Cnil ? t_symbol : t_cons)  : _z->d.t));})
+#define typeword_p(a_) (((((ufixnum)(a_))^IM_FIX_BASE)&(IM_FIX_BASE|(1<<13)|1))==(IM_FIX_BASE|(1<<13)|1))
+
+#define type_of(x)       ({register object _z=(object)(x);		\
+      (immp(_z) ? (((fixnum)(_z))>=0 ? t_character : t_fixnum) :	\
+       (typeword_p(_z->fw) ? _z->d.t : (_z==Cnil ? t_symbol : t_cons)));})
+       /* (valid_cdr(_z) ?  (_z==Cnil ? t_symbol : t_cons)  : _z->d.t));}) */
 
 #ifdef WIDE_CONS
 #define TYPEWORD_TYPE_P(y_) 1
@@ -85,17 +98,17 @@ enum type {
   
 /*Note preserve sgc flag here                                         VVV*/
 #define set_type_of(x,y) ({object _x=(object)(x);enum type _y=(y);_x->d.f=0;\
-    if (TYPEWORD_TYPE_P(_y)) {_x->d.e=1;_x->d.t=_y;_x->fw|=(fixnum)OBJNULL;}})
+      if (TYPEWORD_TYPE_P(_y)) {_x->d.e=1;_x->d.t=_y;_x->d.st=1;}})/*_x->fw|=(fixnum)OBJNULL;*/
 
 #ifndef WIDE_CONS
 
 #define cdr_listp(x)     valid_cdr(x)
 #define consp(x)         ({register object _z=(object)(x);\
-                           (!is_imm_fixnum(_z) && valid_cdr(_z) && _z!=Cnil);})
+                           (!immp(_z) && valid_cdr(_z) && _z!=Cnil);})
 #define listp(x)         ({register object _z=(object)(x);\
-                           (!is_imm_fixnum(_z) && valid_cdr(_z));})
+                           (!immp(_z) && valid_cdr(_z));})
 #define atom(x)          ({register object _z=(object)(x);\
-                           (is_imm_fixnum(_z) || !valid_cdr(_z) || _z==Cnil);})
+                           (immp(_z) || !valid_cdr(_z) || _z==Cnil);})
 
 #else
 

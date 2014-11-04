@@ -603,7 +603,7 @@ BEGIN:
 	});
 		a = cat(c);
 	} while (a == cat_whitespace);
-	if (c->ch.ch_code == '(') { /* Loose package extension */
+	if (char_code(c) == '(') { /* Loose package extension */
 	  LP=LP || PP0==P0 ? LP : PP0[-1]; /* push loose packages into nested lists */
 	  if (LP) {
 	    if (PP0-P0>=MAX_PACKAGE_STACK)
@@ -613,7 +613,7 @@ BEGIN:
 	  }
 	} else if (LP)
 	    FEerror("Loose package prefix must be followed by a list",0);
-	if (c->ch.ch_code==')' && PP0>P0) PP0--; /* regardless of error behavior, 
+	if (char_code(c)==')' && PP0>P0) PP0--; /* regardless of error behavior, 
 						    will pop stack to beginning as parens
 						    must match before the reader starts */
 	delimiting_char = vs_head;

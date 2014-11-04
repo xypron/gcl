@@ -159,7 +159,7 @@ object val;
 			goto E;
 		if (type_of(val) != t_character)
 			FEwrong_type_argument(sLcharacter, val);
-		seq->st.st_self[index] = val->ch.ch_code;
+		seq->st.st_self[index] = char_code(val);
 		return(val);
 
 	default:

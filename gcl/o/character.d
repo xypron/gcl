@@ -387,9 +387,9 @@ BEGIN:
 	if (fix(b) == 0 && fix(f) == 0)
 		@(return `code_char(fix(c))`)
 	x = alloc_object(t_character);
-	char_code(x) = fix(c);
-	char_bits(x) = fix(b);
-	char_font(x) = fix(f);
+	x->ch.ch_code = fix(c);
+	x->ch.ch_bits = fix(b);
+	x->ch.ch_font = fix(f);
 	@(return x)
 @)
 
@@ -410,9 +410,9 @@ BEGIN:
 	if (fix(b) == 0 && fix(f) == 0)
 		@(return `code_char(code)`)
 	x = alloc_object(t_character);
-	char_code(x) = code;
-	char_bits(x) = fix(b);
-	char_font(x) = fix(f);
+	x->ch.ch_code = code;
+	x->ch.ch_bits = fix(b);
+	x->ch.ch_font = fix(f);
 	@(return x)
 @)
 
@@ -474,9 +474,9 @@ int w, r;
 	if (fix(f) == 0)
 		@(return `code_char(dw)`)
 	x = alloc_object(t_character);
-	char_code(x) = dw;
-	char_bits(x) = 0;
-	char_font(x) = fix(f);
+	x->ch.ch_code = dw;
+	x->ch.ch_bits = 0;
+	x->ch.ch_font = fix(f);
 	@(return x)
 @)
 
@@ -506,11 +506,11 @@ int w, r;
 		@(return Cnil)
 	if (b == 0 && f == 0)
 		@(return `code_char(c)`)
-	x = alloc_object(t_character);
-	char_code(x) = c;
-	char_bits(x) = b;
-	char_font(x) = f;
-	@(return x)
+	/* x = alloc_object(t_character); */
+	/* char_code(x) = c; */
+	/* char_bits(x) = b; */
+	/* char_font(x) = f; */
+	@(return Cnil)
 @)
 
 @(defun char_name (c)
@@ -578,25 +578,6 @@ int w, r;
 void
 gcl_init_character()
 {
-	int i;
-
-	for (i = 0;  i < CHCODELIM;  i++) {
-	  object x=(object)(character_table+i);
-	  x->fw=0;
-	  set_type_of(x,t_character);
-	  /* character_table[i].ch.t = (short)t_character; */
-	  character_table[i].ch.ch_code = i;
-	  character_table[i].ch.ch_font = 0;
-	  character_table[i].ch.ch_bits = 0;
-	}
-#ifdef AV
-	for (i = -128;  i < 0;  i++) {
-		character_table[i].ch.t = (short)t_character;
-		character_table[i].ch.ch_code = i+CHCODELIM;
-		character_table[i].ch.ch_font = 0;
-		character_table[i].ch.ch_bits = 0;
-	}
-#endif
 
  	make_constant("CHAR-CODE-LIMIT", make_fixnum(CHCODELIM));
  	make_constant("CHAR-FONT-LIMIT", make_fixnum(CHFONTLIM));

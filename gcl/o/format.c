@@ -334,7 +334,7 @@ LOOP:
 				fmt_param[n].fmt_param_value = fix(x);
 			} else if (type_of(x) == t_character) {
 				fmt_param[n].fmt_param_type = fmt_char;
-				fmt_param[n].fmt_param_value = x->ch.ch_code;
+				fmt_param[n].fmt_param_value = char_code(x);
                         } else if (x == Cnil) {
                                  fmt_param[n].fmt_param_type = fmt_null;				
 			} else

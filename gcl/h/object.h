@@ -238,10 +238,10 @@ struct rtent {				/*  read table entry  */
 
 /* struct character character_table1[256+128]; */
 #define character_table (character_table1+128)
-#define	code_char(c)		(object)(character_table+((unsigned char)(c)))
-#define	char_code(obje)		((object)obje)->ch.ch_code
-#define	char_font(obje)		((object)obje)->ch.ch_font
-#define	char_bits(obje)		((object)obje)->ch.ch_bits
+/* #define	code_char(c)		(object)(character_table+((unsigned char)(c))) */
+/* #define	char_code(obje)		((object)obje)->ch.ch_code */
+#define	char_font(obje)		(0)/* ((object)obje)->ch.ch_font */
+#define	char_bits(obje)		(0)/* ((object)obje)->ch.ch_bits */
 
 
 #define address_int unsigned long
@@ -514,7 +514,7 @@ EXTER unsigned plong signals_allowed, signals_pending;
     
 #define proper_list(a) (type_of(a)==t_cons || (a)==Cnil)
 
-#define IMMNIL(x) (is_imm_fixnum(x)||x==Cnil)
+#define IMMNIL(x) (is_imm_fixnum(x)||is_imm_character(x)||x==Cnil)
 
 #define eql(a_,b_)    ({register object _a=(a_);register object _b=(b_);_a==_b || (!IMMNIL(_a)&&!IMMNIL(_b)&&eql1(_a,_b));})
 #define equal(a_,b_)  ({register object _a=(a_);register object _b=(b_);_a==_b || (!IMMNIL(_a)&&!IMMNIL(_b)&&equal1(_a,_b));})
