@@ -65,7 +65,7 @@ Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 	if (char_font(c) != 0 || char_bits(c) != 0)
 		@(return Cnil)
 	i = char_code(c);
-	if (isalpha(i))
+	if (isalpha(i)||i>=128)
 		@(return Ct)
 	else
 		@(return Cnil)
@@ -142,7 +142,7 @@ int i, r;
 	if (char_font(c) != 0 || char_bits(c) != 0)
 		@(return Cnil)
 	i = char_code(c);
-	if (isalphanum(i))
+	if (isalphanum(i)||i>=128)
 		@(return Ct)
 	else
 		@(return Cnil)
