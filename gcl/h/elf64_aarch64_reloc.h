@@ -7,7 +7,7 @@
     case R_AARCH64_JUMP26: /* B:      ((S+A-P) >> 2) & 0x3ffffff.  */
     case R_AARCH64_CALL26: /* BL:     ((S+A-P) >> 2) & 0x3ffffff.  */
       {
-	long x=((long)(s+a-p))/4;
+	fixnum x=((long)(s+a-p))/4;
 	if (abs(x)&(~MASK(25))) {
 	  if (a) {
 	    got+=gotp;
@@ -16,14 +16,14 @@
 	    got+=(sym->st_size-1)*tz;
 	  *got++=s+a;
 	  memcpy(got,tramp,sizeof(tramp));
-	  x=((long)got-p)/4;
+	  x=((fixnum)got-p)/4;
 	}
 	store_vals(where,MASK(26),x);
       }
       break;
     case R_AARCH64_ADR_PREL_PG_HI21: /* ADRH:   ((PG(S+A)-PG(P)) >> 12) & 0x1fffff */
 #define PG(x) ((x) & ~0xfff)
-      s = ((long)(PG(s+a)-PG(p))) / 0x1000;
+      s = ((fixnum)(PG(s+a)-PG(p))) / 0x1000;
       store_val(where,MASK(2) << 29, (s & 0x3) << 29);
       store_val(where,MASK(19) << 5, (s & 0x1ffffc) << 3);
 #undef PG

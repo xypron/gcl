@@ -36,7 +36,7 @@ extern char *mach_brkpt;
 extern char *get_dbegin ();
 
 #include <unistd.h> /* to get sbrk defined */
-extern void *my_sbrk(long incr);
+extern void *my_sbrk(fixnum incr);
 #define sbrk my_sbrk
 
 
@@ -148,8 +148,8 @@ do {int c=0;                                                            \
 
 #define GET_FULL_PATH_SELF(a_)                              \
 do {                                                        \
-extern int _NSGetExecutablePath (char *, unsigned long *);  \
-unsigned long bufsize = 1024;                               \
+extern int _NSGetExecutablePath (char *, ufixnum *);  \
+ufixnum bufsize = 1024;                               \
 static char buf [1024];                                     \
 static char fub [1024];                                     \
 if (_NSGetExecutablePath (buf, &bufsize) != 0) {            \

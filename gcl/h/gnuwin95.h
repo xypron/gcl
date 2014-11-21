@@ -4,7 +4,7 @@
 /* #include "fcntl.h" */
 
 #define DBEGIN _dbegin
-#define DBEGIN_TY unsigned long
+#define DBEGIN_TY ufixnum
 extern DBEGIN_TY _dbegin;
 
 

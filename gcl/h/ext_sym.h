@@ -109,7 +109,7 @@
 #define nlist nlist_
 #undef syment
 struct syment {
-	long	n_value;
+	fixnum	n_value;
 	unsigned char	n_type;
 	unsigned char	n_length;
 	short	n_almod;

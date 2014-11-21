@@ -63,11 +63,11 @@ more by changing one line in genconfig.c and then recompiling gcc
 
 /* x - y */
 #define SUBXCC(xp,yp)\
-({unsigned long _res;  asm volatile("sbbl %2,%0" \
+({ufixnum _res;  asm volatile("sbbl %2,%0" \
   :"=r,rm" (_res): "0,0" (xp) , "rm,r" (yp)); _res;})
 
 #define ADDXCC(xp,yp)\
-({unsigned long _res;  asm volatile("adcl %2,%0" \
+({ufixnum _res;  asm volatile("adcl %2,%0" \
   :"=r,m" (_res): "0,0" (xp) , "rm,r" (yp)); _res;})
 
 /* index of the first non zero bit numbering from left */

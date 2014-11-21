@@ -59,7 +59,7 @@ typedef struct
 /*    action \ */
 /*    ((((CMPt1=(x))+1024)&-2048)==0?small_fixnum(CMPt1):make_fixnum1(CMPt1));}while(0) */
      
-#define ineg(a_) (sizeof(a_)==sizeof(unsigned) ? (unsigned)-(a_) : (unsigned long)-(a_))
+#define ineg(a_) (sizeof(a_)==sizeof(unsigned) ? (unsigned)-(a_) : (ufixnum)-(a_))
 
 #define addii mpz_add
 #define addsi(u,a,b) (a >= 0 ?  mpz_add_ui(u,b,a) : mpz_sub_ui(u,b,ineg(a)))
@@ -112,7 +112,7 @@ GEN subss();
 
 #define MP_ALLOCATED(x) (x)->big.big_length
 #define MP_SELF(x) (x)->big.big_self
-#define MP_LIMB_SIZE (sizeof(long))
+#define MP_LIMB_SIZE (sizeof(fixnum))
 
 
 #define MP_SELF(x) MP(x)._mp_d

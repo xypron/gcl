@@ -3,8 +3,8 @@
 
 
 #ifndef page
-#define page(p)	(((unsigned long)(p))>>PAGEWIDTH)
-#define	pagetochar(x)	((char *)((((unsigned long)x) << PAGEWIDTH) + sizeof(struct pageinfo)))
+#define page(p)	(((ufixnum)(p))>>PAGEWIDTH)
+#define	pagetochar(x)	((char *)((((ufixnum)x) << PAGEWIDTH) + sizeof(struct pageinfo)))
 #define pageinfo(x) ((struct pageinfo *)(((ufixnum)x)&(-PAGESIZE)))
 #define pagetoinfo(x) ((struct pageinfo *)((((ufixnum)x)<<PAGEWIDTH)))
 #endif
@@ -21,8 +21,8 @@
 #define PTR_ALIGN SIZEOF_VOID_P
 #endif
 
-#define ROUND_UP_PTR(n)	(((long)(n) + (PTR_ALIGN-1)) & ~(PTR_ALIGN-1))
-#define ROUND_DOWN_PTR(n) (((long)(n)  & ~(PTR_ALIGN-1)))
+#define ROUND_UP_PTR(n)	(((fixnum)(n) + (PTR_ALIGN-1)) & ~(PTR_ALIGN-1))
+#define ROUND_DOWN_PTR(n) (((fixnum)(n)  & ~(PTR_ALIGN-1)))
 
 /* minimum size required for contiguous pointers */
 #if PTR_ALIGN < SIZEOF_CONTBLOCK
@@ -31,8 +31,8 @@
 #define CPTR_SIZE PTR_ALIGN
 #endif
 
-#define ROUND_UP_PTR_CONT(n)	(((long)(n) + (CPTR_SIZE-1)) & ~(CPTR_SIZE-1))
-#define ROUND_DOWN_PTR_CONT(n) (((long)(n)  & ~(CPTR_SIZE-1)))
+#define ROUND_UP_PTR_CONT(n)	(((fixnum)(n) + (CPTR_SIZE-1)) & ~(CPTR_SIZE-1))
+#define ROUND_DOWN_PTR_CONT(n) (((fixnum)(n)  & ~(CPTR_SIZE-1)))
 
 
 #ifdef SGC
@@ -93,7 +93,7 @@ extern int sgc_enabled;
 #define TM_NUSED(pt) (((pt).tm_npage*(pt).tm_nppage) - (pt).tm_nfree - (pt).tm_alt_nfree)
 
 
-extern long resv_pages;
+extern fixnum resv_pages;
 extern int reserve_pages_for_signal_handler;
 /* #define CONT_MARK_PAGE (((page(heap_end)-first_data_page)*(PAGESIZE/(CPTR_SIZE*CHAR_SIZE))+PAGESIZE-1)/PAGESIZE) */
 /* #define	available_pages	((fixnum)(real_maxpage-page(heap_end)-2*nrbpage-CONT_MARK_PAGE-resv_pages)) */
@@ -110,7 +110,7 @@ extern fixnum writable_pages;
 #define IS_WRITABLE(i) is_writable(i)
 
 
-EXTER long first_data_page,real_maxpage,phys_pages,available_pages;
+EXTER fixnum first_data_page,real_maxpage,phys_pages,available_pages;
 EXTER void *data_start;
 
 #if !defined(IN_MAIN) && defined(SGC)

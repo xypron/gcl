@@ -12,7 +12,7 @@
 #include <link.h>
 #define SEEK_TO_END_OFILE(fp)\
   do { \
-	long offset = 0, endofelf; int j; \
+	fixnum offset = 0, endofelf; int j; \
 	ElfW(Ehdr) eheader; ElfW(Shdr) shdr; \
         fseek(fp, 0, SEEK_SET); \
         massert(1==fread(&eheader, sizeof(eheader), 1, fp));	      \

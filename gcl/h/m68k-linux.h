@@ -32,8 +32,8 @@
     ({\
 	struct sigcontext *scp1 = (struct sigcontext *)(sv); \
 	int format = (scp1->sc_formatvec >> 12) & 0xf; \
-	unsigned long *framedata = (unsigned long *)(scp1 + 1); \
-	unsigned long ea; \
+	ufixnum *framedata = (unsigned long *)(scp1 + 1); \
+	ufixnum ea; \
 	if (format == 0xa || format == 0xb) \
 			/* 68020/030 */	\
           ea = framedata[2]; \
@@ -69,7 +69,7 @@
 int cacheflush(void *,int,int,int);
 #define CLEAR_CACHE_LINE_SIZE 32
 #define CLEAR_CACHE do {void *v=memory->cfd.cfd_start,*ve=v+memory->cfd.cfd_size; \
-                        v=(void *)((unsigned long)v & ~(CLEAR_CACHE_LINE_SIZE - 1));\
+                        v=(void *)((ufixnum)v & ~(CLEAR_CACHE_LINE_SIZE - 1));\
                         cacheflush(v,FLUSH_SCOPE_PAGE,FLUSH_CACHE_BOTH,ve-v);\
                     } while(0)
 

@@ -923,7 +923,7 @@ get_data_end (void)
 }
 
 ufixnum
-probe_heap_size(void *base,ufixnum try,unsigned long inc,unsigned long max) {
+probe_heap_size(void *base,ufixnum try,ufixnum inc,ufixnum max) {
   void *r;
   if (!(r=VirtualAlloc(base,try,MEM_RESERVE,PAGE_NOACCESS)))
     return try>inc ? probe_heap_size(base,try-inc,inc>>1,max) : 0;
@@ -995,7 +995,7 @@ void *
 sbrk (ptrdiff_t increment)
 {
   void *result;
-  fixnum size = (long) increment;
+  fixnum size = (fixnum) increment;
   
   /* Allocate our heap if we haven't done so already.  */
   if (data_region_base == UNINIT_PTR) 

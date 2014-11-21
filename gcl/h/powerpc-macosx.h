@@ -36,7 +36,7 @@ extern char *mach_brkpt;
 extern char *get_dbegin ();
 
 #include <unistd.h> /* to get sbrk defined */
-extern void *my_sbrk(long incr);
+extern void *my_sbrk(fixnum incr);
 #define sbrk my_sbrk
 
 
@@ -83,7 +83,7 @@ extern int seek_to_end_ofile (FILE *);
 #define CLEAR_CACHE                                                             \
 do {                                                                            \
   void *v=memory->cfd.cfd_start,*ve=v+memory->cfd.cfd_size;                     \
-  v=(void *)((unsigned long)v & ~(CLEAR_CACHE_LINE_SIZE - 1));                  \
+  v=(void *)((ufixnum)v & ~(CLEAR_CACHE_LINE_SIZE - 1));                  \
   for (;v<ve;v+=CLEAR_CACHE_LINE_SIZE)                                          \
   asm __volatile__                                                              \
     ("dcbst 0,%0\n\tsync\n\ticbi 0,%0\n\tsync\n\tisync": : "r" (v) : "memory"); \
@@ -160,8 +160,8 @@ do {int c=0;                                                            \
 
 #define GET_FULL_PATH_SELF(a_)                              \
 do {                                                        \
-extern int _NSGetExecutablePath (char *, unsigned long *);  \
-unsigned long bufsize = 1024;                               \
+extern int _NSGetExecutablePath (char *, ufixnum *);  \
+ufixnum bufsize = 1024;                               \
 static char buf [1024];                                     \
 static char fub [1024];                                     \
 if (_NSGetExecutablePath (buf, &bufsize) != 0) {            \

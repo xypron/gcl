@@ -442,7 +442,7 @@ opt_maxpage(struct typemanager *my_tm) {
   z*=(y-mmax_page)*mmax_page;
   z=sqrt(z);
   z=z-mmax_page>available_pages ? mmax_page+available_pages : z;
-  my_tm->tm_opt_maxpage=(fixnum)z>my_tm->tm_opt_maxpage ? (long)z : my_tm->tm_opt_maxpage;
+  my_tm->tm_opt_maxpage=(fixnum)z>my_tm->tm_opt_maxpage ? (fixnum)z : my_tm->tm_opt_maxpage;
 
   if (z<=mmax_page)
     return 0;
@@ -451,7 +451,7 @@ opt_maxpage(struct typemanager *my_tm) {
   r/=x*y;
   if (sSAnotify_optimize_maximum_pagesA->s.s_dbind!=sLnil)
     printf("[type %u max %lu(%lu) opt %lu   y %lu(%lu) gbcrat %f sav %f]\n",
-	   my_tm->tm_type,mmax_page,mro,(fixnum)z,(long)y,tro,(my_tm->tm_adjgbccnt-1)/(1+x-0.9*my_tm->tm_adjgbccnt),r);
+	   my_tm->tm_type,mmax_page,mro,(fixnum)z,(fixnum)y,tro,(my_tm->tm_adjgbccnt-1)/(1+x-0.9*my_tm->tm_adjgbccnt),r);
   return r<=0.95 && set_tm_maxpage(my_tm,z+mro) ? 1 : 0;
 
 }
@@ -1409,9 +1409,9 @@ gprof_cleanup(void) {
 }
     
 static inline int
-my_monstartup(ufixnum start,unsigned long end) {
+my_monstartup(ufixnum start,ufixnum end) {
 
-  extern void monstartup(ufixnum,unsigned long);
+  extern void monstartup(ufixnum,ufixnum);
 
   monstartup(start,end);
 

@@ -49,7 +49,7 @@
 #include <sys/mman.h>
 #define CLEAR_CACHE {\
    void *p=memory->cfd.cfd_start,*pe=p+memory->cfd.cfd_size; \
-   p=(void *)((unsigned long)p & ~(PAGESIZE-1)); \
+   p=(void *)((ufixnum)p & ~(PAGESIZE-1)); \
    for (;p<pe;p++) /*+=PAGESIZE?*/ asm __volatile__ ("ocbp @%0\n\t": : "r" (p) : "memory");\
 }
 #endif

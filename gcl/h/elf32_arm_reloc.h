@@ -9,7 +9,7 @@
       s+=a; 
       if (ELF_ST_TYPE(sym->st_info)==STT_FUNC) s|=1; 
       s-=p+4; /*FIXME maybe drop 4 and add_val below*/
-      s=((long)s>>1); 
+      s=((fixnum)s>>1); 
       massert(!(abs(s)&0xff000000));  
       store_val(where,MASK(11)<<16,(s&0x7ff)<<16); 
       store_val(where,MASK(10),s>>11); 
@@ -21,7 +21,7 @@
       s+=a; 
       if (ELF_ST_TYPE(sym->st_info)==STT_FUNC) s|=1; 
       s-=p+4; /*FIXME maybe drop 4 and add_val below*/
-      s=((long)s>>1); 
+      s=((fixnum)s>>1); 
       massert(!(abs(s)&0xffc00000));  
       store_val(where,MASK(11),s>>11); 
       store_val(where,MASK(11)<<16,(s&0x7ff)<<16); 
@@ -53,7 +53,7 @@
       break;
     case R_ARM_CALL:
     case R_ARM_JUMP24:
-      add_vals(where,MASK(24),((long)(s+a-p))>>2);
+      add_vals(where,MASK(24),((fixnum)(s+a-p))>>2);
       break;
     case R_ARM_ABS32:
       add_val(where,~0L,s+a);

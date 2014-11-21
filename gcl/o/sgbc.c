@@ -308,7 +308,7 @@ sgc_mark_object1(object x) {
 #endif			  
 	  x->a.a_self = (object *)copy_relblock(cp, j);
       } else if (x->a.a_displaced->c.c_car == Cnil) {
-	i = (fixnum)(object *)copy_relblock(cp, j) - (long)(x->a.a_self);
+	i = (fixnum)(object *)copy_relblock(cp, j) - (fixnum)(x->a.a_self);
 	adjust_displaced(x, i);
       }
     }
@@ -1520,7 +1520,7 @@ memprotect_handler(int sig, fixnum code, void *scp, char *addr) {
 }
 
 static int
-sgc_mprotect(fixnum pbeg, long n, int writable) {
+sgc_mprotect(fixnum pbeg, fixnum n, int writable) {
   /* CHECK_RANGE(pbeg,n);  */
 #ifdef DEBUG_MPROTECT
   printf("prot[%d,%d,(%d),%s]\n",pbeg,pbeg+n,writable & SGC_WRITABLE,

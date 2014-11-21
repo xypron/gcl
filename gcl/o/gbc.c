@@ -580,7 +580,7 @@ mark_object(object x) {
 #endif			  
 	  x->a.a_self = (object *)copy_relblock(cp, j);
       } else if (x->a.a_displaced->c.c_car == Cnil) {
-	i = (fixnum)(object *)copy_relblock(cp, j)  - (long)(x->a.a_self);
+	i = (fixnum)(object *)copy_relblock(cp, j)  - (fixnum)(x->a.a_self);
 	adjust_displaced(x, i);
       }
     }
@@ -1297,7 +1297,7 @@ GBC(enum type t) {
     
     if (rb_start < rb_pointer)
       rb_start1 = (char *)
-	((fixnum)(rb_pointer + PAGESIZE-1) & -(unsigned long)PAGESIZE);
+	((fixnum)(rb_pointer + PAGESIZE-1) & -(ufixnum)PAGESIZE);
     else
       rb_start1 = rb_start;
     
@@ -1429,7 +1429,7 @@ GBC(enum type t) {
     printf("contblock: %ld blocks %ld pages\n", ncb, ncbpage);
     printf("hole: %ld pages\n", holepage);
     printf("relblock: %ld bytes used %ld bytes free %ld pages\n",
-	   (fixnum)(rb_pointer - rb_start), (long)(rb_end - rb_pointer), nrbpage);
+	   (fixnum)(rb_pointer - rb_start), (fixnum)(rb_end - rb_pointer), nrbpage);
     printf("GBC ended\n");
     fflush(stdout);
   }

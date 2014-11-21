@@ -27,7 +27,7 @@ EXTER object common_lisp_package;
 #endif
 EXTER char *core_end;
 EXTER int catch_fatal;
-EXTER long real_maxpage;
+EXTER fixnum real_maxpage;
 char *getenv();
 EXTER char *this_lisp;
 

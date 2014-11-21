@@ -119,9 +119,9 @@ static func prepare_bundle (object faslfile, char *filename)
     ufixnum n;
     ufixnum vmsize = 0;
     ufixnum vmaddr_slide = 0;
-    ufixnum base_addr = (unsigned long) -1;
+    ufixnum base_addr = (ufixnum) -1;
     
-    extern void mark_region (ufixnum address, unsigned long size);
+    extern void mark_region (ufixnum address, ufixnum size);
     
     if (NSCreateObjectFileImageFromFile (filename , &image) != NSObjectFileImageSuccess) {
         sfasl_error ("cannot create object file image\n");

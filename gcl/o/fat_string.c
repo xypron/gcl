@@ -86,7 +86,7 @@ char *data_load_addr =0;
 int maxpage;
 object sScdefn;
 
-#define CF_FLAG ((ufixnum)1 << (sizeof(long)*8-1)) 
+#define CF_FLAG ((ufixnum)1 << (sizeof(fixnum)*8-1)) 
 
 static void
 cfuns_to_combined_table(unsigned int n) /* non zero n will ensure new table length */

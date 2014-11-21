@@ -1,6 +1,6 @@
   case R_SPARC_WDISP30:
     /* v-disp30*/
-    store_vals(where,MASK(30),((long)(s+a-p))>>2);
+    store_vals(where,MASK(30),((fixnum)(s+a-p))>>2);
     break;
     
   case R_SPARC_HI22:

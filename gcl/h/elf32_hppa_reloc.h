@@ -1,6 +1,6 @@
     case R_PARISC_PCREL17F:
       s+=a-pltgot;
-      s=((long)s)>>2;
+      s=((fixnum)s)>>2;
       massert(ovchks(s,~MASK(17)));		  
       s&=MASK(17);
       *where=(0x39<<26)|(0x13<<21)|ASM17(s); /* b,l -> be,l */

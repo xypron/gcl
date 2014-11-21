@@ -45,7 +45,7 @@ extern char etext;
 /* 		real_maxpage = MAXPAGE ; } while(0) */
      
 #define ROUND_UP_SBRK(x)  \
-       do {long i; \
+       do {fixnum i; \
 	     if ((i = ((long)x & (PAGESIZE - 1)))) \
 	       x=sbrk(PAGESIZE - i); } while(0);
 

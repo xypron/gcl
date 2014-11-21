@@ -380,13 +380,13 @@ print_load_command (struct load_command *lc)
 
       scp = (struct segment_command *) lc;
       printf (" %-16.16s %#10lx %#8lx\n",
-	      scp->segname, (fixnum) (scp->vmaddr), (long) (scp->vmsize));
+	      scp->segname, (fixnum) (scp->vmaddr), (fixnum) (scp->vmsize));
 
       sectp = (struct section *) (scp + 1);
       for (j = 0; j < scp->nsects; j++)
 	{
 	  printf ("                           %-16.16s %#10lx %#8lx\n",
-		  sectp->sectname, (fixnum) (sectp->addr), (long) (sectp->size));
+		  sectp->sectname, (fixnum) (sectp->addr), (fixnum) (sectp->size));
 	  sectp++;
 	}
     }
@@ -417,8 +417,8 @@ copy_segment (struct load_command *lc)
 
 #if VERBOSE
   printf ("Writing segment %-16.16s @ %#8lx (%#8lx/%#8lx @ %#10lx)\n",
-	  scp->segname, (fixnum) (scp->fileoff), (long) (scp->filesize),
-	  (fixnum) (scp->vmsize), (long) (scp->vmaddr));
+	  scp->segname, (fixnum) (scp->fileoff), (fixnum) (scp->filesize),
+	  (fixnum) (scp->vmsize), (fixnum) (scp->vmaddr));
 #endif
 
   if (!unexec_copy (scp->fileoff, old_fileoff, scp->filesize))
@@ -461,7 +461,7 @@ copy_data_segment (struct load_command *lc)
 #if VERBOSE
   printf ("Writing segment %-16.16s @ %#8lx (%#8lx/%#8lx @ %#10lx)\n",
 	  scp->segname, curr_file_offset, (fixnum)(scp->filesize),
-	  (fixnum)(scp->vmsize), (long) (scp->vmaddr));
+	  (fixnum)(scp->vmsize), (fixnum) (scp->vmaddr));
 #endif
 
   /* Offsets in the output file for writing the next section structure
@@ -541,7 +541,7 @@ copy_data_segment (struct load_command *lc)
 #if VERBOSE
       printf ("        section %-16.16s at %#8lx - %#8lx (sz: %#8lx)\n",
 	      sectp->sectname, (fixnum) (sectp->offset),
-	      (fixnum) (sectp->offset + sectp->size), (long) (sectp->size));
+	      (fixnum) (sectp->offset + sectp->size), (fixnum) (sectp->size));
 #endif
 
       header_offset += sizeof (struct section);
@@ -577,8 +577,8 @@ copy_data_segment (struct load_command *lc)
 
 #if VERBOSE
       printf ("Writing segment %-16.16s @ %#8lx (%#8lx/%#8lx @ %#10lx)\n",
-	      sc.segname, (fixnum) (sc.fileoff), (long) (sc.filesize),
-	      (fixnum) (sc.vmsize), (long) (sc.vmaddr));
+	      sc.segname, (fixnum) (sc.fileoff), (fixnum) (sc.filesize),
+	      (fixnum) (sc.vmsize), (fixnum) (sc.vmaddr));
 #endif
 
       if (!unexec_write (sc.fileoff, (void *) sc.vmaddr, sc.filesize))
@@ -679,7 +679,7 @@ unrelocate (const char *name, off_t reloff, int nrel, vm_address_t base)
 #if __ppc64__
 /* Rebase r_address in the relocation table.  */
 static void
-rebase_reloc_address (off_t reloff, int nrel, fixnum linkedit_delta, long diff)
+rebase_reloc_address (off_t reloff, int nrel, fixnum linkedit_delta, fixnum diff)
 {
   int i;
   struct relocation_info reloc_info;
@@ -1051,7 +1051,7 @@ unexec (char *outfile, char *infile, void *start_data, void *start_bss,
 #include <sys/mman.h>
 #include <errno.h>
 ufixnum
-probe_big_heap(ufixnum try,unsigned long inc,unsigned long max) {
+probe_big_heap(ufixnum try,ufixnum inc,ufixnum max) {
 
   void *r;
 

@@ -1,5 +1,5 @@
   case R_SPARC_WDISP30:
-    store_ivals((int *)where,MASK(30),((long)(s+a-p))>>2);
+    store_ivals((int *)where,MASK(30),((fixnum)(s+a-p))>>2);
     break;
     
   case R_SPARC_HI22:

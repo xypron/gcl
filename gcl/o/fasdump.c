@@ -808,7 +808,7 @@ write_fasd(object obj)
      {int l = MP(obj)->_mp_size;
      int m = (l >= 0 ? l : -l);
       
-     ufixnum *u = (unsigned long *) MP(obj)->_mp_d;
+     ufixnum *u = (ufixnum *) MP(obj)->_mp_d;
      /* fix this */
      /* if (sizeof(mp_limb_t) != 4) { FEerror("fix for gmp",0);} */
      PUT4(l);

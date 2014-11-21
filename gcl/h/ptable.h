@@ -12,7 +12,7 @@ there are tab.n_symbols pairs occurring.
 #endif
 
 
-typedef unsigned long addr;
+typedef ufixnum addr;
 
 struct node{
   const char *string;

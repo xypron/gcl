@@ -1,4 +1,4 @@
-/* alloc.c:89:OF */ extern void *alloc_page (long n); /* (n) int n; */
+/* alloc.c:89:OF */ extern void *alloc_page (fixnum n); /* (n) int n; */
 /* alloc.c:149:OF */ inline void add_page_to_freelist (char *p, struct typemanager *tm); /* (p, tm) char *p; struct typemanager *tm; */
 /* alloc.c:196:OF */ extern object type_name (int t); /* (t) int t; */
 /* alloc.c:213:OF */ inline object alloc_object (enum type t); /* (t) enum type t; */
@@ -31,7 +31,7 @@
 /* array.c:480:OF */ extern void siLmake_vector (void); /* () */
 /* array.c:519:OF */ extern object fSmake_array1 (fixnum elt_type, object staticp, object initial_element, object displaced_to,fixnum displaced_index_offset, object dimensions); /* (elt_type, staticp, initial_element, displaced_to, displaced_index_offset, dimensions) int elt_type; object staticp; object initial_element; object displaced_to; int displaced_index_offset; object dimensions; */
 /* array.c::OF */ extern object fSmake_vector1_1 (fixnum n,fixnum elt_type,object staticp); 
-/* array.c:738:OF */ extern void adjust_displaced (object x, long diff); /* (x, diff) object x; int diff; */
+/* array.c:738:OF */ extern void adjust_displaced (object x, fixnum diff); /* (x, diff) object x; int diff; */
 /* array.c:790:OF */ extern void gset (void *p1, void *val, int n, int typ); /* (p1, val, n, typ) char *p1; char *val; int n; int typ; */
 /* array.c:831:OF */ extern object fScopy_array_portion (object x, object y,object i1,object i2, object n1); /* (x, y, i1, i2, n1) object x; object y; int i1; int i2; int n1; */
 /* array.c:879:OF */ extern void array_allocself (object x, int staticp, object dflt); /* (x, staticp, dflt) object x; int staticp; object dflt; */
@@ -239,12 +239,12 @@ typedef void (*funcvoid)(void);
 /* sgbc.c:924:OF */ extern fixnum sgc_count_type (int t); /* (t) int t; */
 /* sgbc.c:938:OF */ extern int sgc_start (void); /* () */
 /* sgbc.c:1068:OF */ extern int sgc_quit (void); /* () */
-/* sgbc.c:1131:OF */ extern void make_writable (unsigned long beg, unsigned long i); /* (beg, i) int beg; int i; */
+/* sgbc.c:1131:OF */ extern void make_writable (ufixnum beg, unsigned long i); /* (beg, i) int beg; int i; */
 #ifndef __MINGW32__
 /* #include <signal.h> */
 #endif
 /* sgbc.c:1246:OF */ extern int memory_protect (int on); /* (on) int on; */
-/* sgbc.c:1306:OF */ extern void perm_writable (char *p, long n); /* (p, n) char *p; int n; */
+/* sgbc.c:1306:OF */ extern void perm_writable (char *p, fixnum n); /* (p, n) char *p; int n; */
 /* sgbc.c:1321:OF */ extern void system_error (void); /* () */
 /* gbc.c:1357:OF */ extern void gcl_init_GBC (void); /* () */
 /* gnumalloc.c:286:OF */ extern void malloc_init (char *start, void (*warnfun) (/* ??? */)); /* (start, warnfun) char *start; void (*warnfun)(); */
@@ -395,10 +395,10 @@ typedef void (*funcvoid)(void);
 /* num_sfun.c:502:OF */ extern void Lcos (void); /* () */
 /* num_sfun.c:516:OF */ extern void Latan (void); /* () */
 /* num_sfun.c:535:OF */ extern void gcl_init_num_sfun (void); /* () */
-/* number.c:35:OF */ extern long int fixint (object x); /* (x) object x; */
+/* number.c:35:OF */ extern fixnum fixint (object x); /* (x) object x; */
 /* number.c:44:OF */ extern int fixnnint (object x); /* (x) object x; */
 /* number.c:59:OF */ extern object fSallocate_bigger_fixnum_range (fixnum min,fixnum max); /* (min, max) int min; int max; */
-/* number.c:81:OF */ extern object make_fixnum1 (long i); /* (i) int i; */
+/* number.c:81:OF */ extern object make_fixnum1 (fixnum i); /* (i) int i; */
 /* number.c:102:OF */ extern object make_ratio (object num, object den); /* (num, den) object num; object den; */
 /* number.c:144:OF */ extern object make_shortfloat (double f); /* (f) double f; */
 /* number.c:157:OF */ extern object make_longfloat (longfloat f); /* (f) longfloat f; */
@@ -1752,7 +1752,7 @@ void *
 gcl_gmp_alloc(size_t);
 
 int
-my_plt(const char *,unsigned long *);
+my_plt(const char *,ufixnum *);
 
 int
 parse_plt(void);
@@ -1910,7 +1910,7 @@ void
 prelink_init(void);
 
 int
-gcl_mprotect(void *,unsigned long,int);
+gcl_mprotect(void *,ufixnum,int);
 
 int
 rl_pending_buffered_input_p(FILE *f);

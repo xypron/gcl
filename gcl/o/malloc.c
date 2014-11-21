@@ -87,7 +87,7 @@ otherwise to copy, sublicense, distribute or transfer this program is void and
 your rights to use the program under this License agreement shall be
 automatically terminated.  However, parties who have received computer
 software programs from you with this License Agreement will not have
-their licenses terminated so fixnum as such parties remain in full compliance.
+their licenses terminated so long as such parties remain in full compliance.
 
   5. If you wish to incorporate parts of this program into other free
 programs whose distribution conditions are different, write to the Free

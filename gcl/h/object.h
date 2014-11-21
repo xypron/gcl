@@ -63,7 +63,7 @@ Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #endif
 
 #ifndef plong
-#define plong long
+#define plong fixnum
 #endif
 
 
@@ -244,7 +244,7 @@ struct rtent {				/*  read table entry  */
 #define	char_bits(obje)		((object)obje)->ch.ch_bits
 
 
-#define address_int unsigned long
+#define address_int ufixnum
 
 /*
 	The struct of free lists.
@@ -254,10 +254,10 @@ struct freelist {
 	address_int f_link;
 };
 #ifndef INT_TO_ADDRESS
-#define INT_TO_ADDRESS(x) ((object )(long )x)
+#define INT_TO_ADDRESS(x) ((object )(fixnum)x)
 #endif
 
-#define F_LINK(x) ((struct freelist *)(long) x)->f_link
+#define F_LINK(x) ((struct freelist *)(fixnum) x)->f_link
 #define FL_LINK F_LINK
 #define SET_LINK(x,val) F_LINK(x) = (address_int) (val)
 #define OBJ_LINK(x) ((object) INT_TO_ADDRESS(F_LINK(x)))
@@ -269,28 +269,28 @@ struct freelist {
 */
 struct typemanager {
   enum type tm_type;             /*  type  */
-  long	    tm_size;             /*  element size in bytes  */
-  long      tm_nppage;           /*  number per page  */
+  fixnum	    tm_size;             /*  element size in bytes  */
+  fixnum      tm_nppage;           /*  number per page  */
   object    tm_free;             /*  free list  */
 				 /*  Note that it is of type object.  */
-  long	    tm_nfree;            /*  number of free elements  */
-  long	    tm_npage;            /*  number of pages  */
-  long	    tm_maxpage;          /*  maximum number of pages  */
+  fixnum	    tm_nfree;            /*  number of free elements  */
+  fixnum	    tm_npage;            /*  number of pages  */
+  fixnum	    tm_maxpage;          /*  maximum number of pages  */
   char	   *tm_name;             /*  type name  */
-  long	    tm_gbccount;         /*  GBC count  */
+  fixnum	    tm_gbccount;         /*  GBC count  */
   object    tm_alt_free;         /*  Alternate free list (swap with tm_free) */
-  long      tm_alt_nfree;        /*  Alternate nfree (length of nfree) */
-  long	    tm_alt_npage;        /*  number of pages  */
-  long      tm_sgc;              /*  this type has at least this many sgc pages */
-  long      tm_sgc_minfree;      /*  number free on a page to qualify for being an sgc page */
-  long      tm_sgc_max;          /* max on sgc pages */
-  long      tm_min_grow;         /* min amount to grow when growing */
-  long      tm_max_grow;         /* max amount to grow when growing */
-  long      tm_growth_percent;   /* percent to increase maxpages */
-  long      tm_percent_free;     /* percent which must be free after a gc for this type */
-  long      tm_distinct;         /* pages of this type are distinct */
+  fixnum      tm_alt_nfree;        /*  Alternate nfree (length of nfree) */
+  fixnum	    tm_alt_npage;        /*  number of pages  */
+  fixnum      tm_sgc;              /*  this type has at least this many sgc pages */
+  fixnum      tm_sgc_minfree;      /*  number free on a page to qualify for being an sgc page */
+  fixnum      tm_sgc_max;          /* max on sgc pages */
+  fixnum      tm_min_grow;         /* min amount to grow when growing */
+  fixnum      tm_max_grow;         /* max amount to grow when growing */
+  fixnum      tm_growth_percent;   /* percent to increase maxpages */
+  fixnum      tm_percent_free;     /* percent which must be free after a gc for this type */
+  fixnum      tm_distinct;         /* pages of this type are distinct */
   float     tm_adjgbccnt;
-  long      tm_opt_maxpage;
+  fixnum      tm_opt_maxpage;
 };
 
 
@@ -324,17 +324,17 @@ EXTER struct contblock *old_cb_pointer;	/*  old contblock pointer when in SGC  *
 /*
 	Variables for memory management.
 */
-EXTER long ncb;			/*  number of contblocks  */
+EXTER fixnum ncb;			/*  number of contblocks  */
 #define ncbpage tm_table[t_contiguous].tm_npage
 #define maxcbpage tm_table[t_contiguous].tm_maxpage
 #define cbgbccount tm_table[t_contiguous].tm_gbccount  
   
 
-EXTER long holepage;			/*  hole pages  */
+EXTER fixnum holepage;			/*  hole pages  */
 #define nrbpage tm_table[t_relocatable].tm_npage
 #define maxrbpage tm_table[t_relocatable].tm_maxpage
 #define rbgbccount tm_table[t_relocatable].tm_gbccount
-EXTER long new_holepage,starting_hole_div,starting_relb_heap_mult;
+EXTER fixnum new_holepage,starting_hole_div,starting_relb_heap_mult;
   
 
 #ifdef SGC
@@ -361,7 +361,7 @@ char *tmp_alloc;
 #define ALLOC_ALIGNED(f, size,align) \
   (align <= sizeof(plong) ? (char *)((f)(size)) : \
    (tmp_alloc = (char *)((f)(size+(size ?(align)-1 : 0)))+(align)-1 , \
-   (char *)(align * (((unsigned long)tmp_alloc)/align))))
+   (char *)(align * (((ufixnum)tmp_alloc)/align))))
 #define AR_ALLOC(f,n,type) (type *) \
   (ALLOC_ALIGNED(f,(n)*sizeof(type),sizeof(type)))
 
