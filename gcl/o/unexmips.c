@@ -89,15 +89,15 @@ struct headers {
 
 unexec (new_name, a_name, data_start, bss_start, entry_address)
      char *new_name, *a_name;
-     unsigned long data_start, bss_start, entry_address;
+     ufixnum data_start, bss_start, entry_address;
 {
   int new, old;
-  long pagesize, brk;
-  long newsyms, symrel;
+  fixnum pagesize, brk;
+  fixnum newsyms, symrel;
   int nread;
   struct headers hdr;
   int i;
-  long vaddr, scnptr;
+  fixnum vaddr, scnptr;
 #define BUFSIZE 8192
   char buffer[BUFSIZE];
 
@@ -204,7 +204,7 @@ for( i = 0, ptr = NULL; i < hdr.fhdr.f_nscns && !ptr; i++){ \
   if (entry_address == 0)
     {
       extern DEFAULT_ENTRY_ADDRESS ();
-      hdr.aout.entry = (unsigned long)DEFAULT_ENTRY_ADDRESS;
+      hdr.aout.entry = (ufixnum)DEFAULT_ENTRY_ADDRESS;
     }
   else
     hdr.aout.entry = entry_address;

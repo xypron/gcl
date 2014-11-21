@@ -13,7 +13,7 @@
    memprotect test in sgbc.c to ensure we have a working kernel */
 #define SGC 
 
-#if SIZEOF_LONG==4
+#if SIZEOF_VOID_P==4
 #define RELOC_H "elf32_mips_reloc.h"
 #define SPECIAL_RELOC_H "elf32_mips_reloc_special.h"
 #else

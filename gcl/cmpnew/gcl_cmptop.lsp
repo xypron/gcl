@@ -280,7 +280,7 @@
 
 (defun declaration-type (type) 
   (cond ((equal type "") "void")
-	((equal type "long ") "object ")
+	((equal type "fixnum ") "object ")
 	(t type)))
 
 (defvar *vaddress-list*)   ;; hold addresses of C functions, and other data
@@ -1326,7 +1326,7 @@
 
 (defun rep-type (type)
        (case type
-             (fixnum "long ")
+             (fixnum "fixnum ")
 	     (integer "MP_INT * ")
              (character "unsigned char ")
              (short-float "float ")
@@ -1528,9 +1528,9 @@
                (wt-nl1 "vs_push(")
                (case (car arg)
                      (object (wt (cadr arg)))
-                     (char (wt "code_char((long)" (cadr arg) ")"))
+                     (char (wt "code_char((fixnum)" (cadr arg) ")"))
                      (int (when (zerop *space*) (wt "CMP"))
-                          (wt "make_fixnum((long)(" (cadr arg) "))"))
+                          (wt "make_fixnum((fixnum)(" (cadr arg) "))"))
                      (float (wt "make_shortfloat((double)" (cadr arg) ")"))
                      (double (wt "make_longfloat((double)" (cadr arg) ")")))
                (wt ");"))

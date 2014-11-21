@@ -485,7 +485,7 @@ call_proc_new(object sym, void **link, int argd, object first, va_list ll) {
 	if (SFUN_NEXT_TYPE(argd)==f_object)
 	  _xx=i ? va_arg(ll,object) : first;
 	else {
-	  long _yy;
+	  fixnum _yy;
 	  _yy=i ? va_arg(ll,fixnum) : (fixnum)first;
 	  _xx=make_fixnum(_yy);
 	}

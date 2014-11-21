@@ -1,7 +1,7 @@
 #if defined (LOW_SHFT)
 
 #define LOW_IM_FIX (1L<<(LOW_SHFT-1))
-#define INT_IN_BITS(a_,b_) ({fixnum _a=(fixnum)(a_);_a>>(b_)==_a>>(CHAR_SIZE*SIZEOF_LONG-1);})
+#define INT_IN_BITS(a_,b_) ({fixnum _a=(fixnum)(a_);_a>>(b_)==_a>>(CHAR_SIZE*SIZEOF_VOID_P-1);})
 
 #define      make_imm_fixnum(a_)        ((object)a_)
 #define       fix_imm_fixnum(a_)        ((fixnum)a_)

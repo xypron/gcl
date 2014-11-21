@@ -2464,7 +2464,7 @@ object in;
 	VOL object *vsp;
 	object vspo;
 	VOL object x;
-	long i;
+	fixnum i;
 	bool e;
 	object old_READtable;
 	int old_READdefault_float_format;
@@ -2474,7 +2474,7 @@ object in;
 	int old_backq_level;
 
         /* to prevent longjmp clobber */
-        i=(long)&vsp;
+        i=(fixnum)&vsp;
 	vsp=&vspo;
 	old_READtable = READtable;
 	old_READdefault_float_format = READdefault_float_format;

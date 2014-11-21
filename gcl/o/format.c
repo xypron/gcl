@@ -1736,7 +1736,7 @@ fmt_indirection(bool colon, bool atsign) {
 	int up_colon;
 
 	/* to prevent longjmp clobber */
-	up_colon=(long)&old_fmt_paramp;
+	up_colon=(fixnum)&old_fmt_paramp;
 	fmt_max_param(0);
 	fmt_not_colon(colon);
 	s = fmt_advance();
@@ -1945,7 +1945,7 @@ fmt_iteration(bool colon, bool atsign) {
 	int up_colon;
 
 	/* to prevent longjmp clobber */
-	up_colon=(long)&old_fmt_paramp;
+	up_colon=(fixnum)&old_fmt_paramp;
 	fmt_max_param(1);
 	fmt_set_param(0, &n, fmt_int, 1000000);
 	i = ctl_index;
@@ -2072,7 +2072,7 @@ fmt_justification(volatile bool colon, bool atsign)
 	vs_mark;
 
 	/* to prevent longjmp clobber */
-	up_colon=(long)&old_fmt_paramp;
+	up_colon=(fixnum)&old_fmt_paramp;
 	fmt_max_param(4);
 	fmt_set_param(0, &mincol, fmt_int, 0);
 	fmt_set_param(1, &colinc, fmt_int, 1);
@@ -2273,7 +2273,7 @@ fLformat_1(object strm, object control,object x) {
 
 }
 
-/*  object c_apply_n(long int (*fn) (), int n, object *x); */
+/*  object c_apply_n(fixnum int (*fn) (), int n, object *x); */
 
 static void
 fmt_error(char *s)

@@ -345,14 +345,14 @@ getd(str)
 #define READ_BYTE1() getc(fas_stream)
 
 #define GET8(varx ) \
- do{unsigned long var=(unsigned long)READ_BYTE1();  \
-   var |=  ((unsigned long)READ_BYTE1() << SIZE_BYTE); \
-   var |=  ((unsigned long)READ_BYTE1() << (2*SIZE_BYTE)); \
-   var |=  ((unsigned long)READ_BYTE1() << (3*SIZE_BYTE)); \
-   var |=  ((unsigned long)READ_BYTE1() << (4*SIZE_BYTE)); \
-   var |=  ((unsigned long)READ_BYTE1() << (5*SIZE_BYTE)); \
-   var |=  ((unsigned long)READ_BYTE1() << (6*SIZE_BYTE)); \
-   var |=  ((unsigned long)READ_BYTE1() << (7*SIZE_BYTE)); \
+ do{ufixnum var=(ufixnum)READ_BYTE1();  \
+   var |=  ((ufixnum)READ_BYTE1() << SIZE_BYTE); \
+   var |=  ((ufixnum)READ_BYTE1() << (2*SIZE_BYTE)); \
+   var |=  ((ufixnum)READ_BYTE1() << (3*SIZE_BYTE)); \
+   var |=  ((ufixnum)READ_BYTE1() << (4*SIZE_BYTE)); \
+   var |=  ((ufixnum)READ_BYTE1() << (5*SIZE_BYTE)); \
+   var |=  ((ufixnum)READ_BYTE1() << (6*SIZE_BYTE)); \
+   var |=  ((ufixnum)READ_BYTE1() << (7*SIZE_BYTE)); \
    DPRINTF("{8byte:varx= %ld}", var); \
      varx=var;} while (0)
 
@@ -382,11 +382,11 @@ getd(str)
 #define MASK ~(~0 << 8)
 #define WRITE_BYTEI(x,i)  putc((((x) >> (i*SIZE_BYTE)) & MASK),fas_stream)
 
-#define PUTFIX(v_) Join(PUT,SIZEOF_LONG)(v_)
-#define GETFIX(v_) Join(GET,SIZEOF_LONG)(v_)
+#define PUTFIX(v_) Join(PUT,SIZEOF_VOID_P)(v_)
+#define GETFIX(v_) Join(GET,SIZEOF_VOID_P)(v_)
 
 #define PUT8(varx ) \
- do{unsigned long var= varx ; \
+ do{ufixnum var= varx ; \
      DPRINTF("{8byte:varx= %ld}", var); \
        WRITE_BYTEI(var,0); \
      WRITE_BYTEI(var,1); \
@@ -689,7 +689,7 @@ write_fasd(object obj)
      case DP(t_cons:)
        TRY_HASH;
 
-       /* decide how long we think this list is */
+       /* decide how fixnum we think this list is */
        
        {object x=obj->c.c_cdr;
 	int l=0;
@@ -808,7 +808,7 @@ write_fasd(object obj)
      {int l = MP(obj)->_mp_size;
      int m = (l >= 0 ? l : -l);
       
-     unsigned long *u = (unsigned long *) MP(obj)->_mp_d;
+     ufixnum *u = (unsigned long *) MP(obj)->_mp_d;
      /* fix this */
      /* if (sizeof(mp_limb_t) != 4) { FEerror("fix for gmp",0);} */
      PUT4(l);
@@ -1279,7 +1279,7 @@ read_fasd1(int i, object *loc)
       case DP( d_bignum:)
 	{int j,m;
 	 object tem;
-	 unsigned long *u;
+	 ufixnum *u;
 	 GET4(j);
 #ifdef GMP
 	 tem = new_bignum();
@@ -1287,7 +1287,7 @@ read_fasd1(int i, object *loc)
 	 _mpz_realloc(MP(tem),m);
 	 MP(tem)->_mp_size = j;
 	 j = m;
-	 u = (unsigned long *) MP(tem)->_mp_d;
+	 u = (ufixnum *) MP(tem)->_mp_d;
 #else	 
         { BEGIN_NO_INTERRUPT;
 	 tem = alloc_object(t_bignum);

@@ -991,7 +991,7 @@ BEGIN:
 			if (!x->st.st_adjustable)
 				FEerror("The string ~S is not adjustable.",
 					1, x);
-                        p = (inheap((long)x->st.st_self) ? alloc_contblock : alloc_relblock)
+                        p = (inheap((fixnum)x->st.st_self) ? alloc_contblock : alloc_relblock)
                              (x->st.st_dim * 2 + 16); 
 			for (i = 0;  i < x->st.st_dim;  i++)
 				p[i] = x->st.st_self[i];
@@ -2030,7 +2030,7 @@ LFD(siLcopy_stream)()
 /* too_long_file_name(fn) */
 /* object fn; */
 /* { */
-/* 	FEerror("~S is a too long file name.", 1, fn); */
+/* 	FEerror("~S is a too fixnum file name.", 1, fn); */
 /* } */
 
 static void
@@ -2333,7 +2333,7 @@ maccept(object x) {
 static void
 rmc(int e,void *pid) {
 
-  kill((long)pid,SIGTERM);
+  kill((fixnum)pid,SIGTERM);
 
 }
 #endif
@@ -2379,7 +2379,7 @@ object x=Cnil;
 #ifdef BSD
   if (isServer && daemon != Cnil) {
 
-    long pid,i;
+    fixnum pid,i;
     struct rlimit r;
     struct sigaction sa;
 

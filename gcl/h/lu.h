@@ -3,11 +3,8 @@
 #undef bool
 typedef int bool;
 
-typedef long long lfixnum;
-typedef unsigned long long ulfixnum;
-
-typedef long fixnum;
-typedef unsigned long ufixnum;
+typedef PTRINT fixnum;
+typedef unsigned PTRINT ufixnum;
 
 typedef float shortfloat;
 typedef double longfloat;
@@ -34,7 +31,7 @@ typedef union lispunion *object;
 
 #endif
 
-#if SIZEOF_LONG < 8
+#if SIZEOF_VOID_P < 8
 #define SPAD object pad
 #else
 #define SPAD

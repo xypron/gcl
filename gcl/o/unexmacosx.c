@@ -163,18 +163,18 @@ static vm_address_t infile_lc_highest_addr = 0;
    the Mach-O header.  Check this value against header size to ensure
    the added load commands for the new __DATA segments did not
    overwrite any of the sections in the __TEXT segment.  */
-static unsigned long text_seg_lowest_offset = 0x10000000;
+static ufixnum text_seg_lowest_offset = 0x10000000;
 
 /* Mach header.  */
 static struct mach_header mh;
 
 /* Offset at which the next load command should be written.  */
-static unsigned long curr_header_offset = sizeof (struct mach_header);
+static ufixnum curr_header_offset = sizeof (struct mach_header);
 
 /* Offset at which the next segment should be written.  */
-static unsigned long curr_file_offset = 0;
+static ufixnum curr_file_offset = 0;
 
-static unsigned long pagesize;
+static ufixnum pagesize;
 #define ROUNDUP_TO_PAGE_BOUNDARY(x)	(((x) + pagesize - 1) & ~(pagesize - 1))
 
 static int infd, outfd;
@@ -212,7 +212,7 @@ vm_range_t marked_regions [MAX_MARKED_REGIONS];
 unsigned num_marked_regions;
 
 /* Size of the heap.  */
-static unsigned long big_heap;
+static ufixnum big_heap;
 
 /* Start of the heap.  */
 char *mach_mapstart = 0;
@@ -380,13 +380,13 @@ print_load_command (struct load_command *lc)
 
       scp = (struct segment_command *) lc;
       printf (" %-16.16s %#10lx %#8lx\n",
-	      scp->segname, (long) (scp->vmaddr), (long) (scp->vmsize));
+	      scp->segname, (fixnum) (scp->vmaddr), (long) (scp->vmsize));
 
       sectp = (struct section *) (scp + 1);
       for (j = 0; j < scp->nsects; j++)
 	{
 	  printf ("                           %-16.16s %#10lx %#8lx\n",
-		  sectp->sectname, (long) (sectp->addr), (long) (sectp->size));
+		  sectp->sectname, (fixnum) (sectp->addr), (long) (sectp->size));
 	  sectp++;
 	}
     }
@@ -402,7 +402,7 @@ static void
 copy_segment (struct load_command *lc)
 {
   struct segment_command *scp = (struct segment_command *) lc;
-  unsigned long old_fileoff = scp->fileoff;
+  ufixnum old_fileoff = scp->fileoff;
   struct section *sectp;
   int j;
 
@@ -417,8 +417,8 @@ copy_segment (struct load_command *lc)
 
 #if VERBOSE
   printf ("Writing segment %-16.16s @ %#8lx (%#8lx/%#8lx @ %#10lx)\n",
-	  scp->segname, (long) (scp->fileoff), (long) (scp->filesize),
-	  (long) (scp->vmsize), (long) (scp->vmaddr));
+	  scp->segname, (fixnum) (scp->fileoff), (long) (scp->filesize),
+	  (fixnum) (scp->vmsize), (long) (scp->vmaddr));
 #endif
 
   if (!unexec_copy (scp->fileoff, old_fileoff, scp->filesize))
@@ -449,7 +449,7 @@ copy_data_segment (struct load_command *lc)
   struct segment_command *scp = (struct segment_command *) lc;
   struct section *sectp;
   int j;
-  unsigned long header_offset, old_file_offset;
+  ufixnum header_offset, old_file_offset;
 
   /* The new filesize of the segment is set to its vmsize because data
      blocks for segments must start at region boundaries.  Note that
@@ -460,8 +460,8 @@ copy_data_segment (struct load_command *lc)
 
 #if VERBOSE
   printf ("Writing segment %-16.16s @ %#8lx (%#8lx/%#8lx @ %#10lx)\n",
-	  scp->segname, curr_file_offset, (long)(scp->filesize),
-	  (long)(scp->vmsize), (long) (scp->vmaddr));
+	  scp->segname, curr_file_offset, (fixnum)(scp->filesize),
+	  (fixnum)(scp->vmsize), (long) (scp->vmaddr));
 #endif
 
   /* Offsets in the output file for writing the next section structure
@@ -496,7 +496,7 @@ copy_data_segment (struct load_command *lc)
       else if (strncmp (sectp->sectname, SECT_BSS, 16) == 0)
 	{
 	  /* extern char *my_endbss_static; */
-	  unsigned long my_size;
+	  ufixnum my_size;
 
 	  sectp->flags = S_REGULAR;
 
@@ -540,8 +540,8 @@ copy_data_segment (struct load_command *lc)
 
 #if VERBOSE
       printf ("        section %-16.16s at %#8lx - %#8lx (sz: %#8lx)\n",
-	      sectp->sectname, (long) (sectp->offset),
-	      (long) (sectp->offset + sectp->size), (long) (sectp->size));
+	      sectp->sectname, (fixnum) (sectp->offset),
+	      (fixnum) (sectp->offset + sectp->size), (long) (sectp->size));
 #endif
 
       header_offset += sizeof (struct section);
@@ -566,7 +566,7 @@ copy_data_segment (struct load_command *lc)
       sc.cmdsize = sizeof (struct segment_command);
       /* strncpy (sc.segname, SEG_DATA, 16); */
       strncpy (sc.segname, "__HEAP", 16);
-      sc.vmaddr = (long)mach_mapstart;
+      sc.vmaddr = (fixnum)mach_mapstart;
       sc.vmsize = mach_maplimit-mach_mapstart;
       sc.fileoff = curr_file_offset;
       sc.filesize = core_end-mach_mapstart;
@@ -577,8 +577,8 @@ copy_data_segment (struct load_command *lc)
 
 #if VERBOSE
       printf ("Writing segment %-16.16s @ %#8lx (%#8lx/%#8lx @ %#10lx)\n",
-	      sc.segname, (long) (sc.fileoff), (long) (sc.filesize),
-	      (long) (sc.vmsize), (long) (sc.vmaddr));
+	      sc.segname, (fixnum) (sc.fileoff), (long) (sc.filesize),
+	      (fixnum) (sc.vmsize), (long) (sc.vmaddr));
 #endif
 
       if (!unexec_write (sc.fileoff, (void *) sc.vmaddr, sc.filesize))
@@ -595,7 +595,7 @@ copy_data_segment (struct load_command *lc)
 /* Copy a LC_SYMTAB load command from the input file to the output
    file, adjusting the file offset fields.  */
 static void
-copy_symtab (struct load_command *lc, long delta)
+copy_symtab (struct load_command *lc, fixnum delta)
 {
   struct symtab_command *stp = (struct symtab_command *) lc;
 
@@ -679,7 +679,7 @@ unrelocate (const char *name, off_t reloff, int nrel, vm_address_t base)
 #if __ppc64__
 /* Rebase r_address in the relocation table.  */
 static void
-rebase_reloc_address (off_t reloff, int nrel, long linkedit_delta, long diff)
+rebase_reloc_address (off_t reloff, int nrel, fixnum linkedit_delta, long diff)
 {
   int i;
   struct relocation_info reloc_info;
@@ -708,7 +708,7 @@ rebase_reloc_address (off_t reloff, int nrel, long linkedit_delta, long diff)
 /* Copy a LC_DYSYMTAB load command from the input file to the output
    file, adjusting the file offset fields.  */
 static void
-copy_dysymtab (struct load_command *lc, long delta)
+copy_dysymtab (struct load_command *lc, fixnum delta)
 {
   struct dysymtab_command *dstp = (struct dysymtab_command *) lc;
   vm_address_t base;
@@ -791,7 +791,7 @@ copy_dysymtab (struct load_command *lc, long delta)
 /* Copy a LC_TWOLEVEL_HINTS load command from the input file to the output
    file, adjusting the file offset fields.  */
 static void
-copy_twolevelhints (struct load_command *lc, long delta)
+copy_twolevelhints (struct load_command *lc, fixnum delta)
 {
   struct twolevel_hints_command *tlhp = (struct twolevel_hints_command *) lc;
 
@@ -813,7 +813,7 @@ copy_twolevelhints (struct load_command *lc, long delta)
 /* Copy a LC_DYLD_INFO(_ONLY) load command from the input file to the output
    file, adjusting the file offset fields.  */
 static void
-copy_dyld_info (struct load_command *lc, long delta)
+copy_dyld_info (struct load_command *lc, fixnum delta)
 {
   struct dyld_info_command *dip = (struct dyld_info_command *) lc;
 
@@ -864,7 +864,7 @@ static void
 dump_it () {
 
   int i;
-  long linkedit_delta = 0;
+  fixnum linkedit_delta = 0;
   
 #if VERBOSE
   printf ("--- Load Commands written to Output File ---\n");
@@ -1050,8 +1050,8 @@ unexec (char *outfile, char *infile, void *start_data, void *start_bss,
 
 #include <sys/mman.h>
 #include <errno.h>
-unsigned long
-probe_big_heap(unsigned long try,unsigned long inc,unsigned long max) {
+ufixnum
+probe_big_heap(ufixnum try,unsigned long inc,unsigned long max) {
 
   void *r;
 
@@ -1062,7 +1062,7 @@ probe_big_heap(unsigned long try,unsigned long inc,unsigned long max) {
 
 }
 
-void *my_sbrk (long incr)
+void *my_sbrk (fixnum incr)
 {
   char               *temp, *ptr;
 
@@ -1113,7 +1113,7 @@ stub_memalign(size_t boundary, size_t size) {
 
   extern void *my_malloc (size_t);
   void *v=my_malloc(size+boundary-1);
-  return (void *)(((unsigned long)v+boundary-1)&~(boundary-1));
+  return (void *)(((ufixnum)v+boundary-1)&~(boundary-1));
 
 }
 #endif

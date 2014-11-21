@@ -34,8 +34,8 @@ struct nil3 { object nil3_self[3]; } three_nils;
 
 #ifdef DEBUG_AVMA
 #undef DEBUG_AVMA
-unsigned long avma,bot;
-#define DEBUG_AVMA unsigned long saved_avma =  avma;
+ufixnum avma,bot;
+#define DEBUG_AVMA ufixnum saved_avma =  avma;
 warn_avma()
 { 
   print(list(2,make_simple_string("avma changed"),ihs_top_function_name(ihs_top)),
@@ -50,7 +50,7 @@ warn_avma()
 
 
 
-/*  object c_apply_n(long int (*fn)(), int n, object *x); */
+/*  object c_apply_n(fixnum int (*fn)(), int n, object *x); */
 
 object sSAbreak_pointsA;
 object sSAbreak_stepA;
@@ -86,7 +86,7 @@ quick_call_sfun(object fun)
   res=c_apply_n_fun(fun,n,x);
   base[0]=
     (restype==f_object ?  res :
-     restype==f_fixnum ? make_fixnum((long)res)
+     restype==f_fixnum ? make_fixnum((fixnum)res)
      :(object) (FEerror("Bad result type",0),Cnil));
   vs_base = base;
   vs_top=base+1;

@@ -16,7 +16,7 @@ end
 
 define seePending
 echo signals_pending=
-output (unsigned long)signals_pending
+output (unsigned fixnum)signals_pending
 echo [
 output /t signals_pending
 echo ]

@@ -61,10 +61,10 @@ PIMAGE_NT_HEADERS
 unsigned char *data_region_base = UNINIT_PTR;
 unsigned char *data_region_end = UNINIT_PTR;
 unsigned char *real_data_region_end = UNINIT_PTR;
-unsigned long  data_region_size = UNINIT_LONG;
-unsigned long  reserved_heap_size = UNINIT_LONG;
+ufixnum  data_region_size = UNINIT_LONG;
+ufixnum  reserved_heap_size = UNINIT_LONG;
 
-extern BOOL ctrl_c_handler (unsigned long type);
+extern BOOL ctrl_c_handler (ufixnum type);
 
 extern char my_begdata[];
 extern char my_edata[];
@@ -85,7 +85,7 @@ enum {
 int heap_state = HEAP_UNINITIALIZED;
 
 /* So we can find our heap in the file to recreate it.  */
-unsigned long heap_index_in_executable = UNINIT_LONG;
+ufixnum heap_index_in_executable = UNINIT_LONG;
 
 static void get_section_info (file_data *p_file);
 static void copy_executable_and_dump_data_section (file_data *, file_data *);
@@ -217,7 +217,7 @@ unexec (char *new_name, char *old_name, void *start_data, void *start_bss,
   file_data in_file, out_file;
   char out_filename[MAX_PATH], in_filename[MAX_PATH];
   char filename[MAX_PATH];
-  unsigned long size;
+  ufixnum size;
   char *ptr;
   extern void cygwin_conv_to_full_win32_path(char *,char *);
 
@@ -246,7 +246,7 @@ unexec (char *new_name, char *old_name, void *start_data, void *start_bss,
 #else 
   file_data in_file, out_file;
   char out_filename[MAX_PATH], in_filename[MAX_PATH];
-  unsigned long size;
+  ufixnum size;
   char *ptr;
 
   fflush (stdin);
@@ -293,7 +293,7 @@ unexec (char *new_name, char *old_name, void *start_data, void *start_bss,
   /* The size of the dumped executable is the size of the original
      executable plus the size of the heap and the size of the .bss section.  */
   if (heap_index_in_executable==UNINIT_LONG)
-    heap_index_in_executable = (unsigned long)
+    heap_index_in_executable = (ufixnum)
       round_to_next ((unsigned char *) in_file.size, get_allocation_unit ());
   /* from lisp we know what to use */
 #ifdef IN_UNIXSAVE
@@ -390,7 +390,7 @@ open_input_file (file_data *p_file, char *filename)
 }
 
 int
-open_output_file (file_data *p_file, char *filename, unsigned long size)
+open_output_file (file_data *p_file, char *filename, ufixnum size)
 {
   HANDLE file;
   HANDLE file_mapping;
@@ -472,7 +472,7 @@ get_bss_info_from_map_file (file_data *p_infile, PUCHAR *p_bss_start,
 }
 #endif
 
-unsigned long
+ufixnum
 get_section_size (PIMAGE_SECTION_HEADER p_section)
 {
   /* The true section size, before rounding.  Some linkers swap the
@@ -536,7 +536,7 @@ get_section_info (file_data *p_infile)
       printf ("Unknown EXE header in %s...bailing.\n", p_infile->name);
       exit (1);
     }
-  nt_header = (PIMAGE_NT_HEADERS) (((unsigned long) dos_header) + 
+  nt_header = (PIMAGE_NT_HEADERS) (((ufixnum) dos_header) + 
 				   dos_header->e_lfanew);
   if (nt_header == NULL) 
     {
@@ -649,7 +649,7 @@ copy_executable_and_dump_data_section (file_data *p_infile,
 				       file_data *p_outfile)
 {
   unsigned char *data_file, *data_va;
-  unsigned long size, index;
+  ufixnum size, index;
   
   /* Get a pointer to where the raw data should go in the executable file.  */
   data_file = (unsigned char *) p_outfile->file_base + data_start_file;
@@ -686,7 +686,7 @@ static void
 dump_bss_and_heap (file_data *p_infile, file_data *p_outfile)
 {
     unsigned char *heap_data, *bss_data;
-    unsigned long size, index;
+    ufixnum size, index;
 
     /* printf ("Dumping heap into executable...\n"); */
 
@@ -852,7 +852,7 @@ Boston, MA 02111-1307, USA.
 
 /* This gives us the page size and the size of the allocation unit on NT.  */
 SYSTEM_INFO sysinfo_cache;
-unsigned long syspage_mask = 0;
+ufixnum syspage_mask = 0;
 
 /* These are defined to get Emacs to compile, but are not used.  */
 int edata;
@@ -897,11 +897,11 @@ cache_system_info (void)
 
 /* Round ADDRESS up to be aligned with ALIGN.  */
 unsigned char *
-round_to_next (unsigned char *address, unsigned long align)
+round_to_next (unsigned char *address, ufixnum align)
 {
-  unsigned long tmp;
+  ufixnum tmp;
 
-  tmp = (unsigned long) address;
+  tmp = (ufixnum) address;
   tmp = (tmp + align - 1) / align;
 
   return (unsigned char *) (tmp * align);
@@ -922,8 +922,8 @@ get_data_end (void)
   return data_region_end;
 }
 
-unsigned long
-probe_heap_size(void *base,unsigned long try,unsigned long inc,unsigned long max) {
+ufixnum
+probe_heap_size(void *base,ufixnum try,unsigned long inc,unsigned long max) {
   void *r;
   if (!(r=VirtualAlloc(base,try,MEM_RESERVE,PAGE_NOACCESS)))
     return try>inc ? probe_heap_size(base,try-inc,inc>>1,max) : 0;
@@ -995,7 +995,7 @@ void *
 sbrk (ptrdiff_t increment)
 {
   void *result;
-  long size = (long) increment;
+  fixnum size = (long) increment;
   
   /* Allocate our heap if we haven't done so already.  */
   if (data_region_base == UNINIT_PTR) 
@@ -1006,7 +1006,7 @@ sbrk (ptrdiff_t increment)
 
       /* Ensure that the addresses don't use the upper tag bits since
 	 the Lisp type goes there.  */
-      if (((unsigned long) data_region_base & ~VALMASK) != 0) 
+      if (((ufixnum) data_region_base & ~VALMASK) != 0) 
 	{
 	  printf ("Error: The heap was allocated in upper memory.\n");
 	  exit (1);
@@ -1035,7 +1035,7 @@ sbrk (ptrdiff_t increment)
 	 partial deallocation [cga].  */
       new_data_region_end = (data_region_end - size);
       new_data_region_end = (unsigned char *)
-	((long) (new_data_region_end + syspage_mask) & ~syspage_mask);
+	((fixnum) (new_data_region_end + syspage_mask) & ~syspage_mask);
       new_size = real_data_region_end - new_data_region_end;
       real_data_region_end = new_data_region_end;
       if (new_size > 0) 
@@ -1064,7 +1064,7 @@ sbrk (ptrdiff_t increment)
       /* We really only commit full pages, so record where
 	 the real end of committed memory is [cga].  */
       real_data_region_end = (unsigned char *)
-	  ((long) (data_region_end + syspage_mask) & ~syspage_mask);
+	  ((fixnum) (data_region_end + syspage_mask) & ~syspage_mask);
     }
   
   return result;
@@ -1107,13 +1107,13 @@ recreate_heap (char *executable_path) {
 
 /* Round the heap up to the given alignment.  */
 void
-round_heap (unsigned long align)
+round_heap (ufixnum align)
 {
-  unsigned long needs_to_be;
-  unsigned long need_to_alloc;
+  ufixnum needs_to_be;
+  ufixnum need_to_alloc;
   
-  needs_to_be = (unsigned long) round_to_next (get_heap_end (), align);
-  need_to_alloc = needs_to_be - (unsigned long) get_heap_end ();
+  needs_to_be = (ufixnum) round_to_next (get_heap_end (), align);
+  need_to_alloc = needs_to_be - (ufixnum) get_heap_end ();
   
   if (need_to_alloc) 
     sbrk (need_to_alloc);
@@ -1142,7 +1142,7 @@ _heap_term (void)
 
 
 #ifdef UNIXSAVE
-BOOL ctrl_c_handler (unsigned long type)
+BOOL ctrl_c_handler (ufixnum type)
 {
   extern void sigint(void);
   sigint();

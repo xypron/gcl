@@ -18,7 +18,7 @@
 
 /* alignment required for pointers */
 #ifndef PTR_ALIGN
-#define PTR_ALIGN SIZEOF_LONG
+#define PTR_ALIGN SIZEOF_VOID_P
 #endif
 
 #define ROUND_UP_PTR(n)	(((long)(n) + (PTR_ALIGN-1)) & ~(PTR_ALIGN-1))

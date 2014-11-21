@@ -28,7 +28,7 @@ License for more details.
 #include "gclincl.h"
 
 
-#if SIZEOF_LONG == 4
+#if SIZEOF_VOID_P == 4
 #define Elfw 32
 #else
 #define Elfw 64
@@ -62,7 +62,7 @@ License for more details.
 
 
 
-typedef unsigned long ul;
+typedef ufixnum ul;
 
 
 
@@ -533,8 +533,8 @@ clear_protect_memory(object memory) {
 
   void *p,*pe;
 
-  p=(void *)((unsigned long)memory->cfd.cfd_start & ~(PAGESIZE-1));
-  pe=(void *)((unsigned long)(memory->cfd.cfd_start+memory->cfd.cfd_size + PAGESIZE-1) & ~(PAGESIZE-1));
+  p=(void *)((ul)memory->cfd.cfd_start & ~(PAGESIZE-1));
+  pe=(void *)((ul)(memory->cfd.cfd_start+memory->cfd.cfd_size + PAGESIZE-1) & ~(PAGESIZE-1));
 
   return gcl_mprotect(p,pe-p,PROT_READ|PROT_WRITE|PROT_EXEC);
 

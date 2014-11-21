@@ -260,10 +260,10 @@ static void
 write_addr(x)
 object x;
 {
-	long i;
+	fixnum i;
 	int j, k;
 
-	i = (long)x;
+	i = (fixnum)x;
 	for (j = 8*sizeof(i)-4;  j >= 0;  j -= 4) {
 		k = (i>>j) & 0xf;
 		if (k < 10)
@@ -1415,8 +1415,8 @@ int level;
 
 	case t_spice:
 		write_str("#<\100");
-		for (i = 8*sizeof(long)-4;  i >= 0;  i -= 4) {
-			j = ((long)x >> i) & 0xf;
+		for (i = 8*sizeof(fixnum)-4;  i >= 0;  i -= 4) {
+			j = ((fixnum)x >> i) & 0xf;
 			if (j < 10)
 				write_ch('0' + j);
 			else

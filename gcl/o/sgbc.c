@@ -308,7 +308,7 @@ sgc_mark_object1(object x) {
 #endif			  
 	  x->a.a_self = (object *)copy_relblock(cp, j);
       } else if (x->a.a_displaced->c.c_car == Cnil) {
-	i = (long)(object *)copy_relblock(cp, j) - (long)(x->a.a_self);
+	i = (fixnum)(object *)copy_relblock(cp, j) - (long)(x->a.a_self);
 	adjust_displaced(x, i);
       }
     }
@@ -557,7 +557,7 @@ sgc_mark_phase(void) {
   
   /* mark all non recent data on writable pages */
   {
-    long t,i=page(heap_end);
+    fixnum t,i=page(heap_end);
     struct typemanager *tm;
     char *p;
     
@@ -645,7 +645,7 @@ sgc_mark_phase(void) {
 
 static void
 sgc_sweep_phase(void) {
-  STATIC long j, k;
+  STATIC fixnum j, k;
   STATIC object x;
   STATIC char *p;
   STATIC struct typemanager *tm;
@@ -742,7 +742,7 @@ sgc_contblock_sweep_phase(void) {
 
 
 #define PAGE_ROUND_UP(adr) \
-    ((char *)(PAGESIZE*(((long)(adr)+PAGESIZE -1) >> PAGEWIDTH)))
+    ((char *)(PAGESIZE*(((fixnum)(adr)+PAGESIZE -1) >> PAGEWIDTH)))
 
 /* char *old_rb_start; */
 
@@ -891,7 +891,7 @@ memprotect_print(void) {
 
 
 static void
-memprotect_handler_test(int sig, long code, void *scp, char *addr) {
+memprotect_handler_test(int sig, fixnum code, void *scp, char *addr) {
 
   char *faddr;
   faddr=GET_FAULT_ADDR(sig,code,scp,addr); 
@@ -913,7 +913,7 @@ static int
 memprotect_test(void) {
 
   char *b1,*b2;
-  unsigned long p=PAGESIZE;
+  ufixnum p=PAGESIZE;
   struct sigaction sa,sao,saob;
 
   if (memprotect_result!=memprotect_none)
@@ -935,7 +935,7 @@ memprotect_test(void) {
 
   memset(b1,32,2*p);
   memset(b2,0,p);
-  memprotect_test_address=(void *)(((unsigned long)b1+p-1) & ~(p-1));
+  memprotect_test_address=(void *)(((ufixnum)b1+p-1) & ~(p-1));
   sa.sa_sigaction=(void *)memprotect_handler_test;
   sa.sa_flags=MPROTECT_ACTION_FLAGS;
   if (sigaction(SIGSEGV,&sa,&sao)) {
@@ -1021,13 +1021,13 @@ memprotect_test_reset(void) {
 
 }
 
-#define MMIN(a,b) ({long _a=a,_b=b;_a<_b ? _a : _b;})
-#define MMAX(a,b) ({long _a=a,_b=b;_a>_b ? _a : _b;})
+#define MMIN(a,b) ({fixnum _a=a,_b=b;_a<_b ? _a : _b;})
+#define MMAX(a,b) ({fixnum _a=a,_b=b;_a>_b ? _a : _b;})
 /* If opt_maxpage is set, don't lose balancing information gained thus
    far if we are triggered 'artificially' via a hole overrun. FIXME --
    try to allocate a small working set with the right proportions
    later on. 20040804 CM*/
-#define WSGC(tm) ({struct typemanager *_tm=tm;long _t=MMAX(MMIN(_tm->tm_opt_maxpage,_tm->tm_npage),_tm->tm_sgc);_t*scale;})
+#define WSGC(tm) ({struct typemanager *_tm=tm;fixnum _t=MMAX(MMIN(_tm->tm_opt_maxpage,_tm->tm_npage),_tm->tm_sgc);_t*scale;})
 /* If opt_maxpage is set, add full pages to the sgc set if needed
    too. 20040804 CM*/
 /* #define FSGC(tm) (tm->tm_type==t_cons ? tm->tm_nppage : (tm->tm_opt_maxpage ? 0 : tm->tm_sgc_minfree)) */
@@ -1040,8 +1040,8 @@ unsigned char *wrimap=NULL;
 int
 sgc_start(void) {
 
-  long i,count,minfree,allocate_more_pages=!saving_system && 10*available_pages>2*(real_maxpage-first_data_page);
-  long np;
+  fixnum i,count,minfree,allocate_more_pages=!saving_system && 10*available_pages>2*(real_maxpage-first_data_page);
+  fixnum np;
   struct typemanager *tm;
   struct pageinfo *v;
   object omp=sSAoptimize_maximum_pagesA->s.s_dbind;
@@ -1107,8 +1107,8 @@ sgc_start(void) {
     
     if (count < WSGC(tm)) {
       /* try to get some more free pages of type i */
-      long n = WSGC(tm) - count;
-      long again=0,nfree = tm->tm_nfree;
+      fixnum n = WSGC(tm) - count;
+      fixnum again=0,nfree = tm->tm_nfree;
       char *p=alloc_page(n);
       if (tm->tm_nfree > nfree) again=1;  /* gc freed some objects */
       if (tm->tm_npage+n>tm->tm_maxpage)
@@ -1176,7 +1176,7 @@ sgc_start(void) {
     if (i>count) {
       /* SGC cont pages: allocate more if necessary, dumping possible
 	 GBC freed pages onto the old contblock list.  CM 20030827*/
-      unsigned long z=(i-count)+1;
+      ufixnum z=(i-count)+1;
       void *old_contblock_list_tail=contblock_list_tail;
 
       if (maxcbpage<ncbpage+z)
@@ -1201,8 +1201,8 @@ sgc_start(void) {
     
     {
       old_rb_start=rb_start;
-      if(((unsigned long)WSGC(tm)) && allocate_more_pages) {
-	new=alloc_relblock(((unsigned long)WSGC(tm))*PAGESIZE);
+      if(((ufixnum)WSGC(tm)) && allocate_more_pages) {
+	new=alloc_relblock(((ufixnum)WSGC(tm))*PAGESIZE);
 	/* the above may cause a gc, shifting the relblock */
 	old_rb_start=rb_start;
 	new= PAGE_ROUND_UP(new);
@@ -1363,7 +1363,7 @@ sgc_quit(void) {
 
   struct typemanager *tm;
   struct contblock *tmp_cb_pointer,*next;
-  unsigned long i,j,np;
+  ufixnum i,j,np;
   char *p;
   struct pageinfo *v;
 
@@ -1429,7 +1429,7 @@ sgc_quit(void) {
 	f=tm->tm_free;
 	while((y= (object) F_LINK(f))!=OBJNULL)
 	  f=y;
-	F_LINK(f)= (long)(tm->tm_alt_free);
+	F_LINK(f)= (fixnum)(tm->tm_alt_free);
       }
       /* tm->tm_free has all of the free objects */
       tm->tm_nfree += tm->tm_alt_nfree;
@@ -1465,14 +1465,14 @@ fixnum debug_fault =0;
 fixnum fault_count =0;
 extern char etext;
 static void
-memprotect_handler(int sig, long code, void *scp, char *addr) {
+memprotect_handler(int sig, fixnum code, void *scp, char *addr) {
   
-  unsigned long p;
+  ufixnum p;
   void *faddr;  /* Needed because we must not modify signal handler
 		   arguments on the stack! */
 #ifdef GET_FAULT_ADDR
   faddr=GET_FAULT_ADDR(sig,code,scp,addr); 
-  debug_fault = (long) faddr;
+  debug_fault = (fixnum) faddr;
 #ifdef DEBUG_MPROTECT
   printf("fault:0x%x [%d] (%d)  ",faddr,page(faddr),faddr >= core_end);
 #endif 
@@ -1520,7 +1520,7 @@ memprotect_handler(int sig, long code, void *scp, char *addr) {
 }
 
 static int
-sgc_mprotect(long pbeg, long n, int writable) {
+sgc_mprotect(fixnum pbeg, long n, int writable) {
   /* CHECK_RANGE(pbeg,n);  */
 #ifdef DEBUG_MPROTECT
   printf("prot[%d,%d,(%d),%s]\n",pbeg,pbeg+n,writable & SGC_WRITABLE,
@@ -1543,7 +1543,7 @@ sgc_mprotect(long pbeg, long n, int writable) {
 int
 memory_protect(int on) {
 
-  unsigned long i,beg,end= page(core_end);
+  ufixnum i,beg,end= page(core_end);
   int writable=1;
   extern void install_segmentation_catcher(void);
 

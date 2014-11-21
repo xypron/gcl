@@ -32,7 +32,7 @@ Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #include "num_include.h"
 
 
-long
+fixnum
 fixint(object x)
 {
 	if (type_of(x) != t_fixnum)
@@ -84,7 +84,7 @@ DEFUN_NEW("ALLOCATE-BIGGER-FIXNUM-RANGE",object,fSallocate_bigger_fixnum_range,S
 
 
 object
-make_fixnum1(long i)
+make_fixnum1(fixnum i)
 {
 	object x;
 

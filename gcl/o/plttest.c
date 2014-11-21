@@ -24,19 +24,19 @@ main(int argc,char * argv[],char *envp[]) {
   char ch=0;
   jmp_buf env;
   double d=0.1;
-  long l;
-  unsigned long ul;
+  fixnum l;
+  ufixnum ul;
 
   sscanf(argv[1],"%lf",&d);
   bzero(&env,sizeof(env));
   memset(&env,0,sizeof(env));
   
-  ul=*(unsigned long *)envp;
+  ul=*(ufixnum *)envp;
   ul=ul%(ul>>(ul & 0x3));
-  l=*(long *)argv;
+  l=*(fixnum *)argv;
   l=l%(l<<(l & 0x7));
   l/=ul/l;
-  l/=((long)ul)/l;
+  l/=((fixnum)ul)/l;
 
   ch=getc(f);
   ch&=putc(ch,f);
@@ -81,6 +81,6 @@ main(int argc,char * argv[],char *envp[]) {
 
   d=sqrt(d);
   
-  return ul & l & ((unsigned long)d) & ch;
+  return ul & l & ((ufixnum)d) & ch;
 
 }

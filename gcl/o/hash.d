@@ -198,7 +198,7 @@ struct htent *
 gethash(object key, object hashtable) {
 
   enum httest htest;
-  long hsize,j,s,q;
+  fixnum hsize,j,s,q;
   struct htent *e,*first_objnull=NULL;
   object hkey;
   static struct htent dummy={OBJNULL,OBJNULL};

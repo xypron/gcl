@@ -4,7 +4,7 @@
 
 typedef unsigned char  uc;
 typedef unsigned short us;
-typedef unsigned long  ul;
+typedef unsigned int  ul;
 
 struct filehdr {
   us f_magic;	/* magic number			*/

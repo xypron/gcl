@@ -27,10 +27,10 @@ int Rset;
   (in_type == out_type \
 	 ? val \
 	 :in_type == F_int \
-	 ?(out_type == F_object ? make_fixnum((long)val) :\
+	 ?(out_type == F_object ? make_fixnum((fixnum)val) :\
 	   out_type == F_double_ptr \
-	   ?(object) (void *)  & lf(make_longfloat((double)(long) val)) \
-	   :out_type == F_shortfloat? COSF((float)(long)val) \
+	   ?(object) (void *)  & lf(make_longfloat((double)(fixnum) val)) \
+	   :out_type == F_shortfloat? COSF((float)(fixnum)val) \
 	   :(object) 0 ) \
 	 :in_type == F_object \
 	 ?(out_type == F_int ? (object)(void *) Mfix(val) \
@@ -38,12 +38,12 @@ int Rset;
 	   :out_type == F_shortfloat? COSF(Msf(val)) \
 	   :(object) 0)\
 	 :in_type == F_double_ptr \
-    	 ?(out_type == F_int ? (object)(void *)(long)*(double *)(void *)val \
+    	 ?(out_type == F_int ? (object)(void *)(fixnum)*(double *)(void *)val \
 	   :out_type == F_object ? make_longfloat(*(double *)(void *)val) \
 	   :out_type == F_shortfloat? COSF(*(double *)(void *)val) \
 	   :(object) 0) \
          :in_type == F_shortfloat \
-    	 ?(out_type == F_int ? (object)(bill.p = val, (long) bill.f) \
+    	 ?(out_type == F_int ? (object)(bill.p = val, (fixnum) bill.f) \
 	   :out_type == F_object ? make_shortfloat((bill.p=val,(double)(bill.f))) \
 	   :out_type == F_double_ptr ? (object)(void *) \
 	         &lf(make_longfloat((bill.p = val,bill.f))) \

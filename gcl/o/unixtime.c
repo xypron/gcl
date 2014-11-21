@@ -77,7 +77,7 @@ int usleep ( unsigned int microseconds );
 
 #ifdef ATT
 #include <sys/times.h>
-static long beginning;
+static fixnum beginning;
 #endif
 
 int

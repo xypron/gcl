@@ -721,7 +721,7 @@ Cannot compile ~a.~%"
 				   (format st "load2(\"~a\");~%" tem)))))
 		    (format st "return Cnil;}~%~%")
 
-		    (format st "static int my_strncmp(const char *s1,const char *s2,unsigned long n) {")
+		    (format st "static int my_strncmp(const char *s1,const char *s2,ufixnum n) {")
 		    (format st "  for (;n--;) if (*s1++!=*s2++) return 1; return 0;}")
 
 		    (format st "int user_match(const char *s,int n) {~%")

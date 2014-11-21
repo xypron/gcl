@@ -148,7 +148,7 @@ void set_symbol_address ( struct syment *sym, char *string );
 int
 fasload(faslfile)
 object faslfile;
-{       long fasl_vector_start;
+{       fixnum fasl_vector_start;
 	struct filehdr fileheader;
 	struct sfasl_info sfasl_info_buf;
 #ifdef COFF

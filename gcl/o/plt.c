@@ -11,7 +11,7 @@
 
 typedef struct {
   const char *n;
-  unsigned long ad;
+  ufixnum ad;
 } Plt;
 
 #ifdef LEADING_UNDERSCORE
@@ -48,7 +48,7 @@ extern int __divqu();
 extern int __remq();
 extern int __remqu();
 
-#define MY_PLT(a_) {#a_,(unsigned long)(void *)a_}
+#define MY_PLT(a_) {#a_,(ufixnum)(void *)a_}
 static Plt mplt[]={
 	/* This is an attempt to at least capture the addresses to
 	   which the compiler directly refers in C code. (Some symbols
@@ -108,7 +108,7 @@ parse_plt() {
   FILE *f;
   char b[1024],b1[1024];
   unsigned i,n,j;
-  unsigned long u;
+  ufixnum u;
 #ifdef _WIN32
   char *exe_start = NULL;           /* point to start of .exe */
 #endif  
@@ -177,7 +177,7 @@ parse_plt() {
 
 
 int
-my_plt(const char *s,unsigned long *v) {
+my_plt(const char *s,ufixnum *v) {
 
   Plt *p=mplt,*pe=p+sizeof(mplt)/sizeof(*mplt),tp;
   object *op;

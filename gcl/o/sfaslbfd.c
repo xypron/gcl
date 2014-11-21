@@ -51,9 +51,9 @@ bfd_mach_o_inject_fp_branch_islands PARAMS ((bfd *, asection *, asymbol **));
 
 /* align for power of two n */
 static void *
-round_up(void *address, unsigned long n)
+round_up(void *address, ufixnum n)
 {
- return  (void *)(((unsigned long)address + n -1) & ~(n-1)) ;
+ return  (void *)(((ufixnum)address + n -1) & ~(n-1)) ;
 }
 #define ROUND_UP(a,b) round_up(a,b) 
 
@@ -188,7 +188,7 @@ fasload(object faslfile) {
   object memory;
   int max_align=0;
   void *current;
-  unsigned long curr_size;
+  ufixnum curr_size;
   object *old_vs_base=vs_base;
   object *old_vs_top=vs_top;
   static int nbfd;
@@ -266,7 +266,7 @@ fasload(object faslfile) {
     current+=bfd_section_size(b,s);
 
   }
-  curr_size=(unsigned long)current;
+  curr_size=(ufixnum)current;
   max_align=1<<max_align;
 
   memory = alloc_object(t_cfdata);
@@ -287,7 +287,7 @@ fasload(object faslfile) {
       continue;
 
     m=round_up(m,1<<s->alignment_power);
-    s->output_section->vma=(unsigned long)m;
+    s->output_section->vma=(ufixnum)m;
     m+=bfd_section_size(b,s);
 	     
   }
@@ -306,7 +306,7 @@ fasload(object faslfile) {
     struct bfd_link_hash_entry *h;
 
     if (!strncmp(entry_name_ptr,q[u]->name,5)) {
-      init_address=q[u]->value+(q[u]->section->output_section->vma-(unsigned long)memory->cfd.cfd_start);
+      init_address=q[u]->value+(q[u]->section->output_section->vma-(ufixnum)memory->cfd.cfd_start);
       continue;
     }
 
@@ -344,7 +344,7 @@ fasload(object faslfile) {
 
    for (s=b->sections;s;s=s->next) {
      
-     unsigned long ss=bfd_section_size(b,s);
+     ufixnum ss=bfd_section_size(b,s);
 
      if (!(s->flags & SEC_LOAD))
        continue;
@@ -355,7 +355,7 @@ fasload(object faslfile) {
 					     v,0,q)) 
        FEerror("Cannot get relocated section contents\n",0);
 
-     memcpy((void *)(unsigned long)s->output_section->vma,v,ss);
+     memcpy((void *)(ufixnum)s->output_section->vma,v,ss);
      
    }
 

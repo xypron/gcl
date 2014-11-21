@@ -116,12 +116,12 @@ static func prepare_bundle (object faslfile, char *filename)
     NSSymbol nssym;
     int (*fptr) ();
     
-    unsigned long n;
-    unsigned long vmsize = 0;
-    unsigned long vmaddr_slide = 0;
-    unsigned long base_addr = (unsigned long) -1;
+    ufixnum n;
+    ufixnum vmsize = 0;
+    ufixnum vmaddr_slide = 0;
+    ufixnum base_addr = (unsigned long) -1;
     
-    extern void mark_region (unsigned long address, unsigned long size);
+    extern void mark_region (ufixnum address, unsigned long size);
     
     if (NSCreateObjectFileImageFromFile (filename , &image) != NSObjectFileImageSuccess) {
         sfasl_error ("cannot create object file image\n");
@@ -148,19 +148,19 @@ static func prepare_bundle (object faslfile, char *filename)
         sfasl_error ("cannot retrieve entry point address\n");
     }
     
-    for (n = _dyld_image_count () ; --n != (unsigned long) -1 ; )
+    for (n = _dyld_image_count () ; --n != (ufixnum) -1 ; )
     {
         if (strstr (filename, _dyld_get_image_name (n)))
         {
             struct mach_header *mh = _dyld_get_image_header (n);
             struct load_command *lc = (struct load_command *) (mh+1);
-            unsigned long i;
+            ufixnum i;
 	    
             vmsize = 0;
 	    
             for (i=0 ; i < mh->ncmds ; i++) {
                 if (lc->cmd == LC_SEGMENT) {
-                    if (base_addr == (unsigned long) -1) {
+                    if (base_addr == (ufixnum) -1) {
                         base_addr = ((struct segment_command *) lc)->vmaddr;
                     }
                 vmsize += ((struct segment_command *) lc)->vmsize;
@@ -174,7 +174,7 @@ static func prepare_bundle (object faslfile, char *filename)
         }
     }
     
-    if (base_addr != (unsigned long) -1) {
+    if (base_addr != (ufixnum) -1) {
         mark_region (vmaddr_slide - base_addr, vmsize);
     } else {
         sfasl_error ("could not retrieve newly created bundle image\n");

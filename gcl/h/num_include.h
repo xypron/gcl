@@ -37,6 +37,6 @@ object Vrandom_state;
 #define PI			3.141592653589793
 #endif
 
-#define LOG_WORD_SIZE           (8*SIZEOF_LONG)
+#define LOG_WORD_SIZE           (8*SIZEOF_VOID_P)
 #define MOST_POSITIVE_FIX	((long)((((unsigned long)1)<<(LOG_WORD_SIZE-1))-1))
 #define MOST_NEGATIVE_FIX	( - MOST_POSITIVE_FIX - 1 )

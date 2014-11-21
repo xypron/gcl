@@ -6258,6 +6258,137 @@ esac
 # Find where Data begins.  This is used by the storage allocation
 # mechanism, in the PAGE macro.  This offset is subtracted from
 # addresses, in calculating a page for an address in the heap.
+# The cast to long int works around a bug in the HP C Compiler
+# version HP92453-01 B.11.11.23709.GP, which incorrectly rejects
+# declarations like `int a3[[(sizeof (unsigned char)) >= 0]];'.
+# This bug is HP SR number 8606223364.
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking size of void *" >&5
+$as_echo_n "checking size of void *... " >&6; }
+if ${ac_cv_sizeof_void_p+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  if ac_fn_c_compute_int "$LINENO" "(long int) (sizeof (void *))" "ac_cv_sizeof_void_p"        "$ac_includes_default"; then :
+
+else
+  if test "$ac_cv_type_void_p" = yes; then
+     { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error 77 "cannot compute sizeof (void *)
+See \`config.log' for more details" "$LINENO" 5; }
+   else
+     ac_cv_sizeof_void_p=0
+   fi
+fi
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_sizeof_void_p" >&5
+$as_echo "$ac_cv_sizeof_void_p" >&6; }
+
+
+
+cat >>confdefs.h <<_ACEOF
+#define SIZEOF_VOID_P $ac_cv_sizeof_void_p
+_ACEOF
+
+
+# The cast to long int works around a bug in the HP C Compiler
+# version HP92453-01 B.11.11.23709.GP, which incorrectly rejects
+# declarations like `int a3[[(sizeof (unsigned char)) >= 0]];'.
+# This bug is HP SR number 8606223364.
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking size of char" >&5
+$as_echo_n "checking size of char... " >&6; }
+if ${ac_cv_sizeof_char+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  if ac_fn_c_compute_int "$LINENO" "(long int) (sizeof (char))" "ac_cv_sizeof_char"        "$ac_includes_default"; then :
+
+else
+  if test "$ac_cv_type_char" = yes; then
+     { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error 77 "cannot compute sizeof (char)
+See \`config.log' for more details" "$LINENO" 5; }
+   else
+     ac_cv_sizeof_char=0
+   fi
+fi
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_sizeof_char" >&5
+$as_echo "$ac_cv_sizeof_char" >&6; }
+
+
+
+cat >>confdefs.h <<_ACEOF
+#define SIZEOF_CHAR $ac_cv_sizeof_char
+_ACEOF
+
+
+# The cast to long int works around a bug in the HP C Compiler
+# version HP92453-01 B.11.11.23709.GP, which incorrectly rejects
+# declarations like `int a3[[(sizeof (unsigned char)) >= 0]];'.
+# This bug is HP SR number 8606223364.
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking size of short" >&5
+$as_echo_n "checking size of short... " >&6; }
+if ${ac_cv_sizeof_short+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  if ac_fn_c_compute_int "$LINENO" "(long int) (sizeof (short))" "ac_cv_sizeof_short"        "$ac_includes_default"; then :
+
+else
+  if test "$ac_cv_type_short" = yes; then
+     { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error 77 "cannot compute sizeof (short)
+See \`config.log' for more details" "$LINENO" 5; }
+   else
+     ac_cv_sizeof_short=0
+   fi
+fi
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_sizeof_short" >&5
+$as_echo "$ac_cv_sizeof_short" >&6; }
+
+
+
+cat >>confdefs.h <<_ACEOF
+#define SIZEOF_SHORT $ac_cv_sizeof_short
+_ACEOF
+
+
+# The cast to long int works around a bug in the HP C Compiler
+# version HP92453-01 B.11.11.23709.GP, which incorrectly rejects
+# declarations like `int a3[[(sizeof (unsigned char)) >= 0]];'.
+# This bug is HP SR number 8606223364.
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking size of int" >&5
+$as_echo_n "checking size of int... " >&6; }
+if ${ac_cv_sizeof_int+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  if ac_fn_c_compute_int "$LINENO" "(long int) (sizeof (int))" "ac_cv_sizeof_int"        "$ac_includes_default"; then :
+
+else
+  if test "$ac_cv_type_int" = yes; then
+     { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error 77 "cannot compute sizeof (int)
+See \`config.log' for more details" "$LINENO" 5; }
+   else
+     ac_cv_sizeof_int=0
+   fi
+fi
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_sizeof_int" >&5
+$as_echo "$ac_cv_sizeof_int" >&6; }
+
+
+
+cat >>confdefs.h <<_ACEOF
+#define SIZEOF_INT $ac_cv_sizeof_int
+_ACEOF
+
 
 # The cast to long int works around a bug in the HP C Compiler
 # version HP92453-01 B.11.11.23709.GP, which incorrectly rejects
@@ -6292,6 +6423,78 @@ cat >>confdefs.h <<_ACEOF
 _ACEOF
 
 
+# The cast to long int works around a bug in the HP C Compiler
+# version HP92453-01 B.11.11.23709.GP, which incorrectly rejects
+# declarations like `int a3[[(sizeof (unsigned char)) >= 0]];'.
+# This bug is HP SR number 8606223364.
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking size of long long" >&5
+$as_echo_n "checking size of long long... " >&6; }
+if ${ac_cv_sizeof_long_long+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  if ac_fn_c_compute_int "$LINENO" "(long int) (sizeof (long long))" "ac_cv_sizeof_long_long"        "$ac_includes_default"; then :
+
+else
+  if test "$ac_cv_type_long_long" = yes; then
+     { { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error 77 "cannot compute sizeof (long long)
+See \`config.log' for more details" "$LINENO" 5; }
+   else
+     ac_cv_sizeof_long_long=0
+   fi
+fi
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_sizeof_long_long" >&5
+$as_echo "$ac_cv_sizeof_long_long" >&6; }
+
+
+
+cat >>confdefs.h <<_ACEOF
+#define SIZEOF_LONG_LONG $ac_cv_sizeof_long_long
+_ACEOF
+
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for PTRINT" >&5
+$as_echo_n "checking for PTRINT... " >&6; }
+if test "$ac_cv_sizeof_void_p" = "$ac_cv_sizeof_long"; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: result: long" >&5
+$as_echo "long" >&6; }
+
+$as_echo "#define PTRINT long" >>confdefs.h
+# avoid inttypes.h in cmpinclude.h
+else if test "$ac_cv_sizeof_void_p" = "$ac_cv_sizeof_long_long"; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: result: long long" >&5
+$as_echo "long long" >&6; }
+
+$as_echo "#define PTRINT long long" >>confdefs.h
+# avoid inttypes.h in cmpinclude.h
+else if test "$ac_cv_sizeof_void_p" = "$ac_cv_sizeof_int"; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: result: int" >&5
+$as_echo "int" >&6; }
+
+$as_echo "#define PTRINT int" >>confdefs.h
+# avoid inttypes.h in cmpinclude.h
+else if test "$ac_cv_sizeof_void_p" = "$ac_cv_sizeof_short"; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: result: short" >&5
+$as_echo "short" >&6; }
+
+$as_echo "#define PTRINT short" >>confdefs.h
+# avoid inttypes.h in cmpinclude.h
+else if test "$ac_cv_sizeof_void_p" = "$ac_cv_sizeof_char"; then
+   { $as_echo "$as_me:${as_lineno-$LINENO}: result: char" >&5
+$as_echo "char" >&6; }
+
+$as_echo "#define PTRINT char" >>confdefs.h
+# avoid inttypes.h in cmpinclude.h
+else
+   as_fn_error $? "cannot compute PTRINT define" "$LINENO" 5
+fi
+fi
+fi
+fi
+fi
 
 ####  Memory areas and alignment
 
@@ -6450,6 +6653,7 @@ else
 /* end confdefs.h.  */
 
         #include <stdio.h>
+	$ac_includes_default
 	#define EXTER
 	#include "$MP_INCLUDE"
 	#include "./h/enum.h"
@@ -6570,8 +6774,6 @@ _ACEOF
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking sizeof struct contblock" >&5
 $as_echo_n "checking sizeof struct contblock... " >&6; }
 
-# work around MSYS pwd result incompatibility
-if test "$use" = "mingw" ; then
 if test "$cross_compiling" = yes; then :
   echo Cannot find sizeof struct contblock;exit 1
 else
@@ -6579,11 +6781,12 @@ else
 /* end confdefs.h.  */
 #include <stdio.h>
 	#define EXTER
+	$ac_includes_default
 	#include "$MP_INCLUDE"
-	#include "h/enum.h"
-	#include "h/type.h"
-	#include "h/lu.h"
-	#include "h/object.h"
+	#include "./h/enum.h"
+	#include "./h/type.h"
+	#include "./h/lu.h"
+	#include "./h/object.h"
 	int main(int argc,char **argv,char **envp) {
 	FILE *f=fopen("conftest1","w");
 	fprintf(f,"%u",sizeof(struct contblock));
@@ -6600,36 +6803,6 @@ rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
   conftest.$ac_objext conftest.beam conftest.$ac_ext
 fi
 
-else
-if test "$cross_compiling" = yes; then :
-  echo Cannot find sizeof struct contblock;exit 1
-else
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-#include <stdio.h>
-	#define EXTER
-	#include "$MP_INCLUDE"
-	#include "`pwd`/h/enum.h"
-	#include "`pwd`/h/type.h"
-	#include "`pwd`/h/lu.h"
-	#include "`pwd`/h/object.h"
-	int main(int argc,char **argv,char **envp) {
-	FILE *f=fopen("conftest1","w");
-	fprintf(f,"%u",sizeof(struct contblock));
-	fclose(f);
-	return 0;
-	}
-_ACEOF
-if ac_fn_c_try_run "$LINENO"; then :
-  sizeof_contblock=`cat conftest1`
-else
-  echo Cannot find sizeof struct contblock;exit 1
-fi
-rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
-  conftest.$ac_objext conftest.beam conftest.$ac_ext
-fi
-
-fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $sizeof_contblock" >&5
 $as_echo "$sizeof_contblock" >&6; }
 
@@ -7214,7 +7387,7 @@ $as_echo "$as_me: trying to adjust text start" >&6;}
 
       n=-1;
       k=0;
-      lim=`$AWK 'END {printf("%d\n",m*8-2)}' m=$ac_cv_sizeof_long`;
+      lim=`$AWK 'END {printf("%d\n",m*8-2)}' m=$ac_cv_sizeof_void_p`;
       max=0;
       min=$lim;
       while test $n -lt $lim ; do

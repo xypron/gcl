@@ -82,7 +82,7 @@ int debug;			/* debug switch */
 int raw_image = TRUE;		/* raw or saved image -- CYGWIN will only place this in .data and not in .bss if initialized to non-zero */
 bool GBC_enable=FALSE;
 
-long real_maxpage;
+fixnum real_maxpage;
 object sSAlisp_maxpagesA;
 
 object siClisp_pagesize;
@@ -98,7 +98,7 @@ static object stack_space;
 unsigned int _dbegin = 0x10100000;
 #endif
 #ifdef __CYGWIN__
-unsigned long _dbegin = 0;
+ufixnum _dbegin = 0;
 #endif
 
 #ifdef SGC
@@ -262,7 +262,7 @@ minimize_image(void) {
 #else
   int in_sgc=0;
 #endif
-  extern long new_holepage;
+  extern fixnum new_holepage;
   fixnum old_holepage=new_holepage,i;
   void *new;
   
@@ -314,9 +314,9 @@ DEFUN_NEW("SET-LOG-MAXPAGE-BOUND",object,fSset_log_maxpage_bound,SI,1,1,NONE,II,
 
 #ifdef NEED_STACK_CHK_GUARD
 
-unsigned long __stack_chk_guard=0;
+ufixnum __stack_chk_guard=0;
 
-static unsigned long
+static ufixnum
 random_ulong() {
  
   object y;
@@ -337,7 +337,7 @@ random_ulong() {
 #ifdef HAVE_MPROTECT
 #include <sys/mman.h>
 int
-gcl_mprotect(void *v,unsigned long l,int p) {
+gcl_mprotect(void *v,ufixnum l,int p) {
 
   int i;
   char b[80];
@@ -801,7 +801,7 @@ FFN(siLcatch_fatal)(int i) {
 
 LFD(siLreset_stack_limits)(void)
 {
-  long i=0;
+  fixnum i=0;
 
   check_arg(0);
   if(catch_fatal <0) catch_fatal=1;
@@ -838,7 +838,7 @@ LFD(siLreset_stack_limits)(void)
 }
 
 #define COPYSTACK(org,p,typ,lim,top,geta,size) \
-  {unsigned long topl=top-org;\
+  {ufixnum topl=top-org;\
    bcopy(org,p,(lim-org)*sizeof(typ));\
    org=p;\
    top=org+topl;\
@@ -888,7 +888,7 @@ FFN(siLuser_init)(void) {
 /* static void */
 /* FFN(siLaddress)(void) { */
 /*   check_arg(1); */
-/*   vs_base[0] = make_fixnum((long)vs_base[0]); */
+/*   vs_base[0] = make_fixnum((fixnum)vs_base[0]); */
 /* } */
 
 DEFUN_NEW("NANI",object,fSnani,SI,1,1,NONE,OI,OO,OO,OO,(fixnum address),"") {
@@ -1130,13 +1130,13 @@ my_fprintf(void *v,const char *f,...) {
 
 static int
 my_read(bfd_vma memaddr, bfd_byte *myaddr, unsigned int length, struct disassemble_info *dinfo) {
-  memcpy(myaddr,(void *)(long)memaddr,length);
+  memcpy(myaddr,(void *)(fixnum)memaddr,length);
   return 0;
 }
 
 static void
 my_pa(bfd_vma addr,struct disassemble_info *dinfo) {
-  dinfo->fprintf_func(dinfo->stream,"%p",(void *)(long)addr);
+  dinfo->fprintf_func(dinfo->stream,"%p",(void *)(fixnum)addr);
 }
 
 #endif

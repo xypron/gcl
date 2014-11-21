@@ -73,7 +73,7 @@ LFD(Lsymbol_function)(void)
 	if (type_of(sym) != t_symbol)
 		not_a_symbol(sym);
 	if (sym->s.s_sfdef != NOT_SPECIAL) {
-		vs_push(make_fixnum((long)(sym->s.s_sfdef)));
+		vs_push(make_fixnum((fixnum)(sym->s.s_sfdef)));
 		vs_base[0] = sLspecial;
 		stack_cons();
 		return;

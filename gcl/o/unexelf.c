@@ -458,7 +458,7 @@ typedef struct {
 	int ifdMax;
 	int crfd;
 	int iextMax;
-	long cbLine;
+	fixnum cbLine;
 	long cbLineOffset;
 	long cbDnOffset;
 	long cbPdOffset;

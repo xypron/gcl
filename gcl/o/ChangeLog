@@ -185,7 +185,7 @@ Wed Oct  9 21:31:03 1991  Bill Schelter  (wfs at nicolas.ma.utexas.edu)
 	We have left the default number of digits printed out as 17,
 	in spite of the fact that IEE has only 15.95 significant digits.
 	The reason is that correct rounding to 15 or 16  digits, will
-	commonly cause things like most-positive-long-float to print
+	commonly cause things like most-positive-fixnum-float to print
 	in a form which is not even readable (since it is rounded up above
 	the most-positive-long-float).
 

@@ -41,8 +41,8 @@ Boston, MA 02111-1307, USA.
 
 extern unsigned char *get_data_start();
 extern unsigned char *get_data_end();
-extern unsigned long  data_region_size;
-extern unsigned long  reserved_heap_size;
+extern ufixnum  data_region_size;
+extern ufixnum  reserved_heap_size;
 extern SYSTEM_INFO    sysinfo_cache;
 extern int    	      nt_major_version;
 extern int    	      nt_minor_version;
@@ -66,7 +66,7 @@ extern void *sbrk (ptrdiff_t size);
 extern void recreate_heap (char *executable_path);
 
 /* Round the heap to this size.  */
-extern void round_heap (unsigned long size);
+extern void round_heap (ufixnum size);
 
 /* Load in the dumped .bss section.  */
 extern void read_in_bss (char *name);
@@ -79,14 +79,14 @@ extern void cache_system_info (void);
 
 /* Round ADDRESS up to be aligned with ALIGN.  */
 extern unsigned char *round_to_next (unsigned char *address, 
-				     unsigned long align);
+				     ufixnum align);
 
 /* ----------------------------------------------------------------- */
 /* Useful routines for manipulating memory-mapped files. */
 
 typedef struct file_data {
     char          *name;
-    unsigned long  size;
+    ufixnum  size;
     HANDLE         file;
     HANDLE         file_mapping;
     unsigned char *file_base;
@@ -102,10 +102,10 @@ typedef struct file_data {
 	  ((void *)(RVA_TO_OFFSET(var,section) + (filedata).file_base))
 
 int open_input_file (file_data *p_file, char *name);
-int open_output_file (file_data *p_file, char *name, unsigned long size);
+int open_output_file (file_data *p_file, char *name, ufixnum size);
 void close_file_data (file_data *p_file);
 
-unsigned long get_section_size (PIMAGE_SECTION_HEADER p_section);
+ufixnum get_section_size (PIMAGE_SECTION_HEADER p_section);
 
 /* Return pointer to section header for named section. */
 IMAGE_SECTION_HEADER * find_section (char * name, IMAGE_NT_HEADERS * nt_header);

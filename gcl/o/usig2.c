@@ -50,7 +50,7 @@ void * sfaslp;
 
 #ifdef CMAC
 EXTER
-unsigned long s4_neg_int[4],small_neg_int[3],small_pos_int[3];
+ufixnum s4_neg_int[4],small_neg_int[3],small_pos_int[3];
 #endif
 
  
@@ -255,7 +255,7 @@ before_interrupt(struct save_for_interrupt *p, int allowed)
 #undef XS
 #undef XSI
 #define XS(a) *pp++ = (void *) (a);
-#define XSI(a) *pp++ = (void *)(long)(a);
+#define XSI(a) *pp++ = (void *)(fixnum)(a);
 /* #define XS(a) *pp++ =  * (void **) (&a);  */
 #include "usig2_aux.c"
    if ((pp - (&(p->save_objects)[0])) >= (sizeof(p->save_objects)/sizeof(void *)))
@@ -291,7 +291,7 @@ after_interrupt(struct save_for_interrupt *p, int allowed)
 		{ x = (object) p->free2[i];
 		  if (is_marked_or_free(x)) error("should not be free");
 		  make_free(x);
-		  F_LINK(F_LINK(ad->tm_free)) = (long )current_fl;
+		  F_LINK(F_LINK(ad->tm_free)) = (fixnum )current_fl;
 		  ad->tm_nfree += 2;
 		}
 	      else
@@ -319,7 +319,7 @@ after_interrupt(struct save_for_interrupt *p, int allowed)
  
 /* #define XS(a) do { void **_p = (void **)(&a); *_p = (void *)(*pp++);}while(0) */
 #define XS(a) a = (void *)(*pp++)
-#define XSI(a) {union {void *v;long l;}u; u.v=*pp++; a = u.l;}
+#define XSI(a) {union {void *v;fixnum l;}u; u.v=*pp++; a = u.l;}
 #include "usig2_aux.c"
  }
 

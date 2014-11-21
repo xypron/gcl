@@ -31,7 +31,6 @@ Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #define P__(x)
 #endif
 
-
 #include "options.h"
 #include "gclincl.h"
 

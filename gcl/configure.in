@@ -1208,8 +1208,35 @@ esac
 # Find where Data begins.  This is used by the storage allocation
 # mechanism, in the PAGE macro.  This offset is subtracted from
 # addresses, in calculating a page for an address in the heap.
-
-AC_CHECK_SIZEOF(long,0)
+AC_CHECK_SIZEOF([void *])
+AC_CHECK_SIZEOF([char])
+AC_CHECK_SIZEOF([short])
+AC_CHECK_SIZEOF([int])
+AC_CHECK_SIZEOF([long])
+AC_CHECK_SIZEOF([long long])
+AC_MSG_CHECKING([for PTRINT])
+if test "$ac_cv_sizeof_void_p" = "$ac_cv_sizeof_long"; then
+   AC_MSG_RESULT(long)
+   AC_DEFINE([PTRINT],[long],[int with same size as pointer])# avoid inttypes.h in cmpinclude.h
+else if test "$ac_cv_sizeof_void_p" = "$ac_cv_sizeof_long_long"; then
+   AC_MSG_RESULT([long long])
+   AC_DEFINE([PTRINT],[long long],[int with same size as pointer])# avoid inttypes.h in cmpinclude.h
+else if test "$ac_cv_sizeof_void_p" = "$ac_cv_sizeof_int"; then
+   AC_MSG_RESULT([int])
+   AC_DEFINE([PTRINT],[int],[int with same size as pointer])# avoid inttypes.h in cmpinclude.h
+else if test "$ac_cv_sizeof_void_p" = "$ac_cv_sizeof_short"; then
+   AC_MSG_RESULT([short])
+   AC_DEFINE([PTRINT],[short],[int with same size as pointer])# avoid inttypes.h in cmpinclude.h
+else if test "$ac_cv_sizeof_void_p" = "$ac_cv_sizeof_char"; then
+   AC_MSG_RESULT([char])
+   AC_DEFINE([PTRINT],[char],[int with same size as pointer])# avoid inttypes.h in cmpinclude.h
+else
+   AC_MSG_ERROR([cannot compute PTRINT define])
+fi
+fi
+fi
+fi
+fi
 
 ####  Memory areas and alignment
 
@@ -1273,6 +1300,7 @@ AC_SUBST(PAGEWIDTH)
 AC_MSG_CHECKING([for required object alignment])
 AC_RUN_IFELSE([AC_LANG_PROGRAM([[
         #include <stdio.h>
+	$ac_includes_default
 	#define EXTER
 	#include "$MP_INCLUDE"
 	#include "./h/enum.h"
@@ -1310,15 +1338,14 @@ AC_DEFINE_UNQUOTED(NO_RETURN,$no_return,[can use C extension for functions that 
 
 AC_MSG_CHECKING(sizeof struct contblock)
 
-# work around MSYS pwd result incompatibility
-if test "$use" = "mingw" ; then
 AC_TRY_RUN([#include <stdio.h>
 	#define EXTER
+	$ac_includes_default
 	#include "$MP_INCLUDE"
-	#include "h/enum.h"
-	#include "h/type.h"
-	#include "h/lu.h"
-	#include "h/object.h"
+	#include "./h/enum.h"
+	#include "./h/type.h"
+	#include "./h/lu.h"
+	#include "./h/object.h"
 	int main(int argc,char **argv,char **envp) {
 	FILE *f=fopen("conftest1","w");
 	fprintf(f,"%u",sizeof(struct contblock));
@@ -1327,23 +1354,6 @@ AC_TRY_RUN([#include <stdio.h>
 	}],sizeof_contblock=`cat conftest1`,
 	   echo Cannot find sizeof struct contblock;exit 1,
 	   echo Cannot find sizeof struct contblock;exit 1)
-else
-AC_TRY_RUN([#include <stdio.h>
-	#define EXTER
-	#include "$MP_INCLUDE"
-	#include "`pwd`/h/enum.h"
-	#include "`pwd`/h/type.h"
-	#include "`pwd`/h/lu.h"
-	#include "`pwd`/h/object.h"
-	int main(int argc,char **argv,char **envp) {
-	FILE *f=fopen("conftest1","w");
-	fprintf(f,"%u",sizeof(struct contblock));
-	fclose(f);
-	return 0;
-	}],sizeof_contblock=`cat conftest1`,
-	   echo Cannot find sizeof struct contblock;exit 1,
-	   echo Cannot find sizeof struct contblock;exit 1)
-fi
 AC_MSG_RESULT($sizeof_contblock)
 AC_DEFINE_UNQUOTED(SIZEOF_CONTBLOCK,$sizeof_contblock,[sizeof linked list for contiguous pages])
 
@@ -1729,7 +1739,7 @@ if test "$use" != "386-gnu" ; then #hurd can push .data below C stack, but sbrk(
 
       n=-1;
       k=0;
-      lim=`$AWK 'END {printf("%d\n",m*8-2)}' m=$ac_cv_sizeof_long`;
+      lim=`$AWK 'END {printf("%d\n",m*8-2)}' m=$ac_cv_sizeof_void_p`;
       max=0;
       min=$lim;
       while test $n -lt $lim ; do

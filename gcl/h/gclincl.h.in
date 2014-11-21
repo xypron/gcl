@@ -345,17 +345,35 @@
 /* system pagewidth */
 #undef PAGEWIDTH
 
+/* int with same size as pointer */
+#undef PTRINT
+
 /* have sigcontext in signal.h */
 #undef SIGNAL_H_HAS_SIGCONTEXT
 
+/* The size of `char', as computed by sizeof. */
+#undef SIZEOF_CHAR
+
 /* sizeof linked list for contiguous pages */
 #undef SIZEOF_CONTBLOCK
+
+/* The size of `int', as computed by sizeof. */
+#undef SIZEOF_INT
 
 /* sizeof jmp_buf */
 #undef SIZEOF_JMP_BUF
 
 /* The size of `long', as computed by sizeof. */
 #undef SIZEOF_LONG
+
+/* The size of `long long', as computed by sizeof. */
+#undef SIZEOF_LONG_LONG
+
+/* The size of `short', as computed by sizeof. */
+#undef SIZEOF_SHORT
+
+/* The size of `void *', as computed by sizeof. */
+#undef SIZEOF_VOID_P
 
 /* If using the C implementation of alloca, define if you know the
    direction of stack growth for your system; otherwise it will be

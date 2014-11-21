@@ -18,7 +18,7 @@
 
 #define PTR_ALIGN 8
 
-#if SIZEOF_LONG==4
+#if SIZEOF_VOID_P==4
 #define RELOC_H "elf32_sparc_reloc.h"
 #else
 #define RELOC_H "elf64_sparc_reloc.h"
@@ -26,6 +26,6 @@
 void unwind() __attribute__((optimize("O0")));/*FIXME*/
 #endif
 
-/* #if SIZEOF_LONG == 8 */
+/* #if SIZEOF_VOID_P == 8 */
 /* #define C_GC_OFFSET 4 */
 /* #endif */

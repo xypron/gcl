@@ -45,7 +45,7 @@ EXTER inline object
 immnum_length(object x) {return iif(x) ? mif(fixnum_length(fif(x))) : integer_length(x);}
 
 
-#if SIZEOF_LONG == 8
+#if SIZEOF_VOID_P == 8
 #define POPA 0x5555555555555555UL
 #define POPB 0x3333333333333333UL
 #define POPC 0x0F0F0F0F0F0F0F0FUL
@@ -64,7 +64,7 @@ fixnum_popcount(ufixnum x) {
   x=POPC&(x+(x>>4));
   x+=x>>8;
   x+=x>>16;
-#if SIZEOF_LONG == 8
+#if SIZEOF_VOID_P == 8
   x+=x>>32;
 #endif
   return x&POPD;

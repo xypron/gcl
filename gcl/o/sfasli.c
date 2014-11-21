@@ -12,7 +12,7 @@ static int
 build_symbol_table_bfd(void) {
 
   int u,v;
-  unsigned long pa;
+  ufixnum pa;
   asymbol **q;
 
   bfd_init();

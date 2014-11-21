@@ -3,13 +3,13 @@
 
 #include "arth.h"
 
-#define LM(a_) AM(AT(SIZEOF_LONG,8),a_)
-#if SIZEOF_LONG == 4
+#define LM(a_) AM(AT(SIZEOF_VOID_P,8),a_)
+#if SIZEOF_VOID_P == 4
 #define LL 2
-#elif SIZEOF_LONG == 8
+#elif SIZEOF_VOID_P == 8
 #define LL 3
 #else
-#error "unknown SIZEOF_LONG"
+#error "unknown SIZEOF_VOID_P"
 #endif 
 #define POW AM(PAGEWIDTH,AP(LL,1))
 

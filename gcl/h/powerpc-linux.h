@@ -16,7 +16,7 @@
                            asm __volatile__ ("dcbst 0,%0\n\tsync\n\ticbi 0,%0\n\tsync\n\tisync": : "r" (v) : "memory");\
                         } while(0)
 
-#if SIZEOF_LONG == 4
+#if SIZEOF_VOID_P == 4
 #define RELOC_H "elf32_ppc_reloc.h"
 #else
 #ifdef WORDS_BIGENDIAN

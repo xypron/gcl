@@ -31,7 +31,7 @@ enum type what_to_collect;
 object sSAprofile_arrayA;
 #ifdef NO_PROFILE
 #ifdef DARWIN/*FIXME macosx10.8 has a prototype (which must match here) but unlinkable function in 64bit*/
-int profil(char *buf, size_t bufsiz, unsigned long offset, unsigned int scale){return 0;}
+int profil(char *buf, size_t bufsiz, ufixnum offset, unsigned int scale){return 0;}
 #else
 void profil(void){;}
 #endif
@@ -68,7 +68,7 @@ DEFUN_NEW("FUNCTION-START",object,fSfunction_start,SI
     && type_of(funobj)!=t_afun
     && type_of(funobj)!=t_gfun)
     FEerror("not compiled function",0);
- funobj=make_fixnum((long) (funobj->cf.cf_self));
+ funobj=make_fixnum((fixnum) (funobj->cf.cf_self));
  RETURN1(funobj);
 }
 
@@ -86,7 +86,7 @@ char *data_load_addr =0;
 int maxpage;
 object sScdefn;
 
-#define CF_FLAG ((unsigned long)1 << (sizeof(long)*8-1)) 
+#define CF_FLAG ((ufixnum)1 << (sizeof(long)*8-1)) 
 
 static void
 cfuns_to_combined_table(unsigned int n) /* non zero n will ensure new table length */
@@ -127,10 +127,10 @@ cfuns_to_combined_table(unsigned int n) /* non zero n will ensure new table leng
        if (is_free(x) || x->cf.cf_self == NULL)
 	 continue;
        /* the cdefn things are the proclaimed call types. */
-       cf_addr=(char * ) ((unsigned long)(x->cf.cf_self));
+       cf_addr=(char * ) ((ufixnum)(x->cf.cf_self));
        
-       SYM_ADDRESS(combined_table,ii)=(unsigned long)cf_addr;
-       SYM_STRING(combined_table,ii)= (char *)(CF_FLAG | (unsigned long)x) ;
+       SYM_ADDRESS(combined_table,ii)=(ufixnum)cf_addr;
+       SYM_STRING(combined_table,ii)= (char *)(CF_FLAG | (ufixnum)x) ;
        /*       (x->cf.cf_name ? x->cf.cf_name->s.st_self : NULL) ; */
        combined_table.length = ++ii;
        if (ii >= combined_table.alloc_length)
@@ -299,13 +299,13 @@ DEFUN_NEW("DISPLAY-PROFILE",object,fSdisplay_profile,SI
 	 if ( prev < prof_start) continue;
 	 upto=prof_ind(next,scale);
 	 if (upto >= dim) upto=dim;
-	 {const char *name; unsigned long uname;
+	 {const char *name; ufixnum uname;
 	  count=0;
 	  for( ; j<upto;j++)
 	    count += ar[j];
 	  if (count > 0) {
 	    name=SYM_STRING(combined_table,i-1);
-	    uname = (unsigned long) name;
+	    uname = (ufixnum) name;
 	    printf("\n%6.2f%% (%5d): ",(100.0*count)/total, count);
 	    fflush(stdout);
 	    if (CF_FLAG & uname)
@@ -332,7 +332,7 @@ DEFUN_NEW("DISPLAY-PROFILE",object,fSdisplay_profile,SI
 DEFUN_NEW("ARRAY-ADRESS",object,fSarray_adress,SI
        ,1,1,NONE,OO,OO,OO,OO,(object array),"")
 {/* 1 args */
- array=make_fixnum((long) (&(array->st.st_self[0])));
+ array=make_fixnum((fixnum) (&(array->st.st_self[0])));
  RETURN1(array);
 }
 

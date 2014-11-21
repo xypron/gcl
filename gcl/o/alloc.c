@@ -65,10 +65,10 @@ sbrk1(n)
 #define sbrk sbrk1
 #endif /* DEBUG_SBRK */
 
-long starting_hole_div=10;
-long starting_relb_heap_mult=2;
-long new_holepage;
-long resv_pages=40;
+fixnum starting_hole_div=10;
+fixnum starting_relb_heap_mult=2;
+fixnum new_holepage;
+fixnum resv_pages=40;
 
 #ifdef BSD
 #include <sys/time.h>
@@ -187,7 +187,7 @@ int reserve_pages_for_signal_handler=30;
    reserve_pages_for_signal_handler pages on hand in the hole
  */
 inline void *
-alloc_page(long n) {
+alloc_page(fixnum n) {
 
   void *e=heap_end;
   fixnum d,m;
@@ -289,7 +289,7 @@ inline void
 add_page_to_freelist(char *p, struct typemanager *tm) {
 
   short t,size;
-  long i=tm->tm_nppage,fw;
+  fixnum i=tm->tm_nppage,fw;
   object x,f;
   struct pageinfo *pp;
 
@@ -411,13 +411,13 @@ DEFVAR("*OPTIMIZE-MAXIMUM-PAGES*",sSAoptimize_maximum_pagesA,SI,sLnil,"");
 #define OPTIMIZE_MAX_PAGES (sSAoptimize_maximum_pagesA ==0 || sSAoptimize_maximum_pagesA->s.s_dbind !=sLnil) 
 DEFVAR("*NOTIFY-OPTIMIZE-MAXIMUM-PAGES*",sSAnotify_optimize_maximum_pagesA,SI,sLnil,"");
 #define MMAX_PG(a_) (a_)->tm_maxpage
-inline long
+inline fixnum
 opt_maxpage(struct typemanager *my_tm) {
 
   double x=0.0,y=0.0,z,r;
-  long mmax_page;
+  fixnum mmax_page;
   struct typemanager *tm,*tme;
-  long mro=0,tro=0;
+  fixnum mro=0,tro=0;
 
   if (phys_pages>0 && page(heap_end)-first_data_page+nrbpage>=phys_pages)
     return 0;
@@ -442,7 +442,7 @@ opt_maxpage(struct typemanager *my_tm) {
   z*=(y-mmax_page)*mmax_page;
   z=sqrt(z);
   z=z-mmax_page>available_pages ? mmax_page+available_pages : z;
-  my_tm->tm_opt_maxpage=(long)z>my_tm->tm_opt_maxpage ? (long)z : my_tm->tm_opt_maxpage;
+  my_tm->tm_opt_maxpage=(fixnum)z>my_tm->tm_opt_maxpage ? (long)z : my_tm->tm_opt_maxpage;
 
   if (z<=mmax_page)
     return 0;
@@ -451,7 +451,7 @@ opt_maxpage(struct typemanager *my_tm) {
   r/=x*y;
   if (sSAnotify_optimize_maximum_pagesA->s.s_dbind!=sLnil)
     printf("[type %u max %lu(%lu) opt %lu   y %lu(%lu) gbcrat %f sav %f]\n",
-	   my_tm->tm_type,mmax_page,mro,(long)z,(long)y,tro,(my_tm->tm_adjgbccnt-1)/(1+x-0.9*my_tm->tm_adjgbccnt),r);
+	   my_tm->tm_type,mmax_page,mro,(fixnum)z,(long)y,tro,(my_tm->tm_adjgbccnt-1)/(1+x-0.9*my_tm->tm_adjgbccnt),r);
   return r<=0.95 && set_tm_maxpage(my_tm,z+mro) ? 1 : 0;
 
 }
@@ -992,14 +992,14 @@ static int gcl_alloc_initialized;
 
 
 #ifdef GCL_GPROF
-static unsigned long textstart,textend,textpage;
+static ufixnum textstart,textend,textpage;
 static void init_textpage() {
 
   extern void *GCL_GPROF_START;
-  unsigned long s=(unsigned long)GCL_GPROF_START;
+  ufixnum s=(ufixnum)GCL_GPROF_START;
 
-  textstart=(unsigned long)&GCL_GPROF_START;
-  textend=(unsigned long)&etext;
+  textstart=(ufixnum)&GCL_GPROF_START;
+  textend=(ufixnum)&etext;
   if (s<textend && (textstart>textend || s>textstart))
     textstart=s;
 
@@ -1374,7 +1374,7 @@ DEFUN_NEW("GET-HOLE-SIZE",object,fSget_hole_size,SI,0,0,NONE,OO,OO,OO,OO,(void),
 
 #ifdef GCL_GPROF
 
-static unsigned long start,end,gprof_on;
+static ufixnum start,end,gprof_on;
 static void *initial_monstartup_pointer;
 
 void
@@ -1409,9 +1409,9 @@ gprof_cleanup(void) {
 }
     
 static inline int
-my_monstartup(unsigned long start,unsigned long end) {
+my_monstartup(ufixnum start,unsigned long end) {
 
-  extern void monstartup(unsigned long,unsigned long);
+  extern void monstartup(ufixnum,unsigned long);
 
   monstartup(start,end);
 
@@ -1728,7 +1728,7 @@ void *
 calloc(size_t nelem, size_t elsize)
 {
 	char *ptr;
-	long i;
+	fixnum i;
 
 	ptr = malloc(i = nelem*elsize);
 	while (--i >= 0)

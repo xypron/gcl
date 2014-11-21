@@ -176,7 +176,7 @@
        (funcall (cdr type.wt) loc)  (wt ";")
        (unwind-bds bds-cvar bds-bind)
        (wt-nl "VMR" *reservation-cmacro* "(" 
-	      (if (equal (rep-type (car type.wt)) "long ") "(object)" "") 
+	      (if (equal (rep-type (car type.wt)) "fixnum ") "(object)" "") 
 	      "V" cvar")}")
        (return)))
     (t (baboon))

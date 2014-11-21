@@ -29,7 +29,7 @@ Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #define dcheck_vs do{if (vs_base < vs_org || vs_top < vs_org) error("bad vs");} while (0)
 #define dcheck_type(a,b) check_type(a,b) ; dcheck_vs 
 
-#define PADDR(i) ((void *)(long)(sSPinit->s.s_dbind->v.v_self[fix(i)]))
+#define PADDR(i) ((void *)(fixnum)(sSPinit->s.s_dbind->v.v_self[fix(i)]))
 object sSPinit,sSPmemory;
 
 object

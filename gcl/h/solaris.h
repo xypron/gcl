@@ -34,7 +34,7 @@ void bcopy (const void *,void *,size_t);
 void bzero(void *,size_t);
 int bcmp(const void *,const void *,size_t);
 
-#if SIZEOF_LONG==4
+#if SIZEOF_VOID_P==4
 #define RELOC_H "elf32_sparc_reloc.h"
 #else
 #define RELOC_H "elf64_sparc_reloc.h"

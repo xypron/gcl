@@ -256,18 +256,18 @@ int runtime(void);
 #ifdef SGC
 int sgc_enabled=0;
 #endif
-long  first_protectable_page =0;
+fixnum  first_protectable_page =0;
 
 static char *copy_relblock(char *p, int s);
 
-long real_maxpage;
-long new_holepage;
+fixnum real_maxpage;
+fixnum new_holepage;
 
 struct apage {
   char apage_self[PAGESIZE];
 };
 
-/* long maxpage; */
+/* fixnum maxpage; */
 
 object sSAnotify_gbcA;
 
@@ -319,9 +319,9 @@ mark_cons(object x) {
    if one is live, the other will be made live */
 #define mark_displaced_field(ar) mark_object(ar->a.a_displaced)
 
-#define LINK_ARRAY_MARKED(x_) ((*(unsigned long *)(x_))&0x1)
-#define MARK_LINK_ARRAY(x_) ((*(unsigned long *)(x_))|=1UL)
-#define CLEAR_LINK_ARRAY(x_) ((*(unsigned long *)(x_))&=~(1UL))
+#define LINK_ARRAY_MARKED(x_) ((*(ufixnum *)(x_))&0x1)
+#define MARK_LINK_ARRAY(x_) ((*(ufixnum *)(x_))|=1UL)
+#define CLEAR_LINK_ARRAY(x_) ((*(ufixnum *)(x_))&=~(1UL))
 
 /* #define COLLECT_RELBLOCK_P (what_to_collect == t_relocatable || what_to_collect == t_contiguous) */
 bool collect_both=0;
@@ -532,7 +532,7 @@ mark_object(object x) {
     
     switch((enum aelttype)x->a.a_elttype){
 #define  ROUND_RB_POINTERS_DOUBLE \
-{int tem =  ((long)rb_pointer1) & (sizeof(double)-1); \
+{int tem =  ((fixnum)rb_pointer1) & (sizeof(double)-1); \
    if (tem) \
      { rb_pointer +=  (sizeof(double) - tem); \
        rb_pointer1 +=  (sizeof(double) - tem); \
@@ -580,7 +580,7 @@ mark_object(object x) {
 #endif			  
 	  x->a.a_self = (object *)copy_relblock(cp, j);
       } else if (x->a.a_displaced->c.c_car == Cnil) {
-	i = (long)(object *)copy_relblock(cp, j)  - (long)(x->a.a_self);
+	i = (fixnum)(object *)copy_relblock(cp, j)  - (long)(x->a.a_self);
 	adjust_displaced(x, i);
       }
     }
@@ -820,7 +820,7 @@ mark_object(object x) {
   }
 }
 
-static long *c_stack_where;
+static fixnum *c_stack_where;
 
 void **contblock_stack_list=NULL;
 
@@ -834,12 +834,12 @@ sgc_mark_object1(object);
 static void
 mark_stack_carefully(void *topv, void *bottomv, int offset) {
 
-  long pageoffset;
-  long p;
+  fixnum pageoffset;
+  fixnum p;
   object x;
   struct typemanager *tm;
-  register long *j;
-  long *top=topv,*bottom=bottomv;
+  register fixnum *j;
+  fixnum *top=topv,*bottom=bottomv;
   
   /* if either of these happens we are marking the C stack
      and need to use a local */
@@ -1037,7 +1037,7 @@ mark_c_stack(jmp_buf env1, int n, void (*fn)(void *,void *,int)) {
   jmp_buf env;
   int where;
   if (n== N_RECURSION_REQD)
-    c_stack_where = (long *) (void *) &env;
+    c_stack_where = (fixnum *) (void *) &env;
   if (n > 0 ) {  
 #if defined(__hppa__)
     hppa_save_regs(hppa_regs);
@@ -1096,7 +1096,7 @@ mark_c_stack(jmp_buf env1, int n, void (*fn)(void *,void *,int)) {
 static void
 sweep_phase(void) {
 
-  STATIC long j, k;
+  STATIC fixnum j, k;
   STATIC object x;
   STATIC char *p;
   STATIC struct typemanager *tm;
@@ -1201,7 +1201,7 @@ fixnum fault_pages=0;
 void
 GBC(enum type t) {
 
-  long i,j;
+  fixnum i,j;
 #ifdef SGC
   int in_sgc = sgc_enabled;
 #endif
@@ -1297,7 +1297,7 @@ GBC(enum type t) {
     
     if (rb_start < rb_pointer)
       rb_start1 = (char *)
-	((long)(rb_pointer + PAGESIZE-1) & -(unsigned long)PAGESIZE);
+	((fixnum)(rb_pointer + PAGESIZE-1) & -(unsigned long)PAGESIZE);
     else
       rb_start1 = rb_start;
     
@@ -1429,7 +1429,7 @@ GBC(enum type t) {
     printf("contblock: %ld blocks %ld pages\n", ncb, ncbpage);
     printf("hole: %ld pages\n", holepage);
     printf("relblock: %ld bytes used %ld bytes free %ld pages\n",
-	   (long)(rb_pointer - rb_start), (long)(rb_end - rb_pointer), nrbpage);
+	   (fixnum)(rb_pointer - rb_start), (long)(rb_end - rb_pointer), nrbpage);
     printf("GBC ended\n");
     fflush(stdout);
   }
@@ -1458,7 +1458,7 @@ GBC(enum type t) {
   }
   
   {
-    extern long opt_maxpage(struct typemanager *);
+    extern fixnum opt_maxpage(struct typemanager *);
 
 #define IGNORE_MAX_PAGES (sSAignore_maximum_pagesA ==0 || sSAignore_maximum_pagesA->s.s_dbind !=sLnil) 
 #define OPTIMIZE_MAX_PAGES (sSAoptimize_maximum_pagesA ==0 || sSAoptimize_maximum_pagesA->s.s_dbind !=sLnil) 
@@ -1492,7 +1492,7 @@ FFN(siLheap_report)(void) {
   vs_push(make_fixnum(0));/*SHARED_LIB_HEAP_CEILING*/
   i=sizeof(fixnum)*CHAR_SIZE-2;
   i=1<<i;
-  vs_push(make_fixnum(((unsigned long)cs_base+i-1)&-i));
+  vs_push(make_fixnum(((ufixnum)cs_base+i-1)&-i));
   vs_push(make_fixnum(abs(cs_base-cs_org)));
   vs_push(make_fixnum((CSTACK_DIRECTION+1)>>1));
   vs_push(make_fixnum(CSTACK_ALIGNMENT));
