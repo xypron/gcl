@@ -24,7 +24,7 @@ GMP_EXTERN int jmp_gmp,gmp_relocatable;
 /*FIXME : this is slightly excessively conservative as it includes
   comparisons with possible non mpz_t type arguments*/
 #define E21 _b==(void *)_c
-#define E31 E21||_b==(void *)_d
+#define E31 E21||_b==(void *)(ufixnum)_d
 #define E42 _b==_d||_b==_e||_c==_d||_c==_e
 #define E20 0
 #define E11 0
