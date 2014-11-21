@@ -62,11 +62,6 @@ Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 #define CHAR_SIZE        8     /* number of bits in a char */
 #endif
 
-#ifndef plong
-#define plong fixnum
-#endif
-
-
 #define SIGNED_CHAR(x) (((char ) -1) < (char )0 ? (char) x \
 		  : (x >= (1<<(CHAR_SIZE-1)) ? \
 		     x - (((int)(1<<(CHAR_SIZE-1))) << 1) \
@@ -133,7 +128,7 @@ enum aelttype {			/*  array element type  */
 	aet_bit,		/*  bit  */
 	aet_fix,		/*  fixnum  */
 	aet_sf,			/*  short-float  */
-	aet_lf,			/*  plong-float  */
+	aet_lf,			/*  long-float  */
 	aet_char,               /* signed char */
         aet_uchar,               /* unsigned char */
 	aet_short,              /* signed short */
@@ -359,7 +354,7 @@ char *tmp_alloc;
    */
 
 #define ALLOC_ALIGNED(f, size,align) \
-  (align <= sizeof(plong) ? (char *)((f)(size)) : \
+  (align <= sizeof(ufixnum) ? (char *)((f)(size)) : \
    (tmp_alloc = (char *)((f)(size+(size ?(align)-1 : 0)))+(align)-1 , \
    (char *)(align * (((ufixnum)tmp_alloc)/align))))
 #define AR_ALLOC(f,n,type) (type *) \
@@ -414,7 +409,7 @@ object make_si_sfun();
  object Xxvl[65]; \
  {int i; \
   new=Xxvl; \
-  if (n >= 65) FEerror("Too plong vl",0); \
+  if (n >= 65) FEerror("Too long vl",0); \
   for (i=0 ; i < (n); i++) new[i]=va_arg(vl,object);}
 #endif
 
@@ -490,7 +485,7 @@ EXTER object sSlambda_block_expanded;
 #define CHECK_INTERRUPT   /* if (signals_pending) raise_pending_signals(sig_safe) */
 
 #define BEGIN_NO_INTERRUPT \
- plong old_signals_allowed = signals_allowed; \
+ ufixnum old_signals_allowed = signals_allowed; \
   signals_allowed = 0
 
 #define END_NO_INTERRUPT \
@@ -507,7 +502,7 @@ EXTER object sSlambda_block_expanded;
 
 void raise_pending_signals();
 
-EXTER unsigned plong signals_allowed, signals_pending;
+EXTER ufixnum signals_allowed, signals_pending;
 
 #define endp_prop(a) (consp(a) ? FALSE : ((a)==Cnil ? TRUE : endp_error(a)))
 #define endp(a) endp_prop(a)

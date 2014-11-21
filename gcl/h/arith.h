@@ -1,11 +1,11 @@
 #ifndef lsub
 #ifndef our_ulong
-#define our_ulong unsigned plong
+#define our_ulong ufixnum
 #endif
 EXTER our_ulong overflow, hiremainder;
 #endif
 
-#define ulong unsigned plong
+#define ulong ufixnum
 
 #ifndef WSIZ
 #define WSIZ 32

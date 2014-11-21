@@ -58,7 +58,7 @@ struct bignum {
 #ifdef GMP
   __mpz_struct big_mpz_t;
 #else
-  plong *big_self;
+  ufixnum *big_self;
   int big_length;
 #endif
 };
