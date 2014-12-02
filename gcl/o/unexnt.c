@@ -762,7 +762,7 @@ map_in_heap (char *filename)
   DWORD size, upper_size, n_read;
   int    i;
 
-  file = CreateFile (filename, GENERIC_READ, FILE_SHARE_READ, NULL,
+  file = CreateFile (filename, GENERIC_READ|GENERIC_EXECUTE, FILE_SHARE_READ, NULL,
 		     OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, 0);
   if (file == INVALID_HANDLE_VALUE) 
     {
@@ -771,7 +771,7 @@ map_in_heap (char *filename)
     }
   
   size = GetFileSize (file, &upper_size);
-  file_mapping = CreateFileMapping (file, NULL, PAGE_WRITECOPY, 
+  file_mapping = CreateFileMapping (file, NULL, PAGE_EXECUTE_WRITECOPY, 
 				    0, size, NULL);
   if (!file_mapping) 
     {
@@ -780,7 +780,7 @@ map_in_heap (char *filename)
     }
     
   size = get_committed_heap_size ();
-  file_base = MapViewOfFileEx (file_mapping, FILE_MAP_COPY, 0, 
+  file_base = MapViewOfFileEx (file_mapping, FILE_MAP_COPY|FILE_MAP_EXECUTE, 0, 
 			       heap_index_in_executable, size,
 			       get_heap_start ());
   if (file_base != 0) 
@@ -794,7 +794,7 @@ map_in_heap (char *filename)
   CloseHandle (file_mapping);
 
   if (VirtualAlloc (get_heap_start (), get_committed_heap_size (),
-		    MEM_RESERVE | MEM_COMMIT, PAGE_READWRITE) == NULL)
+		    MEM_RESERVE | MEM_COMMIT, PAGE_EXECUTE_READWRITE) == NULL)
     {
       i = GetLastError ();
       exit (1);
@@ -1057,7 +1057,7 @@ sbrk (ptrdiff_t increment)
 
       /* Commit more of our heap. */
       if (VirtualAlloc (data_region_end, size, MEM_COMMIT,
-			PAGE_READWRITE) == NULL)
+			PAGE_EXECUTE_READWRITE) == NULL)
 	return NULL;
       data_region_end += size;
 
