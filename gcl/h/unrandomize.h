@@ -11,10 +11,10 @@
   {
 
     /*READ_IMPLIES_EXEC is for selinux, but selinux will reset it in the child*/
-    fixnum pers = personality(READ_IMPLIES_EXEC|personality(0xffffffffUL));
-    fixnum flag = ADDR_NO_RANDOMIZE;
+    PTRINT pers = personality(READ_IMPLIES_EXEC|personality(0xffffffffUL));
+    PTRINT flag = ADDR_NO_RANDOMIZE;
 
-    if (sizeof(fixnum)==4) flag|=ADDR_LIMIT_3GB|ADDR_COMPAT_LAYOUT;
+    if (sizeof(PTRINT)==4) flag|=ADDR_LIMIT_3GB|ADDR_COMPAT_LAYOUT;
 
     if (pers==-1) {printf("personality failure %d\n",errno);exit(-1);}
     if ((pers & flag)!=flag && !getenv("GCL_UNRANDOMIZE")) {
