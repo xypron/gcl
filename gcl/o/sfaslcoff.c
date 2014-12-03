@@ -62,6 +62,11 @@ struct reloc {
 #define R_SECREL32    0x000B  /* Currently ignored, used only for debugging strings FIXME */
 #define R_PCRLONG     0x0014  /* 32-bit reference pc relative to the symbols virtual address */
 
+#define R_X86_64_64        1  /* Add 64 bit symbol value */
+#define R_X86_64_PC32      2  /* PC relative 32 bit signed sym value */
+#define R_X86_64_GOT32     3  /* PC relative 32 bit GOT offset */
+#define R_X86_64_PLT32     4  /* PC relative 32 bit PLT offset */
+
 struct syment {
   union {
     char n_name[8];
@@ -123,8 +128,15 @@ relocate(struct scnhdr *sec,struct reloc *rel,struct syment *sym) {
     break;
 
   case R_PCRLONG:
+  case R_X86_64_PC32:
+  case R_X86_64_GOT32:
+  case R_X86_64_PLT32:
     store_val(where,~0L,sym->n_value-(ul)(where+1));
     /* *where=sym->n_value-(ul)(where+1); */
+    break;
+
+  case R_X86_64_64:
+    *(unsigned long long *)where+=sym->n_value;
     break;
 
   default:
@@ -243,7 +255,6 @@ load_self_symbols() {
   fhp=v+4;
   h=(void *)(fhp+1);
   massert(h->h_magic==0x10b || h->h_magic==0x20b);
-  massert(h->h_magic==0x10b || !h->h_dbase); /*We cannot handle a 64bit load address*/
 
   sec1=(void *)(fhp+1)+fhp->f_opthdr;
   sece=sec1+fhp->f_nscns;
@@ -284,11 +295,7 @@ load_self_symbols() {
       strcpy(st,st1+sym->n.n.n_offset);
     
     sec=sec1+sym->n_scnum-1;
-    jj=sym->n_value+sec->s_vaddr+h->h_ibase;
-    
-#ifdef FIX_ADDRESS
-    FIX_ADDRESS(jj);
-#endif       
+    jj=sym->n_value+sec->s_vaddr+(h->h_magic==0x20b ? h->h_dbase : h->h_ibase);/*FIXME make sure this is right*/
     
     a->address=jj;
     a->string=st;
