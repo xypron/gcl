@@ -19,12 +19,12 @@ static object
 integer_log_op2(fixnum op,object x,enum type tx,object y,enum type ty) {
 
   object u=big_fixnum1;
-  object ux=tx==t_bignum ? x : (mpz_set_si(MP(big_fixnum2),fix(x)), big_fixnum2);
-  object uy=ty==t_bignum ? y : (mpz_set_si(MP(big_fixnum3),fix(y)), big_fixnum3);
+  object ux=tx==t_bignum ? x : (mpz_set_sf(MP(big_fixnum2),fix(x)), big_fixnum2);
+  object uy=ty==t_bignum ? y : (mpz_set_sf(MP(big_fixnum3),fix(y)), big_fixnum3);
   
   switch(op) {
-  case BOOLCLR:	 mpz_set_si(MP(u),0);break;
-  case BOOLSET:	 mpz_set_si(MP(u),-1);break;
+  case BOOLCLR:	 mpz_set_sf(MP(u),0);break;
+  case BOOLSET:	 mpz_set_sf(MP(u),-1);break;
   case BOOL1:	 mpz_set(MP(u),MP(ux));break;
   case BOOL2:	 mpz_set(MP(u),MP(uy));break;
   case BOOLC1:	 mpz_com(MP(u),MP(ux));break;

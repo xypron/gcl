@@ -136,21 +136,21 @@ number_zero_expt(object x,bool promote_short_p) {
 
 
 inline object
-number_ui_expt(object x,fixnum fy) {
+number_uf_expt(object x,fixnum fy) {
 
   switch (type_of(x)) {
   case t_fixnum:
     { 
       fixnum fx=fix(x);
       object z;
-      MPOP(z=,mpz_ui_pow_ui,labs(fx),fy);
+      MPOP(z=,mpz_uf_pow_uf,labs(fx),fy);
       if (fx<0&&(fy&0x1)) return number_negate(z); else return z;
     }
   case t_bignum:
-    MPOP(return,mpz_pow_ui,MP(x),fy);
+    MPOP(return,mpz_pow_uf,MP(x),fy);
   case t_ratio:
     {
-      object n=number_ui_expt(x->rat.rat_num,fy),d=number_ui_expt(x->rat.rat_den,fy),z=alloc_object(t_ratio);
+      object n=number_uf_expt(x->rat.rat_num,fy),d=number_uf_expt(x->rat.rat_den,fy),z=alloc_object(t_ratio);
       z->rat.rat_num=n;
       z->rat.rat_den=d;/*No need to make_ratio as no common factors*/
       return z;
@@ -199,16 +199,16 @@ number_invert(object x,object y,object z) {
     
 
 inline object 
-number_si_expt(object x,object y) {
+number_sf_expt(object x,object y) {
   switch (type_of(y)) {
   case t_fixnum:
     { 
       fixnum fy=fix(y);
       if (fy>=0)
-	return number_ui_expt(x,fy);
+	return number_uf_expt(x,fy);
       if (fy==MOST_NEGATIVE_FIX)
 	return number_invert(x,y,number_ump_expt(x,number_negate(y)));
-      return number_invert(x,y,number_ui_expt(x,-fy));
+      return number_invert(x,y,number_uf_expt(x,-fy));
     }
   case t_bignum:
     return big_sign(y)<0 ? number_invert(x,y,number_ump_expt(x,number_negate(y))) : number_ump_expt(x,y);
@@ -232,7 +232,7 @@ number_expt(object x, object y) {
     return(number_times(x, y));
   }
 
-  return number_si_expt(x,y);
+  return number_sf_expt(x,y);
 
 }
 

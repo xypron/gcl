@@ -162,46 +162,10 @@ object
 make_integer(__mpz_struct *u)
 {
   if ((u)->_mp_size == 0) return small_fixnum(0);
-  if (mpz_fits_slong_p(u)) {
-    return make_fixnum(mpz_get_si(u));
-      }
+  if (mpz_fits_sf_p(u))
+    return make_fixnum(mpz_get_sf(u));
   return make_bignum(u);
 }
-
-/* like make_integer except that the storage of u is cleared
-   if it is a fixnum, and if not the storage of u is actually
-   copied to the new bignum
-*/
-#ifdef OBSOLETE
-object
-make_integer_clear(u)
-mpz_t u;
-{ object ans;
-  if ((u)->_mp_size == 0) return small_fixnum(0);
-  if (mpz_fits_slong_p(u)) {
-    fixnum x = mpz_get_si(u);
-    mpz_clear(u);
-    return make_fixnum(x);
-      }
-  {BEGIN_NO_INTERRUPT;
-  { GCPROTECT(u);
-  ans = alloc_object(t_bignum);
-  MP(ans)->_mp_alloc = u->_mp_alloc;
-  MP(ans)->_mp_size = u->_mp_size;
-  /* the u->_mp_d may have moved */
-  MP_SELF(ans) = GC_PROTECTED_SELF;
-  mpz_clear(u);
-  END_GCPROTECT;
-  }
-  END_NO_INTERRUPT;
-  } 
-  return ans;
-}
-#endif /* obsolete */
-
-/* static int */
-/* big_zerop(object x) */
-/* { return (mpz_sgn(MP(x))== 0);} */
 
 int
 big_compare(object x, object y)
@@ -279,11 +243,9 @@ object
 normalize_big(object x)
 {
  if (MP_SIZE(x) == 0) return small_fixnum(0);
-  if (mpz_fits_slong_p(MP(x))) {
-    MP_INT *u = MP(x);
-    return make_fixnum(mpz_get_si(u));
-      }
-  else return x;
+ if (mpz_fits_sf_p(MP(x)))
+   return make_fixnum(mpz_get_sf(MP(x)));
+ return x;
 }
 
 object
@@ -393,7 +355,7 @@ obj_to_mpz(object x,MP_INT * y) {
 
   switch(type_of(x)) {
   case t_fixnum:
-    mpz_set_si(y,fix(x));
+    mpz_set_sf(y,fix(x));
     break;
   case t_bignum:
     if (abs(MP(x)->_mp_size)<=y->_mp_alloc)
@@ -415,7 +377,7 @@ obj_to_mpz1(object x,MP_INT * y,void *v) {
 
   switch(type_of(x)) {
   case t_fixnum:
-    mpz_set_si(y,fix(x));
+    mpz_set_sf(y,fix(x));
     break;
   case t_bignum:
     y->_mp_alloc=abs(MP(x)->_mp_size);
@@ -456,14 +418,14 @@ mpz_to_mpz1(MP_INT * x,MP_INT * y,void *v) {
 void
 isetq_fix(MP_INT * var,int s)
 {
-  mpz_set_si(var,s);
+  mpz_set_sf(var,s);
 }
 
 MP_INT *
 otoi(object x) {
   if (type_of(x)==t_fixnum) {
     object y = new_bignum();
-    mpz_set_si(MP(y),fix(x));
+    mpz_set_sf(MP(y),fix(x));
     return MP(y);
   }
   if (type_of(x)==t_bignum)
@@ -487,20 +449,18 @@ maybe_replace_big(object x)
    bug or feature of gmp..
 */   
   if (MP_SIZE(x) == 0) return small_fixnum(0);
-  if (mpz_fits_slong_p(MP(x))) {
-    MP_INT *u = MP(x);
-    return make_fixnum(mpz_get_si(u));
-  }
+  if (mpz_fits_sf_p(MP(x)))
+    return make_fixnum(mpz_get_sf(MP(x)));
   return make_bignum(MP(x));
 }
 
 
 object
-bignum2(unsigned int h, unsigned int l)
+bignum2(unsigned int h, unsigned int l)/*FIXME 64*/
 {
   object x = new_bignum();
   mpz_set_ui(MP(x),h);
-  mpz_mul_2exp(MP(x),MP(x),32);
+  mpz_mul_2exp(MP(x),MP(x),8*sizeof(l));
   mpz_add_ui(MP(x),MP(x),l);
   return normalize_big(x);
 }

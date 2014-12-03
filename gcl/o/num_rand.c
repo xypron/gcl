@@ -52,7 +52,7 @@ rando(object x, object rs) {
   } else {
     out=big_fixnum1;
     fbase=tx==t_fixnum ? fix(x) : MOST_POSITIVE_FIX;
-    mpz_set_si(MP(big_fixnum2),fbase);
+    mpz_set_sf(MP(big_fixnum2),fbase);
     base=big_fixnum2;
   }
   
@@ -61,7 +61,7 @@ rando(object x, object rs) {
   switch (tx) {
     
   case t_fixnum:
-    return make_fixnum(mpz_get_si(MP(out)));
+    return make_fixnum(mpz_get_sf(MP(out)));
   case t_bignum:
     return normalize_big(out);
   case t_shortfloat: case t_longfloat:

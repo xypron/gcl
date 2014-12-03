@@ -195,3 +195,36 @@ MEM_GMP_CALL(2,size_t,mpz_sizeinbase,0,mpz_t,int)
 /*#define __gmpz_realloc m__gmpz_realloc*/
 #define __gmpz_size m__gmpz_size
 #define __gmpz_sizeinbase m__gmpz_sizeinbase
+
+
+#define GRPL(fn_,fn_ui_,u_,f_,_tf,a_) \
+  ({u_ PTRINT _tf=f_;\
+    if (((u_ long)_tf)==_tf) \
+      fn_ui_ a_ ; \
+    else ({\
+	mp_limb_t _d[1]={_tf};\
+	__mpz_struct _z={1,_tf<0 ? -1 : 1,_d},*_tf=&_z;	\
+	fn_ a_;});\
+  })
+
+#define GRU3(fn_,a_,b_,c_) GRPL(fn_,Join(fn_,_ui),unsigned,c_,_f,(a_,b_,_f))
+#define GRS3(fn_,a_,b_,c_) GRPL(fn_,Join(fn_,_si),,c_,_f,(a_,b_,_f))
+#define GRU2(fn_,a_,b_)    GRPL(fn_,Join(fn_,_ui),unsigned,b_,_f,(a_,_f))
+#define GRS2(fn_,a_,b_)    GRPL(fn_,Join(fn_,_si),,b_,_f,(a_,_f))
+
+#define mpz_add_uf(a_,b_,c_) GRU3(mpz_add,a_,b_,c_)
+#define mpz_sub_uf(a_,b_,c_) GRU3(mpz_sub,a_,b_,c_)
+#define mpz_set_uf(a_,b_)    GRU2(mpz_set,a_,b_)
+
+#define mpz_pow_uf(a_,b_,c_)    if (((unsigned long)(c_)==(c_)))    mpz_pow_ui(a_,b_,c_); else FEerror("Overflow in mpz_pow_uf",0)
+#define mpz_ui_pow_uf(a_,b_,c_) if (((unsigned long)(c_)==(c_))) mpz_ui_pow_ui(a_,b_,c_); else FEerror("Overflow in mpz_ui_pow_uf",0)
+#define mpz_uf_pow_uf(a_,b_,c_) GRPL(mpz_pow_uf,mpz_ui_pow_uf,unsigned,b_,_f,(a_,_f,c_))
+
+#define mpz_mul_sf(a_,b_,c_) GRS3(mpz_mul,a_,b_,c_)
+#define mpz_set_sf(a_,b_)    GRS2(mpz_set,a_,b_)
+
+#define mpz_fits_sf_p(a_) (abs((a_)->_mp_size)==1 && ((a_)->_mp_d[0]>>(sizeof((a_)->_mp_d[0])*8-1))==((a_)->_mp_size<0 ? 1 : 0))
+#define mpz_fits_uf_p(a_) ((a_)->_mp_size==1)
+
+#define mpz_get_sf(a_) ((PTRINT)(a_)->_mp_d[0])
+#define mpz_get_uf(a_) ((a_)->_mp_d[0])
