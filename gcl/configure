@@ -770,6 +770,7 @@ enable_pic
 enable_oldgmp
 enable_dynsysgmp
 with_x
+enable_pagewidthshift
 enable_readline
 enable_ansi
 '
@@ -1440,6 +1441,7 @@ debug safecdr code
 
  --enable-dynsysgmp will link against the system libgmp3 overriding certain functions with patched versions from the local source
 
+--enable-pagewidthshift=xxx will shift system pagewidth left by XXX bits
 --enable-readline    enables command line completion via the readline library
 --enable-ansi builds a large gcl aiming for ansi compliance,
 		    --disable-ansi builds the smaller traditional CLtL1 image
@@ -6431,10 +6433,18 @@ fi
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PAGEWIDTH" >&5
 $as_echo "$PAGEWIDTH" >&6; }
+# Check whether --enable-pagewidthshift was given.
+if test "${enable_pagewidthshift+set}" = set; then :
+  enableval=$enable_pagewidthshift;
+else
+  enable_pagewidthshift=1
+fi
+
 
 cat >>confdefs.h <<_ACEOF
-#define PAGEWIDTH $PAGEWIDTH
+#define PAGEWIDTH ($PAGEWIDTH+$enable_pagewidthshift)
 _ACEOF
+
 
 
 
