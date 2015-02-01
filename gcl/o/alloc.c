@@ -954,10 +954,11 @@ init_tm(enum type t, char *name, int elsize, int nelts, int sgc,int distinct) {
 	j = i;
   if (j >= 0) {
     tm_table[(int)t].tm_type = (enum type)j;
-    set_tm_maxpage(tm_table+j,tm_table[j].tm_maxpage+maxpage);
-#ifdef SGC		
-    tm_table[j].tm_sgc += sgc;
-#endif
+/*     if (!tm_table[j].tm_maxpage) */
+/*       set_tm_maxpage(tm_table+j,1); */
+/* #ifdef SGC		 */
+/*     tm_table[j].tm_sgc = 1; */
+/* #endif */
     return;
   }
   tm_table[(int)t].tm_type = t;
@@ -974,8 +975,8 @@ init_tm(enum type t, char *name, int elsize, int nelts, int sgc,int distinct) {
   tm_table[(int)t].tm_distinct=distinct;
 
 #ifdef SGC	
-  tm_table[(int)t].tm_sgc = sgc;
-  tm_table[(int)t].tm_sgc_max = 3000;
+  tm_table[(int)t].tm_sgc = 1;
+  tm_table[(int)t].tm_sgc_max = real_maxpage;
   tm_table[(int)t].tm_sgc_minfree = (0.4 * tm_table[(int)t].tm_nppage);
 #endif
   
@@ -1168,7 +1169,7 @@ gcl_init_alloc(void *cs_start) {
   rb_end = rb_start + PAGESIZE*nrbpage;
   rb_limit = rb_end - 2*RB_GETA;
 #ifdef SGC	
-  tm_table[(int)t_relocatable].tm_sgc = 50;
+  tm_table[(int)t_relocatable].tm_sgc = 1;
 #endif
   
   gcl_alloc_initialized=1;
@@ -1204,8 +1205,7 @@ t_from_type(object type) {
    when the sgc is turned on.  FREE_PERCENT is an integer between 0 and 100. 
    */
 
-DEFUN_NEW("ALLOCATE-SGC",object,fSallocate_sgc,SI
-      ,4,4,NONE,OO,II,II,OO,(object type,fixnum min,fixnum max,fixnum free_percent),"") {
+DEFUN_NEW("ALLOCATE-SGC",object,fSallocate_sgc,SI,4,4,NONE,OO,II,II,OO,(object type,fixnum min,fixnum max,fixnum free_percent),"") {
 
   int t=t_from_type(type);
   struct typemanager *tm;
@@ -1218,10 +1218,10 @@ DEFUN_NEW("ALLOCATE-SGC",object,fSallocate_sgc,SI
   
   if(min<0 || max< min || free_percent < 0 || free_percent > 100)
     goto END;
-  tm->tm_sgc_max=max;
-  tm->tm_sgc=min;
+  tm->tm_sgc_max=max/tm->tm_nppage;
+  tm->tm_sgc=min/tm->tm_nppage;
   tm->tm_sgc_minfree= (tm->tm_nppage *free_percent) /100;
-      END:
+ END:
   RETURN1(res);
 
 }
@@ -1271,6 +1271,7 @@ DEFUN_NEW("ALLOCATE-CONTIGUOUS-PAGES",object,fSallocate_contiguous_pages,SI,1,2,
   CHECK_ARG_RANGE(1,2);
   if  (npages  < 0)
     FEerror("Allocate requires positive argument.", 0);
+  npages/=tm_table[t_contiguous].tm_nppage;
   if (ncbpage > npages)
     npages=ncbpage;
   if (!set_tm_maxpage(tm_table+t_contiguous,npages))
@@ -1314,6 +1315,7 @@ DEFUN_NEW("ALLOCATE-RELOCATABLE-PAGES",object,fSallocate_relocatable_pages,SI,1,
   CHECK_ARG_RANGE(1,2);
   if (npages  <= 0)
     FEerror("Requires positive arg",0);
+  npages/=tm_table[t_relocatable].tm_nppage;
   if (npages<nrbpage) npages=nrbpage;
   if (!set_tm_maxpage(tm_table+t_relocatable,npages))
     FEerror("Can't set the limit for relocatable blocks to ~D.", 1, make_fixnum(npages));
@@ -1351,6 +1353,7 @@ DEFUN_NEW("ALLOCATE",object,fSallocate,SI,2,3,NONE,OO,OO,OO,OO,(object type,obje
   if  (npages <= 0)
     FEerror("Allocate takes positive argument.", 1,make_fixnum(npages));
   tm = tm_of(t);
+  npages/=tm->tm_nppage;
   if (tm->tm_npage > npages) {npages=tm->tm_npage;}
   if (!set_tm_maxpage(tm,npages))
     FEerror("Can't allocate ~D pages for ~A.", 2, make_fixnum(npages), (make_simple_string(tm->tm_name+1)));
