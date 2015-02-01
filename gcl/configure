@@ -6437,7 +6437,7 @@ $as_echo "$PAGEWIDTH" >&6; }
 if test "${enable_pagewidthshift+set}" = set; then :
   enableval=$enable_pagewidthshift;
 else
-  enable_pagewidthshift=1
+  enable_pagewidthshift=0
 fi
 
 

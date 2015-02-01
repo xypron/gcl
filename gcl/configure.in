@@ -1267,7 +1267,7 @@ AC_RUN_IFELSE([
 	[PAGEWIDTH=`cat conftest1`],
 	[PAGEWIDTH=0])
 AC_MSG_RESULT($PAGEWIDTH)
-AC_ARG_ENABLE(pagewidthshift,[--enable-pagewidthshift=xxx will shift system pagewidth left by XXX bits],,[enable_pagewidthshift=1])
+AC_ARG_ENABLE(pagewidthshift,[--enable-pagewidthshift=xxx will shift system pagewidth left by XXX bits],,[enable_pagewidthshift=0])
 AC_DEFINE_UNQUOTED(PAGEWIDTH,($PAGEWIDTH+$enable_pagewidthshift),[system pagewidth])
 AC_SUBST(PAGEWIDTH)
 
