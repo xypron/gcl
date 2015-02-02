@@ -879,6 +879,8 @@ mark_stack_carefully(void *topv, void *bottomv, int offset) {
 
     if (is_marked_or_free(x)) continue;
 
+    if (((unsigned long)x%OBJ_ALIGNMENT)) continue;
+    
 #ifdef SGC
     if (sgc_enabled)
       sgc_mark_object(x);
