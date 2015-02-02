@@ -607,7 +607,7 @@ alloc_after_gc(struct typemanager *tm,fixnum n) {
 struct pageinfo *contblock_list_head=NULL,*contblock_list_tail=NULL;
 
 inline void
-add_pages(struct typemanager *tm,fixnum m) {
+add_pages(struct typemanager *tm,fixnum m) {/*FIXME handle m=0*/
 
   switch (tm->tm_type) {
   case t_contiguous:
@@ -1278,7 +1278,7 @@ DEFUN_NEW("ALLOCATE-CONTIGUOUS-PAGES",object,fSallocate_contiguous_pages,SI,1,2,
     FEerror("Can't allocate ~D pages for contiguous blocks.", 1, make_fixnum(npages));
   if (really_do == Cnil) 
     RETURN1(Ct);
-  add_pages(tm_of(t_contiguous),npages - ncbpage);
+  if (npages>ncbpage) add_pages(tm_of(t_contiguous),npages - ncbpage);
 
   RETURN1(make_fixnum(npages));
 
@@ -1321,7 +1321,7 @@ DEFUN_NEW("ALLOCATE-RELOCATABLE-PAGES",object,fSallocate_relocatable_pages,SI,1,
     FEerror("Can't set the limit for relocatable blocks to ~D.", 1, make_fixnum(npages));
   if (really_do == Cnil) 
     RETURN1(Ct);
-  add_pages(tm_of(t_relocatable),npages - nrbpage);
+  if (npages>nrbpage) add_pages(tm_of(t_relocatable),npages - nrbpage);
   RETURN1(make_fixnum(npages));
 
 }
@@ -1359,7 +1359,7 @@ DEFUN_NEW("ALLOCATE",object,fSallocate,SI,2,3,NONE,OO,OO,OO,OO,(object type,obje
     FEerror("Can't allocate ~D pages for ~A.", 2, make_fixnum(npages), (make_simple_string(tm->tm_name+1)));
   if (really_do == Cnil)
     RETURN1(Ct);
-  add_pages(tm,npages - tm->tm_npage);
+  if (npages>tm->tm_npage) add_pages(tm,npages - tm->tm_npage);
   RETURN1(make_fixnum(npages));
 
 }
