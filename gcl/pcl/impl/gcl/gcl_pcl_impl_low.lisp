@@ -84,7 +84,7 @@ static object cclosure_env_nthcdr (fixnum n,object cc) {
          env=env->c.c_cdr;}
       return env;}
    else
-     {if(n>=fix(*(turbo-1)))return Cnil;
+     {if(n>=*(fixnum *)(turbo-1))return Cnil;
       return turbo[n];}
 }")
 
