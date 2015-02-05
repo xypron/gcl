@@ -56,7 +56,8 @@ static void
 mark_contblock(void *, int);
 
 static void
-mark_object(object);
+real_mark_object(object *);
+#define mark_object(a_) real_mark_object(&(a_))
 
 
 /* the following in line definitions seem to be twice as fast (at
@@ -300,18 +301,44 @@ enter_mark_origin(object *p) {
 
 }
 
+static void *srb1,*srbp,*srbl,*srbh,*srbe;
+#define ul unsigned long
+
 inline void
-mark_cons(object x) {
+real_mark_cons(object *y) {
+
+  object x=*y;
   
   do {
     object d=x->c.c_cdr;
-    mark(x);
+
+    if ((void *)x>=srb1 && (void *)x<srbl) {
+      void *p=srbp;
+      srbp+=sizeof(struct cons);
+      fprintf(stderr,"Writing address %p:  %p -> ",(void *)y,(void *)*y);
+      *y=(void *)(((ul)p)|((*(ul *)y)&0x7));
+      fprintf(stderr,"%p\n",(void *)*y);
+      fflush(stderr);
+      p+=srbh-srb1;
+      ((object)p)->c=x->c;
+      x->c.c_cdr=p;
+      mark(x);
+      x=p;
+    } else
+      mark(x);
     mark_object(x->c.c_car);
-    x=d;
+    y=&x->c.c_cdr;x=d;
+    if ((void *)x>=srb1 && (void *)x<srbl && is_marked(x)) {
+      fprintf(stderr,"Writing marked address %p:  %p -> ",(void *)y,(void *)*y);
+      *y=(void *)(((ul)Scdr(x)+(srb1-srbh))|((*(ul *)y)&0x7));
+      fprintf(stderr,"%p\n",((void *)*y));
+      fflush(stderr);
+      return;
+    }
     if (NULL_OR_ON_C_STACK(x) || is_marked_or_free(x))/*catches Cnil*/
       return;
   } while (cdr_listp(x));
-  mark_object(x);
+  real_mark_object(y);
 
 }
 
@@ -412,12 +439,13 @@ sweep_link_array(void) {
 }
 
 static void
-mark_object(object x) {
+real_mark_object(object *y) {
   
   fixnum i,j;
   object *p;
   char *cp;
   enum type tp;
+  object x=*y;
   
  BEGIN:
   /* if the body of x is in the c stack, its elements
@@ -426,13 +454,20 @@ mark_object(object x) {
      should be dead, we dont want to mark it. -wfs
   */
   
+  if ((void *)x>=srb1 && (void *)x<srbl && is_marked(x)) {
+    fprintf(stderr,"Writing marked address %p:  %p -> ",(void *)y,(void *)*y);
+    *y=(void *)(((ul)Scdr(x)+(srb1-srbh))|((*(ul *)y)&0x7));
+    fprintf(stderr,"%p\n",((void *)*y));
+    fflush(stderr);
+    return;
+  }
   if (NULL_OR_ON_C_STACK(x) || is_marked_or_free(x))
     return;
 
   tp=type_of(x);
 
   if (tp==t_cons) {
-    mark_cons(x);
+    real_mark_cons(y);
     return;
   }
 
@@ -862,6 +897,13 @@ mark_stack_carefully(void *topv, void *bottomv, int offset) {
     void *v=(void *)(*j),**a;
     struct pageinfo *pi;
     
+    if (v>=srb1 && v<srbl) {
+      fprintf(stderr,"Marking %p %p  %p %p  %s\n",(void *)j,v,((object)v)->c.c_cdr,((object)v)->c.c_car,(char *)v);
+      fflush(stderr);
+      real_mark_object((object *)j);
+      continue;
+    }
+
     if (!VALID_DATA_ADDRESS_P(v)) continue;
     
     if ((p=page(v))<first_data_page) continue;
@@ -887,7 +929,7 @@ mark_stack_carefully(void *topv, void *bottomv, int offset) {
       sgc_mark_object(x);
     else
 #endif
-      mark_object(x);
+      real_mark_object((object *)j);
   }
 }
 
@@ -896,7 +938,7 @@ static void
 mark_phase(void) {
 
   STATIC fixnum i, j;
-  STATIC struct package *pp;
+  struct package **pp;
   STATIC bds_ptr bdp;
   STATIC frame_ptr frp;
   STATIC ihs_ptr ihsp;
@@ -931,8 +973,8 @@ mark_phase(void) {
     for (j = 0;  j < mark_origin_block[i].mob_size;  j++)
       mark_object(mark_origin_block[i].mob_addr[j]);
   
-  for (pp = pack_pointer;  pp != NULL;  pp = pp->p_link)
-    mark_object((object)pp);
+  for (pp = &pack_pointer;  *pp != NULL;  pp = &(*pp)->p_link)
+    real_mark_object((object *)pp);
 #ifdef KCLOVM
   if (ovm_process_created)
     mark_all_stacks();
@@ -952,15 +994,15 @@ mark_phase(void) {
   
   {int size;
   
-  for (pp = pack_pointer;  pp != NULL;  pp = pp->p_link) {
-    size = pp->p_internal_size;
-    if (pp->p_internal != NULL)
+    for (pp = &pack_pointer;  *pp != NULL;  pp = &(*pp)->p_link) {
+    size = (*pp)->p_internal_size;
+    if ((*pp)->p_internal != NULL)
       for (i = 0;  i < size;  i++)
-	mark_object(pp->p_internal[i]);
-    size = pp->p_external_size;
-    if (pp->p_external != NULL)
+	mark_object((*pp)->p_internal[i]);
+    size = (*pp)->p_external_size;
+    if ((*pp)->p_external != NULL)
       for (i = 0;  i < size;  i++)
-	mark_object(pp->p_external[i]);
+	mark_object((*pp)->p_external[i]);
   }}
   
   /* mark the c stack */
@@ -1214,6 +1256,14 @@ GBC(enum type t) {
   
   BEGIN_NO_INTERRUPT;
 
+  if (sSAstatic_relocatable_bufferA && sSAstatic_relocatable_bufferA->s.s_dbind!=Cnil) {
+    srbp=srb1=sSAstatic_relocatable_bufferA->s.s_dbind->v.v_self;
+    srbl=srb1+sSAstatic_relocatable_bufferA->s.s_dbind->v.v_fillp;
+    srbe=srb1+sSAstatic_relocatable_bufferA->s.s_dbind->v.v_dim;
+    srbh=srb1+(srbe-srb1)/2;
+  }
+
+
   if (t==t_other) {
     collect_both=1;
     t=t_contiguous;
@@ -1367,6 +1417,9 @@ GBC(enum type t) {
   }
 #endif
   
+  if (sSAstatic_relocatable_bufferA && sSAstatic_relocatable_bufferA->s.s_dbind!=Cnil)
+    memmove(srb1,srbh,sSAstatic_relocatable_bufferA->s.s_dbind->v.v_fillp=srbp-srb1);
+
   if (COLLECT_RELBLOCK_P) {
     
     if (rb_start < rb_start1) {
