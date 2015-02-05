@@ -315,10 +315,10 @@ real_mark_cons(object *y) {
     if ((void *)x>=srb1 && (void *)x<srbl) {
       void *p=srbp;
       srbp+=sizeof(struct cons);
-      fprintf(stderr,"Writing address %p:  %p -> ",(void *)y,(void *)*y);
+      /* fprintf(stderr,"Writing address %p:  %p -> ",(void *)y,(void *)*y); */
       *y=(void *)(((ul)p)|((*(ul *)y)&0x7));
-      fprintf(stderr,"%p\n",(void *)*y);
-      fflush(stderr);
+      /* fprintf(stderr,"%p\n",(void *)*y); */
+      /* fflush(stderr); */
       p+=srbh-srb1;
       ((object)p)->c=x->c;
       x->c.c_cdr=p;
@@ -329,10 +329,10 @@ real_mark_cons(object *y) {
     mark_object(x->c.c_car);
     y=&x->c.c_cdr;x=d;
     if ((void *)x>=srb1 && (void *)x<srbl && is_marked(x)) {
-      fprintf(stderr,"Writing marked address %p:  %p -> ",(void *)y,(void *)*y);
+      /* fprintf(stderr,"Writing marked address %p:  %p -> ",(void *)y,(void *)*y); */
       *y=(void *)(((ul)Scdr(x)+(srb1-srbh))|((*(ul *)y)&0x7));
-      fprintf(stderr,"%p\n",((void *)*y));
-      fflush(stderr);
+      /* fprintf(stderr,"%p\n",((void *)*y)); */
+      /* fflush(stderr); */
       return;
     }
     if (NULL_OR_ON_C_STACK(x) || is_marked_or_free(x))/*catches Cnil*/
@@ -458,10 +458,10 @@ real_mark_object(object *y) {
       if (is_marked(x)) {
 	void *p=Scdr(x);
 	if (p>=srbh && p<srbe) p+=(srb1-srbh);
-	fprintf(stderr,"Writing marked address %p:  %p -> ",(void *)y,(void *)*y);
+	/* fprintf(stderr,"Writing marked address %p:  %p -> ",(void *)y,(void *)*y); */
 	*y=(void *)(((ul)p)|((*(ul *)y)&0x7));
-	fprintf(stderr,"%p\n",((void *)*y));
-	fflush(stderr);
+	/* fprintf(stderr,"%p\n",((void *)*y)); */
+	/* fflush(stderr); */
       } else {
 	void *p;
 	if ((p=tm_table[t_cons].tm_free)!=OBJNULL&&(void *)x<srbk) {
@@ -471,10 +471,10 @@ real_mark_object(object *y) {
 	  p=srbp;
 	  srbp+=sizeof(struct cons);/*FIXME*/
 	}
-	fprintf(stderr,"Writing address %p:  %p -> ",(void *)y,(void *)*y);
+	/* fprintf(stderr,"Writing address %p:  %p -> ",(void *)y,(void *)*y); */
 	*y=(void *)(((ul)p)|((*(ul *)y)&0x7));
-	fprintf(stderr,"%p\n",(void *)*y);
-	fflush(stderr);
+	/* fprintf(stderr,"%p\n",(void *)*y); */
+	/* fflush(stderr); */
 	if (p==srbp-16) p+=srbh-srb1;
 	((object)p)->c=x->c;
 	x->c.c_cdr=p;
@@ -928,8 +928,8 @@ mark_stack_carefully(void *topv, void *bottomv, int offset) {
     struct pageinfo *pi;
     
     if (v>=srb1 && v<srbl) {
-      fprintf(stderr,"Marking %p %p  %p %p  %s\n",(void *)j,v,((object)v)->c.c_cdr,((object)v)->c.c_car,(char *)v);
-      fflush(stderr);
+      /* fprintf(stderr,"Marking %p %p  %p %p  %s\n",(void *)j,v,((object)v)->c.c_cdr,((object)v)->c.c_car,(char *)v); */
+      /* fflush(stderr); */
       real_mark_object((object *)j);
       continue;
     }
