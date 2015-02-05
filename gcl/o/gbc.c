@@ -307,7 +307,7 @@ static void *srb1,*srbp,*srbl,*srbh,*srbe;
 inline void
 real_mark_cons(object *y) {
 
-  object x=*y;
+  object x=Scdr((object)y);
   
   do {
     object d=x->c.c_cdr;
@@ -453,27 +453,46 @@ real_mark_object(object *y) {
      if this x is somehow hanging around in a cons that
      should be dead, we dont want to mark it. -wfs
   */
-  
-  if ((void *)x>=srb1 && (void *)x<srbl && is_marked(x)) {
-    fprintf(stderr,"Writing marked address %p:  %p -> ",(void *)y,(void *)*y);
-    *y=(void *)(((ul)Scdr(x)+(srb1-srbh))|((*(ul *)y)&0x7));
-    fprintf(stderr,"%p\n",((void *)*y));
-    fflush(stderr);
-    return;
+
+  if (((void *)x>=srb1 && (void *)x<srbl)) {
+      if (is_marked(x)) {
+	fprintf(stderr,"Writing marked address %p:  %p -> ",(void *)y,(void *)*y);
+	*y=(void *)(((ul)Scdr(x)+(srb1-srbh))|((*(ul *)y)&0x7));
+	fprintf(stderr,"%p\n",((void *)*y));
+	fflush(stderr);
+      } else {
+	void *p=srbp;
+	srbp+=sizeof(struct cons);/*FIXME*/
+	fprintf(stderr,"Writing address %p:  %p -> ",(void *)y,(void *)*y);
+	*y=(void *)(((ul)p)|((*(ul *)y)&0x7));
+	fprintf(stderr,"%p\n",(void *)*y);
+	fflush(stderr);
+	p+=srbh-srb1;
+	((object)p)->c=x->c;
+	x->c.c_cdr=p;
+	mark(x);
+	x=p;
+      }
   }
+
   if (NULL_OR_ON_C_STACK(x) || is_marked_or_free(x))
     return;
-
+    
   tp=type_of(x);
+    
+  /* if (tp==t_cons) { */
+  /*   real_mark_cons(y); */
+  /*   return; */
+  /* } */
 
-  if (tp==t_cons) {
-    real_mark_cons(y);
-    return;
-  }
-
-  mark(x);
+  if (((void *)x<srbh || (void *)x>=srbe)) {mark(x);}
 
   switch (tp) {
+
+  case t_cons:
+    mark_object(x->c.c_car);
+    mark_object(x->c.c_cdr);
+    break;
 
   case t_fixnum:
     break;
@@ -1258,8 +1277,8 @@ GBC(enum type t) {
 
   if (sSAstatic_relocatable_bufferA && sSAstatic_relocatable_bufferA->s.s_dbind!=Cnil) {
     srbp=srb1=sSAstatic_relocatable_bufferA->s.s_dbind->v.v_self;
-    srbl=srb1+sSAstatic_relocatable_bufferA->s.s_dbind->v.v_fillp;
-    srbe=srb1+sSAstatic_relocatable_bufferA->s.s_dbind->v.v_dim;
+    srbl=srb1+sSAstatic_relocatable_bufferA->s.s_dbind->v.v_fillp*sizeof(object);
+    srbe=srb1+sSAstatic_relocatable_bufferA->s.s_dbind->v.v_dim*sizeof(object);
     srbh=srb1+(srbe-srb1)/2;
   }
 
@@ -1417,8 +1436,10 @@ GBC(enum type t) {
   }
 #endif
   
-  if (sSAstatic_relocatable_bufferA && sSAstatic_relocatable_bufferA->s.s_dbind!=Cnil)
-    memmove(srb1,srbh,sSAstatic_relocatable_bufferA->s.s_dbind->v.v_fillp=srbp-srb1);
+  if (sSAstatic_relocatable_bufferA && sSAstatic_relocatable_bufferA->s.s_dbind!=Cnil) {
+    memmove(srb1,srbh,(srbp-srb1));
+    sSAstatic_relocatable_bufferA->s.s_dbind->v.v_fillp=(srbp-srb1)/sizeof(object);
+  }
 
   if (COLLECT_RELBLOCK_P) {
     
