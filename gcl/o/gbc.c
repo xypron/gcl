@@ -869,6 +869,9 @@ real_mark_object(object *y) {
     mark_object(x->cc.cc_env);
     mark_object(x->cc.cc_data);
     if (x->cc.cc_turbo!=NULL) {
+      int i;
+      for (i=0;i<*(fixnum *)(x->cc.cc_turbo-1);i++)
+	mark_object(x->cc.cc_turbo[i]);
       if (COLLECT_RELBLOCK_P)
 	x->cc.cc_turbo=(void *)copy_relblock((char *)(x->cc.cc_turbo-1),(1+*(fixnum *)(x->cc.cc_turbo-1))*sizeof(object))+sizeof(object);
     }
