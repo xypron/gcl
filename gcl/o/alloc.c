@@ -529,6 +529,8 @@ alloc_from_freelist(struct typemanager *tm,fixnum n) {
 	return NULL;
       p=sSAstatic_relocatable_bufferA->s.s_dbind->v.v_self+sSAstatic_relocatable_bufferA->s.s_dbind->v.v_fillp;
       sSAstatic_relocatable_bufferA->s.s_dbind->v.v_fillp+=sizeof(struct cons)/sizeof(object);
+      fprintf(stderr,"Allocating relocable buffer %p\n",p);
+      fflush(stderr);
       return p;
     }
     if ((p=tm->tm_free)!=OBJNULL) {
