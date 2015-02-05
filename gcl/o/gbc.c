@@ -301,7 +301,7 @@ enter_mark_origin(object *p) {
 
 }
 
-static void *srb1,*srbp,*srbl,*srbh,*srbe;
+static void *srb1,*srbp,*srbl,*srbh,*srbe,*srbk;
 #define ul unsigned long
 
 inline void
@@ -456,18 +456,26 @@ real_mark_object(object *y) {
 
   if (((void *)x>=srb1 && (void *)x<srbl)) {
       if (is_marked(x)) {
+	void *p=Scdr(x);
+	if (p>=srbh && p<srbe) p+=(srb1-srbh);
 	fprintf(stderr,"Writing marked address %p:  %p -> ",(void *)y,(void *)*y);
-	*y=(void *)(((ul)Scdr(x)+(srb1-srbh))|((*(ul *)y)&0x7));
+	*y=(void *)(((ul)p)|((*(ul *)y)&0x7));
 	fprintf(stderr,"%p\n",((void *)*y));
 	fflush(stderr);
       } else {
-	void *p=srbp;
-	srbp+=sizeof(struct cons);/*FIXME*/
+	void *p;
+	if ((p=tm_table[t_cons].tm_free)!=OBJNULL&&(void *)x<srbk) {
+	  tm_table[t_cons].tm_free=OBJ_LINK(p);
+	  tm_table[t_cons].tm_nfree--;
+	} else {
+	  p=srbp;
+	  srbp+=sizeof(struct cons);/*FIXME*/
+	}
 	fprintf(stderr,"Writing address %p:  %p -> ",(void *)y,(void *)*y);
 	*y=(void *)(((ul)p)|((*(ul *)y)&0x7));
 	fprintf(stderr,"%p\n",(void *)*y);
 	fflush(stderr);
-	p+=srbh-srb1;
+	if (p==srbp-16) p+=srbh-srb1;
 	((object)p)->c=x->c;
 	x->c.c_cdr=p;
 	mark(x);
@@ -1276,6 +1284,7 @@ GBC(enum type t) {
   BEGIN_NO_INTERRUPT;
 
   if (sSAstatic_relocatable_bufferA && sSAstatic_relocatable_bufferA->s.s_dbind!=Cnil) {
+    srbk=srbp;
     srbp=srb1=sSAstatic_relocatable_bufferA->s.s_dbind->v.v_self;
     srbl=srb1+sSAstatic_relocatable_bufferA->s.s_dbind->v.v_fillp*sizeof(object);
     srbe=srb1+sSAstatic_relocatable_bufferA->s.s_dbind->v.v_dim*sizeof(object);
@@ -1438,6 +1447,7 @@ GBC(enum type t) {
   
   if (sSAstatic_relocatable_bufferA && sSAstatic_relocatable_bufferA->s.s_dbind!=Cnil) {
     memmove(srb1,srbh,(srbp-srb1));
+    memset(srb1+(srbp-srb1),0,(srbh-srbp));
     sSAstatic_relocatable_bufferA->s.s_dbind->v.v_fillp=(srbp-srb1)/sizeof(object);
   }
 
