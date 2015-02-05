@@ -508,8 +508,8 @@ mark_object(object x) {
     break;
     
   case t_array:
-    if ((x->a.a_displaced) != Cnil)
-      mark_displaced_field(x);
+    /* if ((x->a.a_displaced) != Cnil) */
+    /*   mark_displaced_field(x); */
     if (x->a.a_dims != NULL) {
       if (inheap(x->a.a_dims)) {
 	if (what_to_collect == t_contiguous)
@@ -584,11 +584,13 @@ mark_object(object x) {
 	adjust_displaced(x, i);
       }
     }
+    if ((x->a.a_displaced) != Cnil)
+      mark_displaced_field(x);
     break;
     
   case t_vector:
-    if ((x->v.v_displaced) != Cnil)
-      mark_displaced_field(x);
+    /* if ((displaced=x->v.v_displaced) != Cnil) */
+    /*   mark_displaced_field(x); */
     if ((enum aelttype)x->v.v_elttype == aet_object)
       goto CASE_GENERAL;
     else
@@ -621,8 +623,8 @@ mark_object(object x) {
     
   CASE_STRING:
   case t_string:
-    if ((x->st.st_displaced) != Cnil)
-      mark_displaced_field(x);
+    /* if ((displaced=x->st.st_displaced) != Cnil) */
+    /*   mark_displaced_field(x); */
     j = x->st.st_dim;
     cp = x->st.st_self;
     if (cp == NULL)
@@ -639,12 +641,14 @@ mark_object(object x) {
 	adjust_displaced(x, i);
       }
     }
+    if ((x->st.st_displaced) != Cnil)
+      mark_displaced_field(x);
     break;
     
   CASE_BITVECTOR:
   case t_bitvector:
-    if ((x->bv.bv_displaced) != Cnil)
-      mark_displaced_field(x);
+    /* if ((displaced=x->bv.bv_displaced) != Cnil) */
+    /*   mark_displaced_field(x); */
     /* We make bitvectors multiple of sizeof(int) in size allocated
        Assume 8 = number of bits in char */
     
