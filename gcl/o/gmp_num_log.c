@@ -88,7 +88,7 @@ big_bitp(object x, ufixnum p)
   return mpz_tstbit(MP(x),p);
 }
 
-static int
+static fixnum
 mpz_bitcount(__mpz_struct *x)
 {
   if (mpz_sgn(x) >= 0) {
@@ -101,7 +101,7 @@ mpz_bitcount(__mpz_struct *x)
 }
 
 
-static int
+static fixnum
 mpz_bitlength(__mpz_struct *x)
 {
   if (mpz_sgn(x) >= 0) {
