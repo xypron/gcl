@@ -445,7 +445,7 @@ real_mark_object(object *y) {
   object *p;
   char *cp;
   enum type tp;
-  object x=*y;
+  object x=Scdr((object)y);
   
  BEGIN:
   /* if the body of x is in the c stack, its elements
