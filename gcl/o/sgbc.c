@@ -639,7 +639,7 @@ sgc_mark_phase(void) {
     }
   }
   
-  mark_c_stack(0,N_RECURSION_REQD,mark_stack_carefully);
+  mark_c_stack(0,mark_stack_carefully);
   
 }
 

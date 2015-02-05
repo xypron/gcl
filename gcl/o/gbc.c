@@ -50,7 +50,7 @@ sgc_count_writable(void);
 #endif
 
 static void
-mark_c_stack(jmp_buf, int, void (*)(void *,void *,int));
+mark_c_stack(jmp_buf, void (*)(void *,void *,int));
 
 static void
 mark_contblock(void *, int);
@@ -1036,10 +1036,10 @@ mark_phase(void) {
   }}
   
   /* mark the c stack */
-#ifndef N_RECURSION_REQD
-#define N_RECURSION_REQD 2
-#endif
-  mark_c_stack(0,N_RECURSION_REQD,mark_stack_carefully);
+/* #ifndef N_RECURSION_REQD */
+/* #define N_RECURSION_REQD 0 */
+/* #endif */
+  mark_c_stack(0,mark_stack_carefully);
   
 }
 
@@ -1104,23 +1104,23 @@ void hppa_save_regs(struct regs);
 #endif
 
 static void
-mark_c_stack(jmp_buf env1, int n, void (*fn)(void *,void *,int)) {
+mark_c_stack(jmp_buf env1, void (*fn)(void *,void *,int)) {
 
 #if defined(__hppa__)
   struct regs hppa_regs;
 #endif
   jmp_buf env;
   int where;
-  if (n== N_RECURSION_REQD)
-    c_stack_where = (long *) (void *) &env;
-  if (n > 0 ) {  
+  /* if (n== N_RECURSION_REQD) */
+  c_stack_where = (long *) (void *) &env;
+  /* if (n > 0 ) {   */
 #if defined(__hppa__)
-    hppa_save_regs(hppa_regs);
-#else    
-    setjmp(env);
+  hppa_save_regs(hppa_regs);
 #endif
-    mark_c_stack(env,n - 1,fn);
-  } else {
+  if (setjmp(env)) return;
+
+  /*   mark_c_stack(env,n - 1,fn); */
+  /* } else { */
       
     /* If the locals of type object in a C function could be
        aligned other than on multiples of sizeof (char *)
@@ -1130,41 +1130,43 @@ mark_c_stack(jmp_buf env1, int n, void (*fn)(void *,void *,int)) {
 #ifndef C_GC_OFFSET
 #define C_GC_OFFSET 0
 #endif
-    {
-      struct pageinfo *v,*tv;void **a;
-      fixnum i;
-      for (v=contblock_list_head,contblock_stack_list=NULL;v;v=v->next)
-	for (i=1;i<v->in_use;i++) {
-	  tv=pagetoinfo(page(v)+i);
-	  if (PAGEINFO_P(tv)) {
-	    a=contblock_stack_list;
-	    /* printf("%p\n",tv); */
-	    contblock_stack_list=alloca(2*sizeof(a));
-	    contblock_stack_list[0]=tv;
-	    contblock_stack_list[1]=a;
-	  }}
+  {
+    struct pageinfo *v,*tv;void **a;
+    fixnum i;
+    for (v=contblock_list_head,contblock_stack_list=NULL;v;v=v->next)
+      for (i=1;i<v->in_use;i++) {
+	tv=pagetoinfo(page(v)+i);
+	if (PAGEINFO_P(tv)) {
+	  a=contblock_stack_list;
+	  /* printf("%p\n",tv); */
+	  contblock_stack_list=alloca(2*sizeof(a));
+	  contblock_stack_list[0]=tv;
+	  contblock_stack_list[1]=a;
+	}}
+    
+    if (&where > cs_org)
+      (*fn)(0,cs_org,C_GC_OFFSET);
+    else
+      (*fn)(cs_org,0,C_GC_OFFSET);
+    
+    contblock_stack_list=NULL;
+  }
 
-      if (&where > cs_org)
-	(*fn)(0,cs_org,C_GC_OFFSET);
-      else
-	(*fn)(cs_org,0,C_GC_OFFSET);
-
-      contblock_stack_list=NULL;
-    }}
-  
 #if defined(__ia64__)
-    {
-       extern void * __libc_ia64_register_backing_store_base;
-       void * bst=GC_save_regs_in_stack();
-       void * bsb=__libc_ia64_register_backing_store_base;
-
-       if (bsb>bst)
-          (*fn)(bsb,bst,C_GC_OFFSET);
-       else
-          (*fn)(bst,bsb,C_GC_OFFSET);
-       
-    }
+  {
+    extern void * __libc_ia64_register_backing_store_base;
+    void * bst=GC_save_regs_in_stack();
+    void * bsb=__libc_ia64_register_backing_store_base;
+    
+    if (bsb>bst)
+      (*fn)(bsb,bst,C_GC_OFFSET);
+    else
+      (*fn)(bst,bsb,C_GC_OFFSET);
+    
+  }
 #endif
+
+  longjmp(env,1);
 
 }
 
