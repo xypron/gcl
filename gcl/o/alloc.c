@@ -485,6 +485,8 @@ Use ALLOCATE to expand the space.",
 #endif
 bool prefer_low_mem_contblock=FALSE;
 
+DEFVAR("*STATIC-RELOCATABLE-BUFFER*",sSAstatic_relocatable_bufferA,SI,sLnil,"");
+
 inline void *
 alloc_from_freelist(struct typemanager *tm,fixnum n) {
 
@@ -522,6 +524,13 @@ alloc_from_freelist(struct typemanager *tm,fixnum n) {
     break;
 
   default:
+    if (tm==tm_table+t_cons && sSAstatic_relocatable_bufferA && sSAstatic_relocatable_bufferA->s.s_dbind!=Cnil) {
+      if (sSAstatic_relocatable_bufferA->s.s_dbind->v.v_fillp==sSAstatic_relocatable_bufferA->s.s_dbind->v.v_dim/2)
+	return NULL;
+      p=sSAstatic_relocatable_bufferA->s.s_dbind->v.v_self+sSAstatic_relocatable_bufferA->s.s_dbind->v.v_fillp;
+      sSAstatic_relocatable_bufferA->s.s_dbind->v.v_fillp+=sizeof(struct cons)/sizeof(object);
+      return p;
+    }
     if ((p=tm->tm_free)!=OBJNULL) {
       tm->tm_free = OBJ_LINK(p);
       tm->tm_nfree--;
@@ -761,15 +770,37 @@ load_cons(object p,object a,object d) {
   p->c.c_car=a;
 }
 
+/* inline object */
+/* make_cons(object a,object d) { */
+
+/*   static struct typemanager *tm=tm_table+t_cons;/\*FIXME*\/ */
+/*   object obj=alloc_mem(tm,tm->tm_size); */
+
+/*   load_cons(obj,a,d); */
+
+/*   pageinfo(obj)->in_use++; */
+
+/*   return(obj); */
+
+/* } */
+
+/* inline object */
+/* make_cons(object a,object d) { */
+
+/*   object obj=alloc_relblock(sizeof(struct cons)); */
+
+/*   load_cons(obj,a,d); */
+
+/*   return(obj); */
+
+/* } */
+
 inline object
 make_cons(object a,object d) {
 
-  static struct typemanager *tm=tm_table+t_cons;/*FIXME*/
-  object obj=alloc_mem(tm,tm->tm_size);
+  object obj=alloc_object(t_cons);
 
   load_cons(obj,a,d);
-
-  pageinfo(obj)->in_use++;
 
   return(obj);
 
