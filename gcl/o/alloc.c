@@ -745,7 +745,10 @@ alloc_object(enum type t)  {
   obj=alloc_mem(tm,tm->tm_size);
   set_type_of(obj,t);
   
-  pageinfo(obj)->in_use++;
+  if (!sSAstatic_relocatable_bufferA || sSAstatic_relocatable_bufferA->s.s_dbind==Cnil
+      || obj<(object)sSAstatic_relocatable_bufferA->s.s_dbind->v.v_self
+      || obj>=(object)sSAstatic_relocatable_bufferA->s.s_dbind->v.v_self+sSAstatic_relocatable_bufferA->s.s_dbind->v.v_fillp)
+    pageinfo(obj)->in_use++;
 
   return(obj);
   
