@@ -958,7 +958,11 @@ mark_stack_carefully(void *topv, void *bottomv, int offset) {
       sgc_mark_object(x);
     else
 #endif
-      real_mark_object((object *)j);
+      {
+	mark_object(x);
+	*(object *)j=((void *)x)+pageoffset%tm->tm_size;/*FIXME above too,only c stack*/
+      }
+      /* real_mark_object(pageoffset%tm->tm_size ? &x : (object *)j); */
   }
 }
 
