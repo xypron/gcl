@@ -1454,6 +1454,8 @@ GBC(enum type t) {
 #endif
   
   if (sSAstatic_relocatable_bufferA && sSAstatic_relocatable_bufferA->s.s_dbind!=Cnil) {
+    fprintf(stderr,"eph: %lu %lu -> %lu\n",sSAstatic_relocatable_bufferA->s.s_dbind->v.v_fillp,(srbk-srb1)/sizeof(object),(srbp-srb1)/sizeof(object));
+    fflush(stderr);
     memmove(srb1,srbh,(srbp-srb1));
     memset(srb1+(srbp-srb1),0,(srbh-srbp));
     sSAstatic_relocatable_bufferA->s.s_dbind->v.v_fillp=(srbp-srb1)/sizeof(object);
