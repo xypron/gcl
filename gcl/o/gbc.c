@@ -447,7 +447,6 @@ real_mark_object(object *y) {
   enum type tp;
   object x=Scdr((object)y);
   
- BEGIN:
   /* if the body of x is in the c stack, its elements
      are marked anyway by the c stack mark carefully, and
      if this x is somehow hanging around in a cons that
@@ -507,8 +506,8 @@ real_mark_object(object *y) {
     
   case t_ratio:
     mark_object(x->rat.rat_num);
-    x = x->rat.rat_den;
-    goto BEGIN;
+    mark_object(x->rat.rat_den);
+    break;
     
   case t_shortfloat:
     break;
@@ -518,12 +517,12 @@ real_mark_object(object *y) {
     
   case t_complex:
     mark_object(x->cmp.cmp_imag);
-    x = x->cmp.cmp_real;
-    goto BEGIN;
+    mark_object(x->cmp.cmp_real);
+    break;
     
   case t_character:
     break;
-    
+
   case t_symbol:
     mark_object(x->s.s_plist);
     mark_object(x->s.s_gfdef);
