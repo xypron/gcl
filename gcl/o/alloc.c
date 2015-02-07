@@ -526,7 +526,7 @@ alloc_from_freelist(struct typemanager *tm,fixnum n) {
   default:
     if (tm==tm_table+t_cons && sSAstatic_relocatable_bufferA) {
       if (sSAstatic_relocatable_bufferA->s.s_dbind==Cnil) {
-      	sSAstatic_relocatable_bufferA->s.s_dbind=(VFUN_NARGS=4,FFN(fSmake_vector1)(make_fixnum(4000000),fSget_aelttype(sLfixnum),Ct,make_fixnum(0)));
+      	sSAstatic_relocatable_bufferA->s.s_dbind=(VFUN_NARGS=4,FFN(fSmake_vector1)(make_fixnum(400000),fSget_aelttype(sLfixnum),Ct,make_fixnum(0)));
       }
       if (sSAstatic_relocatable_bufferA->s.s_dbind!=Cnil) {
 	if (sSAstatic_relocatable_bufferA->s.s_dbind->v.v_fillp==sSAstatic_relocatable_bufferA->s.s_dbind->v.v_dim/2)
