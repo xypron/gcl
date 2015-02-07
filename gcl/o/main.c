@@ -824,15 +824,15 @@ LFD(siLreset_stack_limits)(void)
     ihs_limit = ihs_org + stack_multiple *  IHSSIZE;
   else
     error("can't reset ihs_limit");
-  if (cs_base==cs_org)
-    cs_org=(void *)&i;
-#ifdef __ia64__
- {
-   extern void * GC_save_regs_in_stack();
-   if (cs_base2==cs_org2)
-     cs_org2=GC_save_regs_in_stack();
- }
-#endif
+/*   if (cs_base==cs_org) */
+/*     cs_org=(void *)&i; */
+/* #ifdef __ia64__ */
+/*  { */
+/*    extern void * GC_save_regs_in_stack(); */
+/*    if (cs_base2==cs_org2) */
+/*      cs_org2=GC_save_regs_in_stack(); */
+/*  } */
+/* #endif */
   /* reset_cstack_limit(i); */
   vs_base[0] = Cnil;
 }
