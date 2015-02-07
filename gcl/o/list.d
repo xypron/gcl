@@ -1442,6 +1442,10 @@ void
 gcl_init_list_function()
 {
 
+  enter_mark_origin(&item_compared);
+  enter_mark_origin(&test_function);
+  enter_mark_origin(&key_function);
+
 	sKtest = make_keyword("TEST");
 	sKtest_not = make_keyword("TEST-NOT");
 	sKkey = make_keyword("KEY");
