@@ -1569,7 +1569,7 @@ memory_protect(int on) {
   writable = IS_WRITABLE(beg);
   for (i=beg ; ++i<= end; ) {
 
-    if (writable==IS_WRITABLE(i) && i<=end) continue;
+    if (writable==IS_WRITABLE(i) && i<end) continue;
 
     if (sgc_mprotect(beg,i-beg,writable)) 
       return -1;
