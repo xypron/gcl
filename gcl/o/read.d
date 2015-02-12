@@ -2152,7 +2152,8 @@ LFD(Lreadtablep)()
 		rdtbl->rt.rt_self[c].rte_chattrib
 		= cat_terminating;
 	rdtbl->rt.rt_self[c].rte_macro = fnc;
-	@(return Ct)
+  SGC_TOUCH(rdtbl);
+  @(return Ct)
 @)
 
 @(defun get_macro_character (chr &optional (rdtbl `current_readtable()`))
@@ -2209,7 +2210,8 @@ LFD(Lreadtablep)()
 		rdtbl->rt.rt_self[char_code(dspchr)]
 		.rte_dtab[char_code(subchr) - ('a' - 'A')] = fnc;
 
-	@(return Ct)
+  SGC_TOUCH(rdtbl);
+  @(return Ct)
 @)
 
 @(static defun get_dispatch_macro_character (dspchr subchr
