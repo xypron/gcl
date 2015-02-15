@@ -414,5 +414,8 @@ Good luck!				 The GCL Development Team")
 (in-package 'si)
 
 (defvar *lib-directory* (namestring (truename "../")))
+(defun physical-memory (&aux (z (multiple-value-list (heap-report))))
+  (* (cadr z) (car (last z))))
+(defun scale-heap-to-physical-memory nil (scale-heap-to (physical-memory)))
 
 (import '(*lib-directory* *load-path* *system-directory*) 'si::user) 

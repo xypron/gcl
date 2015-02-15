@@ -1604,6 +1604,35 @@ mark_contblock(void *p, int s) {
     set_mark_bits(v,x,y);
 }
 
+DEFUN_NEW("SCALE-HEAP-TO",object,fSscale_heap_to,SI,1,1,NONE,II,OO,OO,OO,(fixnum mem),"") {
+
+  fixnum i;
+  enum type t;
+  double scale;
+  
+  for (t=i=0;t<t_other;t++)
+    if (tm_table+t==tm_of(t))
+      i+=tm_table[t].tm_maxpage;
+
+  scale=(double)(mem>>PAGEWIDTH)/i;
+  
+  for (t=i=0;t<t_other;t++)
+    if (tm_table+t==tm_of(t)) {
+      if (!set_tm_maxpage(tm_table+t,tm_table[t].tm_maxpage*scale))
+	FEerror("Cannot scale heap",0);
+      if (t<t_relocatable)
+	i+=tm_table[t].tm_maxpage;
+    }
+
+  if ((t=sgc_enabled))
+    sgc_quit();
+  holepage=new_holepage=i;
+  GBC(t_relocatable);
+  if (t)
+    sgc_start();
+  return (object)mem;
+}
+
 DEFUN_NEW("GBC",object,fLgbc,LISP,1,1,NONE,OO,OO,OO,OO,(object x0),"") {
 
   /* 1 args */
