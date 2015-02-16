@@ -1630,6 +1630,7 @@ DEFUN_NEW("SCALE-HEAP-TO",object,fSscale_heap_to,SI,1,1,NONE,II,OO,OO,OO,(fixnum
   GBC(t_relocatable);
   if (t)
     sgc_start();
+  add_pages(tm_table+t_contiguous,tm_table[t_contiguous].tm_maxpage-ncbpage);
   return (object)mem;
 }
 
