@@ -416,6 +416,8 @@ Good luck!				 The GCL Development Team")
 (defvar *lib-directory* (namestring (truename "../")))
 (defun physical-memory (&aux (z (multiple-value-list (heap-report))))
   (* (cadr z) (car (last z))))
-(defun scale-heap-to-physical-memory nil (scale-heap-to (physical-memory)))
+(defun scale-heap-to-physical-memory nil
+  (scale-heap-to (ash (physical-memory)
+		      (- (read-from-string (coerce (getenv "GCL_PMSHFT") 'string) nil 0)))))
 
 (import '(*lib-directory* *load-path* *system-directory*) 'si::user) 
