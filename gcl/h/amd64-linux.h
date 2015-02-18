@@ -21,3 +21,4 @@
 #define C_GC_OFFSET 4
 
 #define RELOC_H "elf64_i386_reloc.h"
+#define SPECIAL_RELOC_H "elf64_i386_reloc_special.h"
