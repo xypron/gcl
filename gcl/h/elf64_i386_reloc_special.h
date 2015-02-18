@@ -1,8 +1,8 @@
 /* #define R_AARCH64_TRAMP 1 */
-static int tramp[]={0x48b80000, /*movabs $0x0,%rax*/
-		    0x00000000,
-		    0x0000ffe0, /*jmpq   *%rax*/
-                    0x90909090};/*nop nop nop nop*/
+static char tramp[]={0x48,b8,00,00, /*movabs $0x0,%rax*/
+		     0x00,00,00,00,
+		     0x00,00,ff,e0, /*jmpq   *%rax*/
+		     0x90,90,90,90};/*nop nop nop nop*/
 static ul gotp,tz=sizeof(tramp)/sizeof(ul);
 
 
