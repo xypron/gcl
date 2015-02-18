@@ -10,7 +10,7 @@
     case R_X86_64_PC32:
     {
       long x=s+a-p;
-      if (abs(x)&(~MASK(32))) {
+      if (labs(x)&(~MASK(32))) {
 	if (a) {
 	  got+=gotp;
 	  gotp+=tz;
