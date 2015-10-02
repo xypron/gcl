@@ -563,19 +563,19 @@ object host, device, directory, name, type, version, casekey;
  */
 
 static int
-parse_namestring_check(s,start,end,c,restrict)
+parse_namestring_check(s,start,end,c,restr)
 object s;
 int start, end;
 char c;
-int restrict;
+int restr;
 {	
   int i;
 	for (i=start; (s->st.st_self[i]!=c) && (i<end); i++) {
-	    if ((restrict==':') &&
+	    if ((restr==':') &&
 	    	!( isalnum(s->st.st_self[i]) || (s->st.st_self[i]=='-') || (s->st.st_self[i]=='.') ))
 	    	return -2;
 #ifdef ANSI
-	    if ((restrict==';') && pathname_resolve(pathKansi) &&
+	    if ((restr==';') && pathname_resolve(pathKansi) &&
 	    	!( isalnum(s->st.st_self[i]) || (s->st.st_self[i]=='-') ||
 		     (s->st.st_self[i]=='*') || (s->st.st_self[i]=='?') ))
 	    	return -2;
@@ -1680,7 +1680,7 @@ LFD(Lhost_namestring)(void)
 		equalp(path->pn.pn_type, defaults->pn.pn_type) ?
 		Cnil : path->pn.pn_type,
 		equalp(path->pn.pn_version, defaults->pn.pn_version) ?
-		Cnil : path->pn.pn_version);
+		Cnil : path->pn.pn_version,sKcommon);
 	} else
 	    path = make_pathname(
 		equalp(path->pn.pn_host, defaults->pn.pn_host) ?
@@ -1694,7 +1694,7 @@ LFD(Lhost_namestring)(void)
 		equalp(path->pn.pn_type, defaults->pn.pn_type) ?
 		Cnil : path->pn.pn_type,
 		equalp(path->pn.pn_version, defaults->pn.pn_version) ?
-		Cnil : path->pn.pn_version);
+		Cnil : path->pn.pn_version,sKcommon);
 
 	@(return `namestring(path)`)
 @)
