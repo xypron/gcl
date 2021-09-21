@@ -468,6 +468,9 @@ case $canonical in
      arm*-*-linux*)
      use=arm-linux; ln -snf linux.defs h/$use.defs;;
 
+     riscv64*-*-linux*)
+     use=riscv64-linux; ln -snf linux.defs h/$use.defs;;
+
      s390-*-linux*)
      use=s390-linux; ln -snf linux.defs h/$use.defs;;
 
